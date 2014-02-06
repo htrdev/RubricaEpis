@@ -31,9 +31,18 @@ class ResultadoAprendizaje{
 
 	}
 
+	
+
 }
 
 class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
+
+	private $conexion;
+
+	public function __construct(){
+		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+	}
+
 	public function agregarResultadoAprendizajeDocente(){
 
 	}
@@ -41,8 +50,22 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	public function modificarResultadoAprendizajeDocente(){
 		
 	}
+
+	public function ResultadoAprendizajePorDocente(){
+		$docente = $_POST['txtDocente'];
+		$query = "select d.ResultadoAprendizaje_idResultadoAprendizaje, c.definicionResultadoAprendizaje, c.tituloResultadoAprendizaje from   resultadoaprendizaje as c inner join resultadoaprendizajedocente as d on d.ResultadoAprendizaje_idResultadoAprendizaje = c.idResultadoAprendizaje where d.Docente_Persona_idPersona ='".$docente."'";
+		$resultado = $this->conexion->realizarConsulta($query);
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;	
+
+
+
+	}
+
+
 }
 
 
-$objetoRA = new ResultadoAprendizaje();
-echo $objetoRA->agregarResultadoAprendizaje();
+$objetoRA = new ResultadoAprendizajeDocente();
+echo $objetoRA->ResultadoAprendizajePorDocente();
+
