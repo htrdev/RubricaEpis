@@ -98,7 +98,7 @@ class ConexionMySQL extends Conexion{
 	public function realizarConsulta($sql){
 		$this->obtenerConexion();
 		$resultado =  mysql_query($sql,$this->conexion);
-		//return $this->convertirArray($resultado);
+		return $this->convertirArray($resultado);
 	}
 
 
