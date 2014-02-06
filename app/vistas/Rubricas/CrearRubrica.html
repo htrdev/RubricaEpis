@@ -1,0 +1,222 @@
+<div class="row-fluid">
+	<div class="span12">
+		<!--PAGE CONTENT BEGINS-->
+
+		<form class="form-horizontal" >
+		<div class="row-fluid" id="DatosGenerales" ng-hide="EstaCuestionario">
+			<div class="span12">
+				<div class="page-header">
+					<h1>Crear Rubrica</h1>	
+				</div>
+				<div class="widget-box">
+					<div class="widget-header widget-header-blue widget-header-flat">
+						<h4 class="lighter">Datos Generales</h4>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="row-fluid">
+								<div class="span6">
+									<label for="form-field-select-3"><h4>Curso</h4></label>
+									<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.codigo+' - '+curso.nombre group by curso.ciclo for curso in cursos" ng-model="cursoSeleccionado">
+										<option value=""> -- Escoje Curso -- </option>
+									</select>
+								</div>
+								<div class="span6">
+									<label for="form-field-select-3"><h4>Semestre</h4></label>
+									<input readonly type="text" name="semestreAcademico" value="2013-EXT" >
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span12" >
+									<label for="form-field-select-3"><h4>Rubrica en</h4></label>
+									<label style="display:inline-block">
+										<input name="tipoRubrica" type="radio"><span class="lbl"> Curso </span>
+										<input name="tipoRubrica" type="radio"><span class="lbl"> Proyecto </span>
+										<input name="tipoRubrica" type="radio"><span class="lbl"> Otro </span>
+										<input type="text" name="semestreAcademico" value="" >
+									</label>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span6">
+									<label for="cboDocente"><h4>Docente</h4></label>
+									<div class="widget-box" style="width:80%">
+										<div class="widget-header widget-healder-small header-color-dark">
+											<h6>Docentes Seleccionados</h6>
+										</div>
+										<div class="widget-body" style="border:1px solid #666" >
+											<div class="widget-main padding-4">
+												<div class="slim-scroll" data-height="250px">
+													<div class="content">
+														<div ng-repeat="docente in docentes">
+															 <div class="alert-{{docente.estaSeleccionado}} alert" >
+																<input type="checkbox" ng-model="docente.estaSeleccionado" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
+																{{docente.nombre}}
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="span2">
+									<label for="cboDocente"><h4>Calificacion A</h4></label>
+									<label style="display:inline-block">
+										<input name="tipoRubrica" type="radio"><span class="lbl"> Alumnos </span><br>
+										<input name="tipoRubrica" type="radio"><span class="lbl"> Docentes </span>
+									</label>
+								</div>
+								<div class="span3">
+									<div class="row-fluid">
+										<label for="id-date-range-picker-1"><h4>Fecha</h4></label>
+										<label for="fechaInicio"><h5>Fecha Inicio</h5></label>
+										<input class="span10 date-picker fecha" data-date-language="es-MX" id="fechaInicio" type="text" data-date-format="dd-mm-yyyy" />
+										<label for="fechaInicio"><h5>Fecha Final</h5></label>
+										<input class="span10 date-picker fecha" data-date-language="es-MX" id="fechaFinal" type="text" data-date-format="dd-mm-yyyy" />
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div style="text-align:right">
+								<button class="btn btn-success btn-next" ng-click="MostrarCuestionario()">Cuestionario
+									<i class="icon-arrow-right icon-on-right"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid" id="Cuestionario" ng-show="EstaCuestionario">
+			<div class="span12">
+				<div class="page-header">
+					<h1>Crear Rubrica</h1>	
+				</div>
+				<div class="widget-box">
+					<div class="widget-header widget-header-blue widget-header-flat">
+						<h4 class="lighter">Criterios de Evaluacion</h4>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="row-fluid">
+								<div class="span4">
+									<div id="mantenerCriteriosTop" style="max-width:373px">
+										<div class="widget-box transparent">
+											<div class="widget-header">
+												<h4 class="lighter">Busqueda</h4>
+											</div>
+											<div class="widget-body">
+												<div class="widget-main" >
+													<label for="form-field-select-3"><h4>Resultado de Aprendizaje</h4></label>
+													<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-resultados ng-options="resultadoAprendizaje.nombre for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
+														<option value=""> -- Seleccione Resultado de Aprendizaje -- </option>
+													</select>
+													<hr>
+													<div class="widget-box">
+														<div class="widget-header widget-healder-small header-color-dark">
+															<h6>Criterios de Evaluacion</h6>
+														</div>
+														<div class="widget-body" style="border:1px solid #666">
+															<div class="widget-main padding-4">
+																<div class="slim-scroll" data-height="250px">
+																	<div class="content">
+																		<div ng-repeat="criterio in resultadoAprendizajeSeleccionado.criterios">
+																			<div class="alert-{{criterio.estaSeleccionado}} alert" >
+																				<input type="checkbox" ng-model="criterio.estaSeleccionado" ng-change="Interfaz.AgregarCriterioSeleccionado(criterio)" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
+																				{{criterio.descripcion}}
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr>
+												</div>
+											</div>
+										</div>
+									</div>	
+								</div>
+								<div class="span8">
+									<div class="widget-box transparent">
+										<div class="widget-header">
+											<h4 class="lighter smaller">
+												Criterios Seleccionados
+											</h4>
+										</div>
+										<div class="widget-body">
+											<div class="widget-main">
+												<ul id="tasks" class="item-list" ui-sortable ng-model="criterios">
+													<li class="item-blue clearfix" ng-repeat="criterio in criterios">
+															<input type="checkbox" style="opacity:1;position:static"/>
+															{{criterio.descripcion}}
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div style="text-align:right">
+								<button class="btn btn-prev" ng-click="OcultarCuestionario()">Datos Generales
+									<i class="icon-arrow-left"></i>
+								</button>
+								<button class="btn btn-success btn-next" ng-click="Interfaz.Guardar()">Guardar
+									<i class="icon-ok"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>	
+		
+	</div><!--/.span-->
+</div><!--/.row-fluid-->
+
+
+<script src="assets/js/jquery.slimscroll.min.js"></script>
+<script src="assets/js/jquery.sticky.js"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		$('.fecha').datepicker({language:"fr-FR"});
+		var agent = navigator.userAgent.toLowerCase();
+				if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+				  $('#tasks').on('touchstart', function(e){
+					var li = $(e.target).closest('#tasks li');
+					if(li.length == 0)return;
+					var label = li.find('label.inline').get(0);
+					if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+				});
+		$('#tasks').sortable({
+				opacity:0.8,
+				revert:true,
+				forceHelperSize:true,
+				placeholder: 'draggable-placeholder',
+				forcePlaceholderSize:true,
+				tolerance:'pointer',
+				stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+					$(ui.item).css('z-index', 'auto');
+				}
+				}
+			);
+		$('#tasks').disableSelection();
+		// scrollables
+		$('.slim-scroll').each(function () {
+			var $this = $(this);
+			$this.slimScroll({
+				height: $this.data('height') || 100,
+				railVisible:true
+			});
+		});
+		
+		//mantener paleta criterios top
+		$('#mantenerCriteriosTop').sticky({topSpacing:0});
+	});
+</script>
