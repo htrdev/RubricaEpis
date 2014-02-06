@@ -40,7 +40,7 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
 	}
 
 	public function agregarResultadoAprendizajeDocente(){
@@ -57,8 +57,6 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 		$resultado = $this->conexion->realizarConsulta($query);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
-
-
 
 	}
 

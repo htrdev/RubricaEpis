@@ -24,7 +24,7 @@ abstract class Conexion{
 	protected $password;
 	protected $baseDeDatos;
 
-	public abstract static function obtenerObjeto();
+	public abstract static function obtenerObjeto($host,$usuario,$password);
 	public abstract function obtenerConexion();
 }
 
@@ -87,7 +87,7 @@ class ConexionMySQL extends Conexion{
 		return self::$objetoConexion;
 	}
 
-	public function obtenerConexion($host,$usuario,$password){
+	public function obtenerConexion(){
 	//	if(!is_null($this->conexion)){
         $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
         //}
