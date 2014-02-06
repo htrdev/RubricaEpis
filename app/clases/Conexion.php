@@ -3,12 +3,12 @@
 
 class ConexionFactory{
 
-	public function obtenerConexion($tipoConexion){
+	public function obtenerConexion($tipoConexion,$host,$usuario,$password){
 		$conexion = "h1";
 		switch($tipoConexion)
 		{
-			case 'sqlserver' : $conexion = ConexionSQLServer::obtenerObjeto();break;
-			case 'mysql' : $conexion = ConexionMySQL::obtenerObjeto();break;
+			case 'sqlserver' : $conexion = ConexionSQLServer::obtenerObjeto($host,$usuario,$password);break;
+			case 'mysql' : $conexion = ConexionMySQL::obtenerObjeto($host,$usuario,$password);break;
 		}
 		return $conexion;
 	}
@@ -30,17 +30,17 @@ abstract class Conexion{
 
 class ConexionSQLServer extends Conexion{
 
-	private function __construct(){
-		$this->servidor = "192.168.1.38";
-		$this->usuario	= "sa";
-		$this->password = "123cuatro";
+	private function __construct($host,$usuario,$password){
+		$this->servidor = $host;
+		$this->usuario	= $usuario;
+		$this->password = $password;
 		$this->baseDeDatos = "test123";
 	}
 
-	public static function obtenerObjeto(){
+	public static function obtenerObjeto($host,$usuario,$password){
 		if(!self::$objetoConexion instanceof self)
 		{
-			self::$objetoConexion = new self;
+			self::$objetoConexion = new self($host,$usuario,$password);
 		}
 		return self::$objetoConexion;
 	}
@@ -72,22 +72,22 @@ class ConexionSQLServer extends Conexion{
 
 class ConexionMySQL extends Conexion{
 
-	private function __construct(){
-		$this->servidor = "192.168.1.37";
-		$this->usuario	= "htrdev";
-		$this->password = "12345";
+	private function __construct($host,$usuario,$password){
+		$this->servidor = $host;
+		$this->usuario	= $usuario;
+		$this->password = $password;
 		$this->baseDeDatos = "rubricaepis";
 	}
 
-	public static function obtenerObjeto(){
+	public static function obtenerObjeto($host,$usuario,$password){
 		if(!self::$objetoConexion instanceof self)
 		{
-			self::$objetoConexion = new self;
+			self::$objetoConexion = new self($host,$usuario,$password);
 		}
 		return self::$objetoConexion;
 	}
 
-	public function obtenerConexion(){
+	public function obtenerConexion($host,$usuario,$password){
 	//	if(!is_null($this->conexion)){
         $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
         //}
