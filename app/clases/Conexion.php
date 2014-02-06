@@ -73,7 +73,7 @@ class ConexionSQLServer extends Conexion{
 class ConexionMySQL extends Conexion{
 
 	private function __construct(){
-		$this->servidor = "localhost";
+		$this->servidor = "192.168.1.37";
 		$this->usuario	= "htrdev";
 		$this->password = "12345";
 		$this->baseDeDatos = "rubricaepis";

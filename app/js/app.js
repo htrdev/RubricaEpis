@@ -22,6 +22,10 @@ rubricaApp.config(['$routeProvider',
         templateUrl: urlServidor+'vistas/ResultadoAprendizaje/CrearResultadoAprendizaje.html'
 
       }).
+      when('/ResultadosAprendizaje',{
+        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html'
+
+      }).
       otherwise({
         redirectTo: '/',
         //templateUrl: urlServidor+'vistas/Usuario/Login.html'
