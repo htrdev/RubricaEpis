@@ -23,8 +23,8 @@ rubricaApp.config(['$routeProvider',
 
       }).
       when('/ResultadosAprendizaje',{
-        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html'
-
+        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html',
+        controller : 'ListarResultadoAprendizajeController'
       }).
       otherwise({
         redirectTo: '/',
@@ -92,9 +92,8 @@ rubricaApp.directive("chosenResultados", function(){
   var linker = function(scope,element,attr){
       scope.$watch('resultadosAprendizaje',function(){
         element.trigger('liszt:updated');
-        
       })
-      element.chosen({width:'80%'});
+      element.chosen({width:'100%'});
   };
 
   return {

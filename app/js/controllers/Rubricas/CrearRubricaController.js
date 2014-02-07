@@ -1,19 +1,28 @@
 'use strict';
 
 rubricaApp.controller('CrearRubricaController',
-	function CrearRubricaController($scope)
+	function CrearRubricaController($scope,Semestre,ResultadoAprendizaje)
 	{
-		$scope.semestre = [
-			{
-				nombre: '2013-EXT'
-			},
-			{
-				nombre: '2013-II'
-			},
-			{
-				nombre: '2013-II'
-			}
-		];
+
+		$scope.semestre;
+		$scope.resultadosAprendizaje;
+
+		listarSemestreActivo();
+		listarResultadoAprendizaje();
+
+		function listarSemestreActivo(){
+			Semestre.listarSemestreActivo()
+				.success(function(semestre){
+					$scope.semestre = semestre;
+				});
+		};
+
+		function listarResultadoAprendizaje(){
+			ResultadoAprendizaje.listarResultadoAprendizaje()
+				.success(function(resultadosAprendizaje){
+					$scope.resultadosAprendizaje = resultadosAprendizaje;
+				});
+		};
 
 		$scope.docentes = [
 
@@ -59,21 +68,13 @@ rubricaApp.controller('CrearRubricaController',
 						,{codigo:'SI-665',nombre:'Sistemas Operativos II',ciclo:'VI'}
 						,{codigo:'SI-666',nombre:'Gestion de la calidad de Software',ciclo:'VI'}];
 
-		$scope.EstaCuestionario = false;
-
-		$scope.MostrarCuestionario = function(){
-			$scope.EstaCuestionario = true;
-		};
-
-		$scope.OcultarCuestionario = function(){
-			$scope.EstaCuestionario = false;
-		};
+		
 
 
 
 		$scope.criterios = [];
 
-		$scope.resultadosAprendizaje = [
+		/*$scope.resultadosAprendizaje = [
 			{
 				nombre : "1a. Aplicacion de Ciencias",
 				criterios : [{descripcion:"Entiende e interpreta fenomenos naturales aplicando las leyes fundamentales que los gobiernan"},
@@ -88,7 +89,7 @@ rubricaApp.controller('CrearRubricaController',
 				criterios : [{descripcion:"Determina las pruebas y experimientos a realizar tomando en cuenta los estandares de calidad requerimientos"},
 							{descripcion: "identifica y relaciona las variables de los Sistemas de software e informacion y los mide o estima con la precision requerida"}]
 			}
-		];
+		];*/
 
 		$scope.Interfaz =	{
 			AgregarCriterioSeleccionado : function(criterio){
@@ -99,7 +100,20 @@ rubricaApp.controller('CrearRubricaController',
 				else{
 					$scope.criterios.splice($scope.criterios.indexOf(criterio),1);
 				}
-			}
+			},
+
+			MostrarCuestionario : function(){
+				$scope.Interfaz.EstaCuestionario = true;
+				console.log($scope.resultadosAprendizaje);
+			},
+
+			OcultarCuestionario : function(){
+				$scope.Interfaz.EstaCuestionario = false;
+			},
+
+			EstaCuestionario : false
 		}
-		
+
+
+
 	});

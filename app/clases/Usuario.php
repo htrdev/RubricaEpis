@@ -9,11 +9,11 @@ class Usuario{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
+		$this->conexion = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
 
 	public function listarUsuarios(){
-		$usuario = $this->conexion->realizarConsulta("SELECT * FROM test");
+		$usuario = $this->conexion->realizarConsulta("SELECT * FROM PERSONA");
 		$resultado = $this->conexion->convertirJson($usuario);
 		return $resultado;
 	}

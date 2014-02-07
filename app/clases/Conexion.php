@@ -34,7 +34,7 @@ class ConexionSQLServer extends Conexion{
 		$this->servidor = $host;
 		$this->usuario	= $usuario;
 		$this->password = $password;
-		$this->baseDeDatos = "test123";
+		$this->baseDeDatos = "matrixupt";
 	}
 
 	public static function obtenerObjeto($host,$usuario,$password){
@@ -60,7 +60,7 @@ class ConexionSQLServer extends Conexion{
 	private function convertirArray($resultado){
 		$objetos = array();
 		while($r = mssql_fetch_assoc($resultado)) {
-		    $objetos[] = $r;
+		    $objetos[] = array_map('utf8_encode', $r);
 		}
 		return $objetos;
 	}
