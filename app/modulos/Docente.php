@@ -10,4 +10,5 @@ $Docente = new Docente();
 
 switch($metodo){
 	case 'listarDocenteActivo' : echo $Docente->listarDocenteActivo();break;
+	case 'listarCursosDocente' : echo $Docente->listarCursosDocente();break;
 }
