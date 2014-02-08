@@ -51,7 +51,7 @@
 														<div ng-repeat="docente in docentes">
 															 <div class="alert-{{docente.estaSeleccionado}} alert" >
 																<input type="checkbox" ng-model="docente.estaSeleccionado" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
-																{{docente.nombre}}
+																{{docente.ApepPer+' '+docente.ApemPer+', '+docente.NomPer}}
 															</div>
 														</div>
 													</div>

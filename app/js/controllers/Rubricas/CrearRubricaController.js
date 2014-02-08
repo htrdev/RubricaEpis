@@ -1,14 +1,16 @@
 'use strict';
 
 rubricaApp.controller('CrearRubricaController',
-	function CrearRubricaController($scope,Semestre,ResultadoAprendizaje)
+	function CrearRubricaController($scope,Semestre,ResultadoAprendizaje,Docente)
 	{
 
 		$scope.semestre;
 		$scope.resultadosAprendizaje;
+		$scope.docentes;
 
 		listarSemestreActivo();
 		listarResultadoAprendizaje();
+		listarDocenteActivo();
 
 		function listarSemestreActivo(){
 			Semestre.listarSemestreActivo()
@@ -24,7 +26,14 @@ rubricaApp.controller('CrearRubricaController',
 				});
 		};
 
-		$scope.docentes = [
+		function listarDocenteActivo(){
+			Docente.listarDocenteActivo()
+				.success(function(docentes){
+					$scope.docentes = docentes;
+				});
+		};
+
+		/*$scope.docentes = [
 
 			{nombre:'IBARRA MONTECINOS, MARIELLA ROSARIO'},
 			{nombre:'ALE NIETO, TITO FERNANDO'},
@@ -53,7 +62,7 @@ rubricaApp.controller('CrearRubricaController',
 			{nombre:'ROJAS MORALES, IVAN CESAR'},
 			{nombre:'ALCA GOMEZ, JAVIER'}
 		
-		];
+		];*/
 
 		$scope.cursos = [{codigo:'SI-561',nombre:'Diseño y Arquitectura de Software',ciclo:'V'}
 						,{codigo:'SI-562',nombre:'Sistemas Operativos I',ciclo:'V'}
