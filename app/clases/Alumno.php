@@ -12,9 +12,9 @@ class Alumno{
 		$this->conexion = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
 
-	public function listarAlumnoPorCursoSemetre(){
+	public function listarAlumnoPorCursoSemestre(){
 
-		$semestre = $_POST['txtSemetre'];
+		$semestre = $_POST['txtSemestre'];
 		$curso = $_POST['txtCurso'];
 		$query = "select cu.DesCurso, p.NomPer, s.Semestre from carga as c
 		inner join PERSONA as p on p.CodPer = c.codper
@@ -29,4 +29,4 @@ class Alumno{
 }
 
 $objetoRA = new Alumno();
-echo $objetoRA->listarAlumnoPorCursoSemetre();
+echo $objetoRA->listarAlumnoPorCursoSemestre();
