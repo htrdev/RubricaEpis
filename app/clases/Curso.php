@@ -4,7 +4,7 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 
-class Docente{
+class Curso{
 
 	private $conexion;
 
