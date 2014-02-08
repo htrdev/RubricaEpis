@@ -16,7 +16,7 @@ class Alumno{
 
 		$semestre = $_POST['txtSemestre'];
 		$curso = $_POST['txtCurso'];
-		$query = "select cu.DesCurso, p.NomPer, s.Semestre from carga as c
+		$query = "select cu.DesCurso, p.NomPer, p.ApepPer, p.ApemPer, s.Semestre from carga as c
 		inner join PERSONA as p on p.CodPer = c.codper
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem 
