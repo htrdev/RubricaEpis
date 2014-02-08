@@ -9,7 +9,7 @@ class ModeloRubrica{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','192.168.1.35','htrdev','12345');
 	}
 
 	public function agregarModeloRubrica(){
@@ -28,12 +28,10 @@ class ModeloRubrica{
 		inner join resultadoaprendizaje as r on r.idResultadoAprendizaje =c.ResultadoAprendizaje_idResultadoAprendizaje 
 		where ModeloRubrica_idModeloRubrica = 1";
 		$resultado2 = $this->conexion->realizarConsulta($query2);
-
 		//Probando
 
 
 		//
-
 		$a = array('modelo'=>$resultado1,'criterio'=>$resultado2);
 		$resultadoJson = $this->conexion->convertirJson($a);
 		return $resultadoJson;
