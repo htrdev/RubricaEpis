@@ -139,28 +139,32 @@ CREATE TABLE IF NOT EXISTS `resultadoaprendizaje` (
   `idResultadoAprendizaje` int(11) NOT NULL AUTO_INCREMENT,
   `definicionResultadoAprendizaje` text,
   `tituloResultadoAprendizaje` text,
+  `codigoResultadoAprendisaje` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`idResultadoAprendizaje`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla rubricaepis.resultadoaprendizaje: ~15 rows (aproximadamente)
+-- Volcando datos para la tabla rubricaepis.resultadoaprendizaje: ~19 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadoaprendizaje` DISABLE KEYS */;
-INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResultadoAprendizaje`, `tituloResultadoAprendizaje`) VALUES
-	(1, 'Aplicacion de Ciencias', NULL),
-	(2, 'Experimentacion y Pruebas', NULL),
-	(3, 'Diseño en Ingenieria', NULL),
-	(4, 'Trabajo en Equipo', NULL),
-	(5, 'Solucion de Problemas de Ingenieria', NULL),
-	(6, 'Responsabilidad etica y profesional', NULL),
-	(7, 'Comunicacion', NULL),
-	(8, 'Perpectiva y Global', NULL),
-	(9, 'Educacion Continua', NULL),
-	(10, 'Asuntos Contemporaneos', NULL),
-	(11, 'Prueba definicion', 'Prueba titulo'),
-	(12, 'examen unidad', 'examen'),
-	(13, 'exposicion unidad I', NULL),
-	(14, 'exposicion unidad II', NULL),
-	(15, 'exposicion unidad III', NULL),
-	(16, 'trabajo unidad I', NULL);
+INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResultadoAprendizaje`, `tituloResultadoAprendizaje`, `codigoResultadoAprendisaje`) VALUES
+	(1, 'Aplicacion de Ciencias', NULL, '1a'),
+	(2, 'Experimentacion y Pruebas', NULL, '2b. '),
+	(3, 'Diseño en Ingenieria', NULL, '3c.'),
+	(4, 'Trabajo en Equipo', NULL, '4d. '),
+	(5, 'Solucion de Problemas de Ingenieria', NULL, '5e. '),
+	(6, 'Responsabilidad etica y profesional', NULL, '6f.'),
+	(7, 'Comunicacion', NULL, '7g.'),
+	(8, ' Perpectiva y Global', NULL, '8h.'),
+	(9, 'Educacion Continua', NULL, '9i. '),
+	(10, 'Asuntos Contemporaneos', NULL, '10j'),
+	(11, 'Prueba definicion', 'Prueba titulo', ''),
+	(12, 'examen unidad', 'examen', ''),
+	(13, 'exposicion unidad I', NULL, ''),
+	(14, 'exposicion unidad II', NULL, NULL),
+	(15, 'exposicion unidad III', NULL, NULL),
+	(16, 'trabajo unidad I', NULL, NULL),
+	(17, 'Practica de Ingenieria Moderna', NULL, '11k'),
+	(18, 'Gestion de Proyectos', NULL, '12l'),
+	(19, 'Desarrollo deSoftware de Implementacion deSI', NULL, '13m');
 /*!40000 ALTER TABLE `resultadoaprendizaje` ENABLE KEYS */;
 
 
@@ -172,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `resultadoaprendizajedocente` (
   CONSTRAINT `fk_ResultadoAprendizajeDocente_ResultadoAprendizaje1` FOREIGN KEY (`ResultadoAprendizaje_idResultadoAprendizaje`) REFERENCES `resultadoaprendizaje` (`idResultadoAprendizaje`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla rubricaepis.resultadoaprendizajedocente: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla rubricaepis.resultadoaprendizajedocente: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadoaprendizajedocente` DISABLE KEYS */;
 INSERT INTO `resultadoaprendizajedocente` (`ResultadoAprendizaje_idResultadoAprendizaje`, `Docente_Persona_idPersona`) VALUES
 	(12, 1),
@@ -203,15 +207,16 @@ INSERT INTO `resultadorubrica` (`idResultadoRubrica`, `fechaCompletadoRubrica`, 
 
 -- Volcando estructura para tabla rubricaepis.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
+  `idUsuario` int(11) NOT NULL,
   `passwordUsuario` varchar(45) DEFAULT NULL,
   `tipoUsuario` varchar(45) DEFAULT NULL,
-  `Persona_idPersona` int(11) NOT NULL,
-  PRIMARY KEY (`idUsuario`,`Persona_idPersona`)
+  PRIMARY KEY (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.usuario: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` (`idUsuario`, `passwordUsuario`, `tipoUsuario`) VALUES
+	(2, '123456', 'Docente');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
