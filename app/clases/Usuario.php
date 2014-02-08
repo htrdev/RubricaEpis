@@ -22,7 +22,7 @@ class Usuario{
 		$nombreUsuario = $_POST['txtUsuario'];
 		$passwordUsuario = $_POST['txtPassword'];
 		$usuario = $this->conexion->realizarConsulta(
-			"SELECT * FROM usuario 
+			"SELECT * FROM PERSONA 
 				where usuario.usuario ='".$nombreUsuario."' 
 					and 
 					  usuario.password='".$passwordUsuario."'");

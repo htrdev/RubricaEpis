@@ -24,17 +24,7 @@ class Docente{
 		return $resultadoJson;
 	}
 
-	public function listarCursosDocente(){
-
-		$docente = $_POST['txtDocente'];
-		$query = "select  cu.DesCurso, p.NomPer, p.ApepPer, p.ApemPer from carga as c
-		inner join PERSONA as p on p.CodPer = c.codper
-		inner join curso as cu on cu.idcurso = c.idcurso
-		inner join SEMESTRE as s on s.IdSem = c.idsem where p.NomPer='".$docente."' and s.Activo=1";
-		$resultado = $this->conexion->realizarConsulta($query);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
-	}
+	
 
 
 }
