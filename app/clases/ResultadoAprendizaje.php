@@ -78,7 +78,3 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	}
 
 }
-
-
-$objeto = new ResultadoAprendizaje();
-echo $objeto->listarResultadoAprendizaje();

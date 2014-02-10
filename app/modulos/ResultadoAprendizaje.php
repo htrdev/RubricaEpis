@@ -4,10 +4,10 @@ header('Content-type: application/json');
 
 require_once('../clases/ResultadoAprendizaje.php');
 
-$metodo = $_GET['metodo'];
+$metodo = $_POST['metodo'];
 
-$semestre = new ResultadoAprendizaje();
+$ResultadoAprendizaje = new ResultadoAprendizaje();
 
 switch($metodo){
-	case 'listarResultadoAprendizaje' : echo $semestre->listarResultadoAprendizaje();break;
+	case 'listarResultadoAprendizaje' : echo $ResultadoAprendizaje->listarResultadoAprendizaje();break;
 }

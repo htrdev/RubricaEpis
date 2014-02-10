@@ -40,7 +40,4 @@ rubricaApp.controller('MisRubricasController',
 			}
 		}
 
-		Usuario.listarUsuarios();
-
-		
 	});

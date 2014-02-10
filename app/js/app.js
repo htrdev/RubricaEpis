@@ -1,36 +1,77 @@
 'use strict';
 
-var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable']);
+var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngCookies']);
 var urlServidor = "http://rubricaepis:8080/app/";
 
-rubricaApp.config(['$routeProvider',
+rubricaApp.config(['$routeProvider','$locationProvider',
   function($routeProvider) {
     $routeProvider.
       when('/CrearRubrica', {
         templateUrl: urlServidor+'vistas/Rubricas/CrearRubrica.html',
-        controller: 'CrearRubricaController'
+        controller: 'CrearRubricaController',
       }).
       when('/MisRubricas',{
         templateUrl: urlServidor+'vistas/Rubricas/MisRubricas.html',
-        controller: 'MisRubricasController'
+        controller: 'MisRubricasController',
       }).
       when('/MisRubricas/:idRubrica/ListarEstadoRubrica',{
         templateUrl: urlServidor+'vistas/Rubricas/ListarEstadoRubrica.html',
-        controller: 'ListarEstadoRubricaController'
+        controller: 'ListarEstadoRubricaController',
       }).
       when('/ResultadosAprendizaje/Crear',{
-        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/CrearResultadoAprendizaje.html'
+        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/CrearResultadoAprendizaje.html',
 
       }).
       when('/ResultadosAprendizaje',{
         templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html',
-        controller : 'ListarResultadoAprendizajeController'
+        controller : 'ListarResultadoAprendizajeController',
+      }).
+      when('/',{
+        templateUrl: urlServidor+'vistas/bienvenida.html',
+        controller : 'IngresarSistemaController',
       }).
       otherwise({
-        redirectTo: '/',
-        //templateUrl: urlServidor+'vistas/Usuario/Login.html'
+        redirectTo: '/IngresarSistema',
+        templateUrl: urlServidor+'vistas/Usuario/Login.html',
+        controller:'IngresarSistemaController'
       });
   }]);
+
+rubricaApp.config(function ($httpProvider) {
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    $httpProvider.defaults.transformRequest = function(data){
+        if (data === undefined) {
+            return data;
+        }
+        return $.param(data);
+    }
+});
+
+rubricaApp.run(['$rootScope', '$location', 'Usuario', function ($rootScope, $location, Usuario) {
+
+    $rootScope.$on('$routeChangeStart', function () {
+        if (!Usuario.estaLogeado()) {
+            console.log('DENY');
+            event.preventDefault();
+            $location.path('/IngresarSistema');
+        }
+        else {
+            console.log('ALLOW');
+        }
+    });
+
+
+}]);
+
+
+var verificarEstadoUsuario = function(Usuario){
+    if (!Usuario.estaLogeado()) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 //DIRECTIVA PARA EL CHZN-SELECT Y EL NG-REPEAT
 //REVISA SI RENDERIZA TODO Y LUEGO EJECUTA
@@ -45,79 +86,5 @@ rubricaApp.config(['$routeProvider',
   }
 });*/
 
-rubricaApp.directive("chosenCiclos", function(){
-  var linker = function(scope,element,attr){
-     scope.$watch('ciclos',function(){
-        element.trigger('liszt:updated');
-      })
-     element.chosen({width:'80%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("chosenCursos", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('cursos',function(){
-        element.trigger('liszt:updated');
-      })
-      element.chosen({width:'80%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("chosenDocentes", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('docentes',function(){
-        element.trigger('liszt:updated');
-        
-      })
-      element.chosen({width:'80%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("chosenResultados", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('resultadosAprendizaje',function(){
-        element.trigger('liszt:updated');
-      })
-      element.chosen({width:'100%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("tabla", function(){
-  return function(scope,element,attr){
-    
-
-    scope.$watch(scope.rubricasCreadas,function(value){
-          dataTable.fnClearTable();
-          dataTable.fnAddData(scope.rubricasCreadas[0]);
-          console.log(scope.rubricasCreadas[0]);
-      })
-    var dataTable = element.dataTable( {
-        "aoColumns": [
-            "Semestre", "Curso","Califica", "FechaInicio", "FechaFinal"
-        ]
-         } );
-  }
-
-});
 
 

@@ -14,6 +14,4 @@ rubricaApp.controller('ListarResultadoAprendizajeController',
 				$scope.Interfaz.EstaResultadoAprendizaje = false;
 			}
 		};
-
-		
 	});

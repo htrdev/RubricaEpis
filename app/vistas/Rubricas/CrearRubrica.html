@@ -110,7 +110,7 @@
 											<div class="widget-body">
 												<div class="widget-main" >
 													<label for="form-field-select-3"><h4>Resultado de Aprendizaje</h4></label>
-													<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." chosen-resultados ng-options="resultadoAprendizaje.definicionResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
+													<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." chosen-resultados ng-options="resultadoAprendizaje.tituloResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
 														<option value=""> -- Seleccione Resultado de Aprendizaje -- </option>
 													</select>
 													<hr>
@@ -122,10 +122,10 @@
 															<div class="widget-main padding-4">
 																<div class="slim-scroll" data-height="250px">
 																	<div class="content">
-																		<div ng-repeat="criterio in resultadoAprendizajeSeleccionado.criterios">
-																			<div class="alert-{{criterio.estaSeleccionado}} alert" >
-																				<input type="checkbox" ng-model="criterio.estaSeleccionado" ng-change="Interfaz.AgregarCriterioSeleccionado(criterio)" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
-																				{{criterio.descripcion}}
+																		<div ng-repeat="criterioEvaluacion in resultadoAprendizajeSeleccionado.criteriosEvaluacion">
+																			<div  >
+																				<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Interfaz.AgregarCriterioSeleccionado(criterioEvaluacion)" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
+																				{{criterioEvaluacion.descripcionCriterioEvaluacion}}
 																			</div>
 																		</div>
 																	</div>
@@ -151,7 +151,7 @@
 												<ul id="tasks" class="item-list" ui-sortable ng-model="criterios">
 													<li class="item-blue clearfix" ng-repeat="criterio in criterios">
 															<input type="checkbox" style="opacity:1;position:static"/>
-															{{criterio.descripcion}}
+															{{criterio.descripcionCriterioEvaluacion}}
 													</li>
 												</ul>
 											</div>

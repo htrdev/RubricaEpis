@@ -36,17 +36,17 @@
 		<!--inline styles related to this page-->
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 
-	<body>
+	<body ng-controller="mainCtrl">
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container-fluid">
-					<a href="#" class="brand">
+					<a href="#" class="brand" ng-click="a()">
 						<small>
 							Rubrica EPIS
 						</small>
 					</a><!--/.brand-->
 
-					<ul class="nav ace-nav pull-right" >
+					<ul class="nav ace-nav pull-right" ng-cloak ng-if="usuario.estado">
 						<li class="purple">
 							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="icon-bell-alt icon-animated-bell"></i>
@@ -88,11 +88,11 @@
 
 						
 						<li class="light-blue">
-							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+							<a data-toggle="dropdown" href="" class="dropdown-toggle">
 								<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
-								<span class="user-info">
+								<span class="user-info" style="max-width:200px" >
 									<small>Bienvenido,</small>
-									Enrique Lanchipa
+									{{usuario.usuario}}
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -109,7 +109,7 @@
 								<li>
 									<a href="#">
 										<i class="icon-user"></i>
-										Profile
+										Perfil
 									</a>
 								</li>
 
@@ -118,7 +118,7 @@
 								<li>
 									<a href="#">
 										<i class="icon-off"></i>
-										Logout
+										Salir
 									</a>
 								</li>
 							</ul>
@@ -133,7 +133,7 @@
 				<span class="menu-text"></span>
 			</a>
 
-			<div class="sidebar" id="sidebar"  ng-cloak>
+			<div class="sidebar" id="sidebar" ng-cloak ng-show="usuario.estado">
 				
 				<ul class="nav nav-list">
 					<li>
@@ -230,8 +230,8 @@
 		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
 			<i class="icon-double-angle-up icon-only bigger-110"></i>
 		</a>
-
-		<!--basic scripts-->
+	</body>
+	<!--basic scripts-->
 
 		<!--[if !IE]>-->
 
@@ -287,10 +287,13 @@
 		<script type="text/javascript" src="app/includes/angular/angular.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-sanitize.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-route.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular-cookies.js"></script>
 		<script type="text/javascript" src="app/js/app.js"></script>
+		<script type="text/javascript" src="app/js/directives.js"></script>
+
 		<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
 		<script type="text/javascript" src="assets/js/sortable.js"></script>
-		<script type="text/javascript" src="assets/js/live.js"></script>
+
 		<!--Servicios-->
 
 		<script type="text/javascript" src="app/js/services/Usuario.js"></script>
@@ -300,12 +303,12 @@
 
 
 		<!--Controladores-->
+		<script type="text/javascript" src="app/js/controllers/mainCtrl.js"></script>
 		<script type="text/javascript" src="app/js/controllers/Rubricas/CrearRubricaController.js"></script>
 		<script type="text/javascript" src="app/js/controllers/Rubricas/MisRubricasController.js"></script>
 		<script type="text/javascript" src="app/js/controllers/Rubricas/ListarEstadoRubricaController.js"></script>
 			
 		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/ListarResultadoAprendizajeController.js"></script>
 			<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/ListarResultadoAprendizajeController.js"></script>
-		
-	</body>
+		<script type="text/javascript" src="app/js/controllers/Usuario/IngresarSistemaController.js"></script>
 </html>

@@ -6,15 +6,10 @@ rubricaApp.factory('Docente',function($http){
 	var dataFactory = {};
 
 	dataFactory.listarDocenteActivo = function(){
-		return $http({
-				    url: urlBase+'Docente.php', 
-				    method: "GET",
-				    params: {metodo: 'listarDocenteActivo'}
-				 }).success(function(data){
-					}).
-				  error(function(data, status, headers, config) {
-
-				  });
+		return $http.post(
+				    urlBase+'Docente.php', 
+				    {metodo: 'listarDocenteActivo'}
+				 );
 	};
 
 	return dataFactory;

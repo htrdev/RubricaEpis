@@ -4,7 +4,7 @@ header('Content-type: application/json');
 
 require_once('../clases/Curso.php');
 
-$metodo = $_GET['metodo'];
+$metodo = $_POST['metodo'];
 
 $Curso = new Curso();
 

@@ -1,12 +1,32 @@
 'use strict';
 
 rubricaApp.factory('Usuario',function($http){
-	return	{
-		listarUsuarios : function(){
-			$http.get('http://rubricaepis:8080/app/clases/Usuario.php').success(function(data){
-				
-				console.log(data);
-			});
-		}
+	var usuario = {usuario : "",estado : false};
+	var urlBase = 'http://rubricaepis:8080/app/modulos/';
+	var dataFactory = {};
+
+		dataFactory.verificarEstadoUsuario = function(){
+			return $http.post(
+				    urlBase+'Usuario.php', 
+				    {metodo: 'verificarUsuario'}
+				 	);
+		};
+
+	dataFactory.autenticarUsuario = function(pusuario){
+			return $http.post(
+				    urlBase+'Usuario.php', 
+				    {metodo: 'ingresarSistema',usuario:pusuario}
+				 );
+		};
+
+	dataFactory.establecerUsuario = function(pusuario){
+		usuario = pusuario;
+	};	
+
+	dataFactory.estaLogeado = function(){
+		return usuario.estado;
 	}
+
+	return dataFactory;
 });
+

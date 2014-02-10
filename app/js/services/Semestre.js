@@ -6,27 +6,17 @@ rubricaApp.factory('Semestre',function($http){
 	var dataFactory = {};
 
 	dataFactory.listarSemestre = function(){
-		return $http({
-				    url: urlBase+'Semestre.php', 
-				    method: "GET",
-				    params: {metodo: 'listarSemestre'}
-				 }).success(function(data){
-						
-					}).
-				  error(function(data, status, headers, config) {
-
-				  });
+		return $http.post(
+				    urlBase+'Semestre.php', 
+				    {metodo: 'listarSemestre'}
+				 );
 	};
 
 	dataFactory.listarSemestreActivo  = function(){
-			return $http({
-				    url: urlBase+'Semestre.php', 
-				    method: "GET",
-				    params: {metodo: 'listarSemestreActivo'}
-				 }).success(function(data){
-					}).
-				  error(function(data, status, headers, config) {
-				  });
+			return $http.post(
+				    urlBase+'Semestre.php', 
+				    {metodo: 'listarSemestreActivo'}
+				 );
 		};
 
 	return dataFactory;
