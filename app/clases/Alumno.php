@@ -26,6 +26,14 @@ class Alumno{
 		return $resultadoJson;
 	}
 
+	public function agregarAlumno(){
+	}
+	public function modificarAlumno(){
+	}
+	public function eliminarAlumno(){
+	}
+
+
 }
 
 $objetoRA = new Alumno();

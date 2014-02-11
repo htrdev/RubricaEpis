@@ -23,6 +23,10 @@ class Docente{
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
 	}
+	public function agregarDocente(){
+	}
+	public function modificarDocente(){
+	}
 
 	
 

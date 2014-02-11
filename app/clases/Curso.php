@@ -36,5 +36,9 @@ class Curso{
 		return $resultadoJson;
 	}
 
+	public function agregarCurso(){
+	}
+	public function modificarCurso(){
+	}
 }
 

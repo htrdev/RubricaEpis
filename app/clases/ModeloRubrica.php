@@ -16,7 +16,8 @@ class ModeloRubrica{
 
 	}
 
-
+	public function modificarModeloRubrica(){
+	}
 	//Aun falta parametros 
 	public function listarModeloRubricaPorCriterios(){
 
@@ -39,6 +40,10 @@ class ModeloRubrica{
 
 	public function listarModeloRubricaPorDocente(){
 	}
+
+
+	
+
 
 }
 
