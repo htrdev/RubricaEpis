@@ -8,15 +8,15 @@ rubricaApp.config(['$routeProvider','$locationProvider',
     $routeProvider.
       when('/CrearRubrica', {
         templateUrl: urlServidor+'vistas/Rubricas/CrearRubrica.html',
-        controller: 'CrearRubricaController',
+        controller: 'crearRubricaCtrl',
       }).
       when('/MisRubricas',{
         templateUrl: urlServidor+'vistas/Rubricas/MisRubricas.html',
-        controller: 'MisRubricasController',
+        controller: 'misRubricasCtrl',
       }).
       when('/MisRubricas/:idRubrica/ListarEstadoRubrica',{
         templateUrl: urlServidor+'vistas/Rubricas/ListarEstadoRubrica.html',
-        controller: 'ListarEstadoRubricaController',
+        controller: 'listarEstadoRubricaCtrl',
       }).
       when('/ResultadosAprendizaje/Crear',{
         templateUrl: urlServidor+'vistas/ResultadoAprendizaje/CrearResultadoAprendizaje.html',
@@ -24,16 +24,14 @@ rubricaApp.config(['$routeProvider','$locationProvider',
       }).
       when('/ResultadosAprendizaje',{
         templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html',
-        controller : 'ListarResultadoAprendizajeController',
+        controller : 'listarResultadoAprendizajeCtrl',
       }).
       when('/',{
         templateUrl: urlServidor+'vistas/bienvenida.html',
-        controller : 'IngresarSistemaController',
       }).
       otherwise({
         redirectTo: '/IngresarSistema',
         templateUrl: urlServidor+'vistas/Usuario/Login.html',
-        controller:'IngresarSistemaController'
       });
   }]);
 

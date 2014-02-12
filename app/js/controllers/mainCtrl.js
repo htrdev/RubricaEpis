@@ -1,30 +1,53 @@
 'use strict';
-
 rubricaApp.controller('mainCtrl',
 	function mainCtrl($scope,$rootScope,$location,Usuario)
 	{
-		$scope.usuario = {usuario:"aaaa",estado : false};
-
 		$rootScope.Interfaz =	{
-			cargarCredencialesUsuario : function(usuario){
+			
+		};
+		
+		$scope.usuario = {
+			usuario : {
+						usuario:"aaaa",
+						estado : false
+					},
+			cargarInformacionUsuario : function(usuario){
 				$scope.usuario = usuario;
 				$location.path('/');
-			}			
-		};
+			},	
 
-		var verificarEstadoUsuario = function(){
-			Usuario.verificarEstadoUsuario()
+			cambiarNombreLogin : function(nombreUsuario){
+				$scope.nombreUsuario = nombreUsuario;
+			},
+
+			ingresarSistema : function(){
+				Usuario.ingresarSistema($scope.usuario.credenciales)
 				.success(function(usuario){
 					Usuario.establecerUsuario(usuario);
-					console.log(usuario);
+					$scope.usuario.cargarInformacionUsuario(usuario);
+				}).
+				error(function(data,status){
+					console.log(status);
+				})
+			},
+
+			verificarEstadoUsuario : function(){
+				Usuario.verificarEstadoUsuario()
+				.success(function(usuario){
+					Usuario.establecerUsuario(usuario);
 					if(usuario.estado){
-						console.log("wtf");
-						$rootScope.Interfaz.cargarCredencialesUsuario(usuario);
+						$scope.usuario.cargarInformacionUsuario(usuario);
 					}
 					else{
 						$location.path('/IngresarSistema');
 					}
-				});
-		}
-		verificarEstadoUsuario();
+				})
+			},
+
+			/*salirSistema : function(){
+				Usuario.
+			}*/
+		};
+
+		$scope.usuario.verificarEstadoUsuario();
 	});

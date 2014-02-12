@@ -1,7 +1,7 @@
 'use strict';
 
-rubricaApp.controller('ListarResultadoAprendizajeController',
-	function CrearRubricaController($scope)
+rubricaApp.controller('listarResultadoAprendizajeCtrl',
+	function listarResultadoAprendizajeCtrl($scope)
 	{
 		$scope.Interfaz = {
 			EstaResultadoAprendizaje : false,

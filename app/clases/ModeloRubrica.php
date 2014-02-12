@@ -30,8 +30,6 @@ class ModeloRubrica{
 		where ModeloRubrica_idModeloRubrica = 1";
 		$resultado2 = $this->conexion->realizarConsulta($query2);
 		//Probando
-
-
 		//
 		$a = array('modelo'=>$resultado1,'criterio'=>$resultado2);
 		$resultadoJson = $this->conexion->convertirJson($a);

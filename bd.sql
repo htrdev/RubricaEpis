@@ -139,32 +139,31 @@ CREATE TABLE IF NOT EXISTS `resultadoaprendizaje` (
   `idResultadoAprendizaje` int(11) NOT NULL AUTO_INCREMENT,
   `definicionResultadoAprendizaje` text,
   `tituloResultadoAprendizaje` text,
-  `codigoResultadoAprendisaje` varchar(10) DEFAULT NULL,
+  `codigoResultadoAprendizaje` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`idResultadoAprendizaje`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla rubricaepis.resultadoaprendizaje: ~19 rows (aproximadamente)
+-- Volcando datos para la tabla rubricaepis.resultadoaprendizaje: ~18 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadoaprendizaje` DISABLE KEYS */;
-INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResultadoAprendizaje`, `tituloResultadoAprendizaje`, `codigoResultadoAprendisaje`) VALUES
-	(1, 'Aplicacion de Ciencias', NULL, '1a'),
-	(2, 'Experimentacion y Pruebas', NULL, '2b. '),
-	(3, 'Diseño en Ingenieria', NULL, '3c.'),
-	(4, 'Trabajo en Equipo', NULL, '4d. '),
-	(5, 'Solucion de Problemas de Ingenieria', NULL, '5e. '),
-	(6, 'Responsabilidad etica y profesional', NULL, '6f.'),
-	(7, 'Comunicacion', NULL, '7g.'),
-	(8, ' Perpectiva y Global', NULL, '8h.'),
-	(9, 'Educacion Continua', NULL, '9i. '),
-	(10, 'Asuntos Contemporaneos', NULL, '10j'),
-	(11, 'Prueba definicion', 'Prueba titulo', ''),
-	(12, 'examen unidad', 'examen', ''),
-	(13, 'exposicion unidad I', NULL, ''),
-	(14, 'exposicion unidad II', NULL, NULL),
-	(15, 'exposicion unidad III', NULL, NULL),
-	(16, 'trabajo unidad I', NULL, NULL),
-	(17, 'Practica de Ingenieria Moderna', NULL, '11k'),
-	(18, 'Gestion de Proyectos', NULL, '12l'),
-	(19, 'Desarrollo deSoftware de Implementacion deSI', NULL, '13m');
+INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResultadoAprendizaje`, `tituloResultadoAprendizaje`, `codigoResultadoAprendizaje`) VALUES
+	(1, 'Aplica los conocimiento y habilidades en matematicas, cientas e ingenieria para resolver problemas de ingenieria sistemas', 'Aplicacion de Ciencias', '1a'),
+	(2, 'Diseñan y conducen expermentos, analizan e interpretan datos', NULL, '2b'),
+	(3, 'Diseña sisteas informaticos, componentes y/o procesos para satisfacer requerimientos considerando resticciones realistas de seguridad y sostenibilidad', 'Diseño en Ingenieria', '3c'),
+	(4, 'Participa activa y efectivamente en grupos multidisciplinarios siendo capaces de liderarlos', 'Trabajo en Equipo', '4d'),
+	(5, 'Identifica, formula y resuelve problemas de ingenieria usando las tecnicas, metodos y herramientas apropiados', 'Solucion de Problemas de Ingenieria', '5e'),
+	(6, 'Entienden sus responsabilidades profesionales, etcas, sociales y legales, y cumplen los compromisos asumidos', 'Responsabilidad etica y profesional', '6f'),
+	(7, 'Se comunican clara y efectivamente en fora oral, escrita y grafica, interactuando con diferentes tipos de audiencias', 'Comunicacion', '7g'),
+	(8, 'Comprende el impacto que tienen las soluciones de ingenieria en la sociedad en un contexto local y global', ' Perpectiva y Global', '8h'),
+	(9, 'Reconocen la necesidad de mantener sus conocimientos y habilidades actualizadas de acuerdo a los avances de la ingenieria de software y sistemas de informacion y se compromete con un aprendizaje para toda la vida', 'Educacion Continua', '9i'),
+	(10, 'Conoce y analiza asuntos contemporaneos relevantes en contextos locales, nacionales y globales', 'Asuntos Contemporaneos', '10j'),
+	(12, '', 'trabajo unidad I', ''),
+	(13, 'Dominio del tema', 'exposicion unidad I', ''),
+	(14, 'Utilza componentes del software para la implementacion', 'exposicion unidad II', NULL),
+	(15, '', 'exposicion unidad III', NULL),
+	(16, 'Comprende el tema', 'trabajo unidad II', NULL),
+	(17, 'Usa las tecnicas, metodos y herramientas de la ingenieria moderna necesarias para la practica de la ingenieria de software y sistemas de informacion', 'Practica de Ingenieria Moderna', '11k'),
+	(18, 'Planifica y gestiona proyectos de ingenieria tomando en cuenta criterios de eficiencia y productividad', 'Gestion de Proyectos', '12l'),
+	(19, 'Desarrollo e implementa software y sistemas de informacion satisfaciendo requerimientos y aplicando metodologias, tecnicas y herramientas apropiadas', 'Desarrollo deSoftware de Implementacion deSI', '13m');
 /*!40000 ALTER TABLE `resultadoaprendizaje` ENABLE KEYS */;
 
 
@@ -213,9 +212,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla rubricaepis.usuario: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla rubricaepis.usuario: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`idUsuario`, `passwordUsuario`, `tipoUsuario`) VALUES
+	(1, '1234', 'Docente'),
 	(2, '123456', 'Docente');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

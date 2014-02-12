@@ -1,4 +1,4 @@
-<div class="row-fluid">
+<div class="row-fluid" >
 	<div class="span12">
 		<!--PAGE CONTENT BEGINS-->
 
@@ -17,7 +17,7 @@
 							<div class="row-fluid">
 								<div class="span6">
 									<label for="form-field-select-3"><h4>Curso</h4></label>
-									<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.codigo+' - '+curso.nombre group by curso.ciclo for curso in cursos" ng-model="cursoSeleccionado">
+									<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
 										<option value=""> -- Escoje Curso -- </option>
 									</select>
 								</div>
@@ -48,7 +48,7 @@
 											<div class="widget-main padding-4">
 												<div class="slim-scroll" data-height="250px">
 													<div class="content">
-														<div ng-repeat="docente in docentes">
+														<div ng-repeat="docente in docentes" >
 															 <div class="alert-{{docente.estaSeleccionado}} alert" >
 																<input type="checkbox" ng-model="docente.estaSeleccionado" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
 																{{docente.ApepPer+' '+docente.ApemPer+', '+docente.NomPer}}
@@ -110,7 +110,7 @@
 											<div class="widget-body">
 												<div class="widget-main" >
 													<label for="form-field-select-3"><h4>Resultado de Aprendizaje</h4></label>
-													<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." chosen-resultados ng-options="resultadoAprendizaje.tituloResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
+													<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." chosen-resultados ng-options="resultadoAprendizaje.codigoResultadoAprendizaje+ '- '+resultadoAprendizaje.tituloResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
 														<option value=""> -- Seleccione Resultado de Aprendizaje -- </option>
 													</select>
 													<hr>
@@ -122,9 +122,11 @@
 															<div class="widget-main padding-4">
 																<div class="slim-scroll" data-height="250px">
 																	<div class="content">
-																		<div ng-repeat="criterioEvaluacion in resultadoAprendizajeSeleccionado.criteriosEvaluacion">
-																			<div  >
+																		<div ng-repeat="criterioEvaluacion in resultadoAprendizajeSeleccionado.criteriosEvaluacion" style="margin-bottom:5px">
+																			<div style="display:inline-block;vertical-align:top;height:100%">
 																				<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Interfaz.AgregarCriterioSeleccionado(criterioEvaluacion)" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
+																			</div>
+																			<div style="display:inline-block;width:90%;margin:0 5px 0 5px;text-align:justify">
 																				{{criterioEvaluacion.descripcionCriterioEvaluacion}}
 																			</div>
 																		</div>

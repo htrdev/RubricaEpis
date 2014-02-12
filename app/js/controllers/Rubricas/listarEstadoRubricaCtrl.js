@@ -1,8 +1,6 @@
 'use strict';
-
-
-rubricaApp.controller('ListarEstadoRubricaController',
-	function ListarEstadoRubricaController($scope,$location,$routeParams)
+rubricaApp.controller('listarEstadoRubricaCtrl',
+	function listarEstadoRubricaCtrl($scope,$location,$routeParams)
 	{
 		//el campo evaluado debe ser un array
 		$scope.rubricasCalificadas = [

@@ -1,22 +1,56 @@
 'use strict';
 
-
-rubricaApp.controller('RubricaController',
-	function CrearRubricaController($scope)
+rubricaApp.controller('crearRubricaCtrl',
+	function crearRubricaCtrl($scope,Semestre,ResultadoAprendizaje,Docente,Curso)
 	{
-		$scope.semestre = [
-			{
-				nombre: '2013-EXT'
-			},
-			{
-				nombre: '2013-II'
-			},
-			{
-				nombre: '2013-II'
-			}
-		];
+		$scope.semestre;
+		$scope.resultadosAprendizaje;
+		$scope.docentes;
+		$scope.rubrica = {
+			idCurso : 1,
+			idSemestre : 2,
+			fechaInicio : "",
+			fechaFinal : "",
+			docentes : [1,2,3,4],
+			calificacionRubrica : 'Alumno',
+			criteriosEvaluacion : [1,2,3,4],
+			tipoRubrica : 'Curso'
+		};
 
-		$scope.docentes = [
+		listarSemestreActivo();
+		listarResultadoAprendizaje();
+		listarDocenteActivo();
+		listarCursosDocente();
+
+		function listarSemestreActivo(){
+			Semestre.listarSemestreActivo()
+				.success(function(semestre){
+					$scope.semestre = semestre;
+				});
+		};
+
+		function listarResultadoAprendizaje(){
+			ResultadoAprendizaje.listarResultadoAprendizaje()
+				.success(function(resultadosAprendizaje){
+					$scope.resultadosAprendizaje = resultadosAprendizaje;
+				});
+		};
+
+		function listarDocenteActivo(){
+			Docente.listarDocenteActivo()
+				.success(function(docentes){
+					$scope.docentes = docentes;
+				});
+		};
+
+		function listarCursosDocente(){
+			Curso.listarCursosDocente()
+				.success(function(cursos){
+					$scope.cursos = cursos;
+				});
+		};
+
+		/*$scope.docentes = [
 
 			{nombre:'IBARRA MONTECINOS, MARIELLA ROSARIO'},
 			{nombre:'ALE NIETO, TITO FERNANDO'},
@@ -45,36 +79,17 @@ rubricaApp.controller('RubricaController',
 			{nombre:'ROJAS MORALES, IVAN CESAR'},
 			{nombre:'ALCA GOMEZ, JAVIER'}
 		
-		];
+		];*/
 
-		$scope.cursos = [{codigo:'SI-561',nombre:'Diseño y Arquitectura de Software',ciclo:'V'}
-						,{codigo:'SI-562',nombre:'Sistemas Operativos I',ciclo:'V'}
-						,{codigo:'SI-563',nombre:'Diseño de Base de Datos',ciclo:'V'}
-						,{codigo:'SI-564',nombre:'Programacion Lineal',ciclo:'V'}
-						,{codigo:'SI-565',nombre:'Programacion III',ciclo:'V'}
-						,{codigo:'SI-566',nombre:'Ingenieria Economica de Software',ciclo:'V'}
-						,{codigo:'SI-661',nombre:'Aplicaciones Moviles',ciclo:'VI'}
-						,{codigo:'SI-662',nombre:'Arquitectura del Computador',ciclo:'VI'}
-						,{codigo:'SI-663',nombre:'Gestion de Base de Datos',ciclo:'VI'}
-						,{codigo:'SI-664',nombre:'Ingenieria de Software',ciclo:'VI'}
-						,{codigo:'SI-665',nombre:'Sistemas Operativos II',ciclo:'VI'}
-						,{codigo:'SI-666',nombre:'Gestion de la calidad de Software',ciclo:'VI'}];
+		
 
-		$scope.EstaCuestionario = false;
-
-		$scope.MostrarCuestionario = function(){
-			$scope.EstaCuestionario = true;
-		};
-
-		$scope.OcultarCuestionario = function(){
-			$scope.EstaCuestionario = false;
-		};
+		
 
 
 
 		$scope.criterios = [];
 
-		$scope.resultadosAprendizaje = [
+		/*$scope.resultadosAprendizaje = [
 			{
 				nombre : "1a. Aplicacion de Ciencias",
 				criterios : [{descripcion:"Entiende e interpreta fenomenos naturales aplicando las leyes fundamentales que los gobiernan"},
@@ -89,7 +104,7 @@ rubricaApp.controller('RubricaController',
 				criterios : [{descripcion:"Determina las pruebas y experimientos a realizar tomando en cuenta los estandares de calidad requerimientos"},
 							{descripcion: "identifica y relaciona las variables de los Sistemas de software e informacion y los mide o estima con la precision requerida"}]
 			}
-		];
+		];*/
 
 		$scope.Interfaz =	{
 			AgregarCriterioSeleccionado : function(criterio){
@@ -100,6 +115,20 @@ rubricaApp.controller('RubricaController',
 				else{
 					$scope.criterios.splice($scope.criterios.indexOf(criterio),1);
 				}
-			}
+			},
+
+			MostrarCuestionario : function(){
+				$scope.Interfaz.EstaCuestionario = true;
+				console.log($scope.resultadosAprendizaje);
+			},
+
+			OcultarCuestionario : function(){
+				$scope.Interfaz.EstaCuestionario = false;
+			},
+
+			EstaCuestionario : false
 		}
+
+
+
 	});

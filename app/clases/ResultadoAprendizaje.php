@@ -20,7 +20,7 @@ class ResultadoAprendizaje{
 
 	public function listarResultadoAprendizaje(){
 
-		$query = "SELECT  r.idResultadoAprendizaje, r.definicionResultadoAprendizaje  FROM resultadoaprendizaje as r";
+		$query = "SELECT  r.idResultadoAprendizaje, r.codigoResultadoAprendizaje , r.tituloResultadoAprendizaje  FROM resultadoaprendizaje as r";
 		$resultadosAprendizaje = $this->conexion->realizarConsulta($query);
 		$resultado = array();
 		$contadorResultado = 0;
@@ -28,7 +28,8 @@ class ResultadoAprendizaje{
 			$idResultadoAprendizaje = $resultadoAprendizaje["idResultadoAprendizaje"];
 			$criteriosAprendizaje = $this->listarCriterioAprendizaje($idResultadoAprendizaje);
 			$resultado[$contadorResultado] = 
-				array("tituloResultadoAprendizaje"=>$resultadoAprendizaje["definicionResultadoAprendizaje"],
+				array("tituloResultadoAprendizaje"=>$resultadoAprendizaje["tituloResultadoAprendizaje"],
+					"codigoResultadoAprendizaje"=>$resultadoAprendizaje["codigoResultadoAprendizaje"],
 					"criteriosEvaluacion"=>$criteriosAprendizaje); 
 			$contadorResultado++;
 		}

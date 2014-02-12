@@ -43,6 +43,7 @@ class Usuario{
 		}
 		else{
 			session_start();
+			$_SESSION['CodPer'] = $usuario[0]['CodPer'];
 			$_SESSION['estado'] = true;
 			$_SESSION['usuario'] = $usuario[0]['nombreCompleto'];
 			$resultado = $this->conexionsql->convertirJson(array("usuario"=>$_SESSION['usuario'],"estado"=>$_SESSION['estado']));

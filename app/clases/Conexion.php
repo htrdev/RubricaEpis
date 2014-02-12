@@ -26,6 +26,10 @@ abstract class Conexion{
 
 	public abstract static function obtenerObjeto($host,$usuario,$password);
 	public abstract function obtenerConexion();
+	public function obtenerVariableSesion($variable){
+		session_start();
+		return $_SESSION[$variable];
+	} 
 }
 
 class ConexionSQLServer extends Conexion{
@@ -101,12 +105,10 @@ class ConexionMySQL extends Conexion{
 		return $this->convertirArray($resultado);
 	}
 
-
-
 	private function convertirArray($resultado){
 		$objetos = array();
 		while($r = mysql_fetch_assoc($resultado)) {
-		    $objetos[] = $r;
+		    $objetos[] = array_map('utf8_encode', $r);
 		}
 		return $objetos;
 	}

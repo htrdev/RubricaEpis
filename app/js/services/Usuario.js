@@ -5,17 +5,24 @@ rubricaApp.factory('Usuario',function($http){
 	var urlBase = 'http://rubricaepis:8080/app/modulos/';
 	var dataFactory = {};
 
-		dataFactory.verificarEstadoUsuario = function(){
+	dataFactory.verificarEstadoUsuario = function(){
 			return $http.post(
 				    urlBase+'Usuario.php', 
 				    {metodo: 'verificarUsuario'}
 				 	);
 		};
 
-	dataFactory.autenticarUsuario = function(pusuario){
+	dataFactory.ingresarSistema = function(pusuario){
 			return $http.post(
 				    urlBase+'Usuario.php', 
 				    {metodo: 'ingresarSistema',usuario:pusuario}
+				 );
+		};
+
+	dataFactory.salirSistema = function(pusuario){
+			return $http.post(
+				    urlBase+'Usuario.php', 
+				    {metodo: 'salirSistema'}
 				 );
 		};
 

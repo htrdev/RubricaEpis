@@ -1,8 +1,6 @@
 'use strict';
-
-
-rubricaApp.controller('MisRubricasController',
-	function MisRubricasController($scope,Usuario)
+rubricaApp.controller('misRubricasCtrl',
+	function misRubricasCtrl($scope,Usuario)
 	{
 		$scope.rubricasCreadas = [
 		{id:1,semestre:"2013-EXT",curso:"Sistemas Operativos I",califica:"Alumnos",fechaInicio:"12-12-12",fechaFinal:"15-12-12"},
