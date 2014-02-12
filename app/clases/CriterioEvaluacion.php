@@ -16,16 +16,12 @@ class CriterioEvaluacion{
 
 
 	public function agregarCriterioEvaluacion(){
-
-
 		$descripcionCriterio = $_POST['txtDescripcion'];
 		$ResultadoAprendizaje = $_POST['txtResultadoAprendisaje'];
 		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje) values ('".$descripcionCriterio."', '".$ResultadoAprendizaje."')";
-		$resultado = $this->conexion->realizarConsulta($query);
+		$resultado = $this->conexion->realizarConsulta($query,false);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
-
-
 	}
 
 	public function listarCriterioEvaluacion(){

@@ -55,10 +55,16 @@ class ConexionSQLServer extends Conexion{
         mssql_select_db($this->baseDeDatos,$this->conexion);
 	}
 
-	public function realizarConsulta($sql){
+	public function realizarConsulta($sql,$convertirArray){
 		$this->obtenerConexion();
 		$resultado =  mssql_query($sql,$this->conexion);
-		return $this->convertirArray($resultado);
+		if($convertirArray){
+			return $this->convertirArray($resultado);
+		}
+		else
+		{
+			return $resultado;
+		}
 	}
 
 	private function convertirArray($resultado){
@@ -99,10 +105,16 @@ class ConexionMySQL extends Conexion{
        // return $this->conexion;
 	}
 
-	public function realizarConsulta($sql){
+	public function realizarConsulta($sql,$convertirArray){
 		$this->obtenerConexion();
 		$resultado =  mysql_query($sql,$this->conexion);
-		return $this->convertirArray($resultado);
+		if($convertirArray){
+			return $this->convertirArray($resultado);
+		}
+		else
+		{
+			return $resultado;
+		}
 	}
 
 	private function convertirArray($resultado){
