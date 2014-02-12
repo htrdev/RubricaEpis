@@ -27,6 +27,8 @@ class Alumno{
 	}
 
 	public function agregarAlumno(){
+
+		
 	}
 	public function modificarAlumno(){
 	}
@@ -36,5 +38,4 @@ class Alumno{
 
 }
 
-$objetoRA = new Alumno();
-echo $objetoRA->listarAlumnoPorCursoSemestre();
+
