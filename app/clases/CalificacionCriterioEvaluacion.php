@@ -13,7 +13,7 @@ class CalificacionCriterioEvaluacion{
 
 	}
 
-	public function agregarCalificacionCriterioEvaluacion(){
+	public function agregarCalificacionCriterioEvaluacion($CriterioEvaluacion){
 
 		$query = "INSERT into calificacionCriterioEvaluacion (Rubrica_idResultadoRubrica, calificacionResultadoRubrica, AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion) 
 		values ('".$CriterioEvaluacion["Rubrica_idResultadoRubrica"]."', '".$CriterioEvaluacion["calificacionResultadoRubrica"]."', '".$CriterioEvaluacion["AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion"]."')";
