@@ -46,14 +46,16 @@ class CriterioEvaluacion{
 
 }
 
-/*$CriterioEvaluacion = array(
-			"descripcionCriterio"=>"valor",
-			"ResultadoAprendizaje_idResultadoAprendizaje"=>"1"); */
+		/*AGREGAR
+		$CriterioEvaluacion = array(
+		"descripcionCriterio"=>"valor",
+		"ResultadoAprendizaje_idResultadoAprendizaje"=>"1"); */
 
 
-	$CriterioEvaluacion = array(
+		/*modificar*/
+		$CriterioEvaluacion = array(
 		"descripcionCriterioEvaluacion"=>"NOMESALE",
 		"ResultadoAprendizaje_idResultadoAprendizaje"=>"1",
 		"idCriterioEvaluacion"=>"1");
-$objetoModeloRubrica = new CriterioEvaluacion();
-echo $objetoModeloRubrica->modificarCriterioEvaluacion($CriterioEvaluacion);
+		$objetoModeloRubrica = new CriterioEvaluacion();
+		echo $objetoModeloRubrica->modificarCriterioEvaluacion($CriterioEvaluacion);

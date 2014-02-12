@@ -11,3 +11,6 @@ $ResultadoAprendizaje = new ResultadoAprendizaje();
 switch($metodo){
 	case 'listarResultadoAprendizaje' : echo $ResultadoAprendizaje->listarResultadoAprendizaje();break;
 }
+
+
+

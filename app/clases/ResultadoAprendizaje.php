@@ -38,15 +38,24 @@ class ResultadoAprendizaje{
 	}
 
 
-	public function agregarResultadoAprendizaje(){
-		$definicion = $_POST['txtDefinicion'];
-		$titulo = $_POST['txtTitulo'];
-		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje,tituloResultadoAprendizaje) VALUES('".$definicion."','".$titulo."')";
-		$resultado = $this->conexion->realizarConsulta($query);
+	public function agregarResultadoAprendizaje($CriterioEvaluacion){
+
+		
+		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
+		VALUES('".$CriterioEvaluacion["definicionResultadoAprendizaje"]."','".$CriterioEvaluacion["tituloResultadoAprendizaje"]."','".$CriterioEvaluacion["codigoResultadoAprendizaje"]."')";
+		$resultado = $this->conexion->realizarConsulta($query,false);
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;
 		
 	}
 
-	public function modificarResultadoAprendizaje(){
+	public function modificarResultadoAprendizaje($CriterioEvaluacion){
+
+		$query = "update ResultadoAprendizaje set definicionResultadoAprendizaje='".$CriterioEvaluacion["definicionResultadoAprendizaje"]."', tituloResultadoAprendizaje='".$CriterioEvaluacion["tituloResultadoAprendizaje"]."', codigoResultadoAprendizaje='".$CriterioEvaluacion["codigoResultadoAprendizaje"]."'
+		 where idResultadoAprendizaje='".$CriterioEvaluacion["idResultadoAprendizaje"]."'";
+		$resultado = $this->conexion->realizarConsulta($query,false);
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;	
 
 	}
 
@@ -79,3 +88,21 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	}
 
 }
+		
+		/*agregar
+		$CriterioEvaluacion = array(
+		"definicionResultadoAprendizaje"=>"abc",
+		"tituloResultadoAprendizaje"=>"abc",
+		"codigoResultadoAprendizaje"=>"1e")
+
+		*/
+
+
+		/*modificar*/
+		$CriterioEvaluacion = array(
+		"definicionResultadoAprendizaje"=>"abc",
+		"tituloResultadoAprendizaje"=>"abc",
+		"codigoResultadoAprendizaje"=>"1e",
+		"idResultadoAprendizaje"=>"1");	
+		$objetoModeloRubrica = new ResultadoAprendizaje();
+		echo $objetoModeloRubrica->modificarResultadoAprendizaje($CriterioEvaluacion);
