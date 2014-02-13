@@ -37,11 +37,12 @@ class ResultadoAprendizaje{
 		return $resultadoJson;
 	}
 
-	public function agregarResultadoAprendizaje(){
-		$definicion = $_POST['txtDefinicion'];
-		$titulo = $_POST['txtTitulo'];
-		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje,tituloResultadoAprendizaje) VALUES('".$definicion."','".$titulo."')";
-		$resultado = $this->conexion->realizarConsulta($query,true);
+	public function agregarResultadoAprendizaje($CriterioEvaluacion){
+		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
+		VALUES('".$CriterioEvaluacion["definicionResultadoAprendizaje"]."','".$CriterioEvaluacion["tituloResultadoAprendizaje"]."','".$CriterioEvaluacion["codigoResultadoAprendizaje"]."')";
+		$resultado = $this->conexion->realizarConsulta($query,false);
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;
 	}
 
 	public function modificarResultadoAprendizaje($CriterioEvaluacion){
