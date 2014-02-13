@@ -21,7 +21,7 @@ class Alumno{
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem 
 		where c.idsem ='".$semestre."' and c.idcurso ='".$curso."' and p.CodEstamento=10";
-		$resultado = $this->conexion->realizarConsulta($query);
+		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
 	}

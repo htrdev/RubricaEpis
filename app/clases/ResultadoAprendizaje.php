@@ -15,13 +15,13 @@ class ResultadoAprendizaje{
 	public function listarCriterioAprendizaje($idResultadoAprendizaje){
 		$query = "SELECT  c.idCriterioEvaluacion,c.descripcionCriterioEvaluacion,c.ResultadoAprendizaje_idResultadoAprendizaje 
 					FROM criterioevaluacion as c WHERE c.ResultadoAprendizaje_idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
-		return $this->conexion->realizarConsulta($query);
+		return $this->conexion->realizarConsulta($query,true);
 	}
 
 	public function listarResultadoAprendizaje(){
 
 		$query = "SELECT  r.idResultadoAprendizaje, r.codigoResultadoAprendizaje , r.tituloResultadoAprendizaje  FROM resultadoaprendizaje as r";
-		$resultadosAprendizaje = $this->conexion->realizarConsulta($query);
+		$resultadosAprendizaje = $this->conexion->realizarConsulta($query,true);
 		$resultado = array();
 		$contadorResultado = 0;
 		foreach($resultadosAprendizaje as $resultadoAprendizaje){
@@ -37,25 +37,19 @@ class ResultadoAprendizaje{
 		return $resultadoJson;
 	}
 
-
 	public function agregarResultadoAprendizaje(){
 		$definicion = $_POST['txtDefinicion'];
 		$titulo = $_POST['txtTitulo'];
 		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje,tituloResultadoAprendizaje) VALUES('".$definicion."','".$titulo."')";
-		$resultado = $this->conexion->realizarConsulta($query);
-		
+		$resultado = $this->conexion->realizarConsulta($query,true);
 	}
 
 	public function modificarResultadoAprendizaje(){
 
 	}
-
-	
-
 }
 
 class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
-
 	private $conexion;
 
 	public function __construct(){
@@ -73,7 +67,7 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	public function ResultadoAprendizajePorDocente(){
 		$docente = $_POST['txtDocente'];
 		$query = "select d.ResultadoAprendizaje_idResultadoAprendizaje, c.definicionResultadoAprendizaje, c.tituloResultadoAprendizaje from   resultadoaprendizaje as c inner join resultadoaprendizajedocente as d on d.ResultadoAprendizaje_idResultadoAprendizaje = c.idResultadoAprendizaje where d.Docente_Persona_idPersona ='".$docente."'";
-		$resultado = $this->conexion->realizarConsulta($query);
+		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
 	}

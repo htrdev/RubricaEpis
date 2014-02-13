@@ -17,7 +17,7 @@ class Curso{
 		inner join PERSONA as p on p.CodPer = c.codper
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem where s.Activo='1'";
-		$resultado = $this->conexion->realizarConsulta($query);
+		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
 	}
@@ -28,7 +28,7 @@ class Curso{
 		inner join PERSONA as p on p.CodPer = c.codper
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem where p.CodPer='".$idDocente."' and s.Activo=1";
-		$resultado = $this->conexion->realizarConsulta($query);
+		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
 	}
