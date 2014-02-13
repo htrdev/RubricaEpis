@@ -44,7 +44,13 @@ class ResultadoAprendizaje{
 		$resultado = $this->conexion->realizarConsulta($query,true);
 	}
 
-	public function modificarResultadoAprendizaje(){
+	public function modificarResultadoAprendizaje($CriterioEvaluacion){
+
+		$query = "update ResultadoAprendizaje set definicionResultadoAprendizaje='".$CriterioEvaluacion["definicionResultadoAprendizaje"]."', tituloResultadoAprendizaje='".$CriterioEvaluacion["tituloResultadoAprendizaje"]."', codigoResultadoAprendizaje='".$CriterioEvaluacion["codigoResultadoAprendizaje"]."'
+		 where idResultadoAprendizaje='".$CriterioEvaluacion["idResultadoAprendizaje"]."'";
+		$resultado = $this->conexion->realizarConsulta($query,false);
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;	
 
 	}
 }
@@ -73,3 +79,21 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	}
 
 }
+		
+		/*agregar
+		$CriterioEvaluacion = array(
+		"definicionResultadoAprendizaje"=>"abc",
+		"tituloResultadoAprendizaje"=>"abc",
+		"codigoResultadoAprendizaje"=>"1e")
+
+		*/
+
+
+		/*modificar*/
+		$CriterioEvaluacion = array(
+		"definicionResultadoAprendizaje"=>"abc",
+		"tituloResultadoAprendizaje"=>"abc",
+		"codigoResultadoAprendizaje"=>"1e",
+		"idResultadoAprendizaje"=>"1");	
+		$objetoModeloRubrica = new ResultadoAprendizaje();
+		echo $objetoModeloRubrica->modificarResultadoAprendizaje($CriterioEvaluacion);
