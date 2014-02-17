@@ -31,7 +31,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
       }).
       otherwise({
         redirectTo: '/IngresarSistema',
-        templateUrl: urlServidor+'vistas/bienvenida.html',
+        templateUrl: urlServidor+'vistas/usuario/login.html',
       });
   }]);
 
