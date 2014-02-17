@@ -11,7 +11,7 @@ class Usuario{
 
 	public function __construct(){
 		$this->conexionsql = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
-		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql','192.168.1.34','htrdev','12345');
 	}
 
 	public function listarUsuarios(){
