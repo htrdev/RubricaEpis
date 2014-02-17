@@ -23,11 +23,11 @@ class Usuario{
 	private function buscarUsuarioPorEmail($emailUsuario){
 		$persona = $this->conexionsql->realizarConsulta(
 			"SELECT PERSONA.CodPer,PERSONA.NomPer,PERSONA.ApepPer,PERSONA.Email FROM PERSONA 
-				where PERSONA.Email ='".$emailUsuario."'");
+				where PERSONA.Email ='".$emailUsuario."'",true);
 		$usuario = $this->conexionmysql->realizarConsulta(
 			"SELECT usuario.passwordUsuario,usuario.tipoUsuario FROM usuario 
 				where usuario.idUsuario ='".$persona[0]["CodPer"]."'"
-			);
+			,true);
 		$usuario[0]["CodPer"]=$persona[0]["CodPer"];
 		$usuario[0]["nombreCompleto"]=$persona[0]["NomPer"].' '.$persona[0]["ApepPer"];
 		$usuario[0]["Email"]=$persona[0]["Email"];

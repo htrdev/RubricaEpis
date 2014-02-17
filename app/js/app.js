@@ -1,29 +1,29 @@
 'use strict';
 
-var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngCookies']);
+var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate']);
 var urlServidor = "http://rubricaepis:8080/app/";
 
 rubricaApp.config(['$routeProvider','$locationProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/CrearRubrica', {
-        templateUrl: urlServidor+'vistas/Rubricas/CrearRubrica.html',
-        controller: 'crearRubricaCtrl',
+      when('/rubricas/nuevo', {
+        templateUrl: urlServidor+'vistas/rubrica/nuevo.html',
+        controller: 'nuevoRubricaCtrl',
       }).
-      when('/MisRubricas',{
-        templateUrl: urlServidor+'vistas/Rubricas/MisRubricas.html',
+      when('/rubricas',{
+        templateUrl: urlServidor+'vistas/rubrica/index.html',
         controller: 'misRubricasCtrl',
       }).
       when('/MisRubricas/:idRubrica/ListarEstadoRubrica',{
-        templateUrl: urlServidor+'vistas/Rubricas/ListarEstadoRubrica.html',
+        templateUrl: urlServidor+'vistas/rubrica/ListarEstadoRubrica.html',
         controller: 'listarEstadoRubricaCtrl',
       }).
-      when('/ResultadosAprendizaje/Crear',{
-        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/CrearResultadoAprendizaje.html',
-
+      when('/resultadoAprendizaje/nuevo',{
+        templateUrl: urlServidor+'vistas/resultadoAprendizaje/nuevo.html',
+        controller:'nuevoResultadoAprendizajeCtrl'
       }).
-      when('/ResultadosAprendizaje',{
-        templateUrl: urlServidor+'vistas/ResultadoAprendizaje/ListarResultadoAprendizaje.html',
+      when('/resultadoAprendizaje',{
+        templateUrl: urlServidor+'vistas/resultadoAprendizaje/index.html',
         controller : 'listarResultadoAprendizajeCtrl',
       }).
       when('/',{
@@ -31,7 +31,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
       }).
       otherwise({
         redirectTo: '/IngresarSistema',
-        templateUrl: urlServidor+'vistas/Usuario/Login.html',
+        templateUrl: urlServidor+'vistas/bienvenida.html',
       });
   }]);
 
@@ -49,12 +49,8 @@ rubricaApp.run(['$rootScope', '$location', 'Usuario', function ($rootScope, $loc
 
     $rootScope.$on('$routeChangeStart', function () {
         if (!Usuario.estaLogeado()) {
-            console.log('DENY');
             event.preventDefault();
             $location.path('/IngresarSistema');
-        }
-        else {
-            console.log('ALLOW');
         }
     });
 

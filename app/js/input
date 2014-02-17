@@ -1,0 +1,195 @@
+INPUT :
+
+	{
+	    idResultadoAprendizaje: 1
+	}
+
+OUTPUT :
+
+	{
+		idResultadoAprendizaje : 1,
+	   	codigoResultadoAprendizaje : "1a",
+	   	tituloResultadoAprendizaje : "Titulo RA",
+	   	definicionResultadoAprendizaje : "hola soy una definicion",
+	   	criteriosEvaluacion :
+	  	[
+		    {
+				idCriterioEvaluacion : 1,
+				descripcionCriterioEvaluacion : "soy una descripcion",
+		    },
+		    {
+				idCriterioEvaluacion : 2,
+				descripcionCriterioEvaluacion : "soy una descripcion",
+		    }
+	  	]
+	}
+
+
+INPUT :
+
+	{
+	   	codigoResultadoAprendizaje : "1a",
+	   	tituloResultadoAprendizaje : "Titulo RA",
+	   	definicionResultadoAprendizaje : "hola soy una definicion",
+	   	criteriosEvaluacion :
+   	  	[
+	   	    {
+	   			descripcionCriterioEvaluacion : "soy una descripcion",
+	   	    },
+	   	    {
+	   			descripcionCriterioEvaluacion : "soy una descripcion",
+	   	    }
+   	  	]
+	}
+
+
+OUTPUT : 
+
+true // si fue exitosa
+false // si hubo algun problema
+
+
+
+INPUT : 
+
+$_SESSION["CodPer"]; //usar metodo $this->conexion->obtenerVariableSesion("CodPer");
+
+OUTPUT : 
+
+	{
+		misRubricas : 
+		[
+			{
+				semestre : "2013-EXT",
+				curso : "Diseño y Arquitectura de Software",
+				calificaA : "Alumnos",
+				fechaInicio : "12-12-12",
+				fechaFinal : "15-12-12"
+			},
+			{
+				semestre : "2013-EXT",
+				curso : "Programacion III",
+				calificaA : "Alumnos",
+				fechaInicio : "14-12-12",
+				fechaFinal : "18-12-12"
+			}
+		],
+
+		rubricasAsignadas :
+		[
+			{
+				idModeloRubrica : 1,
+				semestre : "2013-EXT",
+				curso : "Programacion Lineal",
+				calificaA : "Alumnos",
+				autor : "SISA YATACO, HAYDEE RAQUEL",
+				fechaFinal : 15-12-12
+			},
+			{
+				idModeloRubrica : 2,
+				semestre : "2013-EXT",
+				curso : "Diseño de Base de Datos",
+				calificaA : "Alumnos",
+				autor : "CHAIÑA CONDORI, HENRY WILSON",
+				fechaFinal : 16-12-12
+			}
+		]
+	}
+
+
+
+INPUT :
+
+	{
+		idModeloRubrica : 1
+	}
+
+OUTPUT :
+	[
+		{
+			idResultadoRubrica : 1,
+			fechaCompletadoRubrica : "2014-02-04",
+			personaEvaluada : "OCHOA LOMA, SCHARLY",
+			totalRubrica : 70.00,
+			estadoRubrica : 1,
+			evaluadoPor : "LANCHIPA VALENCIA, ENRIQUE FELIX"
+		},
+		{
+			idResultadoRubrica : 1,
+			fechaCompletadoRubrica : "2014-02-04",
+			personaEvaluada : "OCHOA LOMA, SCHARLY",
+			totalRubrica : 70.00,
+			estadoRubrica : 1,
+			evaluadoPor : "LANCHIPA VALENCIA, ENRIQUE FELIX"
+		}
+	]
+
+
+
+INPUT :
+
+	$_SESSION["CodPer"]; //usar metodo $this->conexion->obtenerVariableSesion("CodPer");
+
+OUTPUT :
+
+	{
+		resultadosAprendizaje :
+		[
+			{
+				idResultadoAprendizaje : 1,
+			   	codigoResultadoAprendizaje : "1a",
+			   	tituloResultadoAprendizaje : "Titulo RA",
+			   	definicionResultadoAprendizaje : "hola soy una definicion",
+			   	criteriosEvaluacion :
+			  	[
+				    {
+						idCriterioEvaluacion : 1,
+						descripcionCriterioEvaluacion : "soy una descripcion",
+				    },
+				    {
+						idCriterioEvaluacion : 2,
+						descripcionCriterioEvaluacion : "soy una descripcion",
+				    }
+			  	]
+			}
+		]
+		resultadosAprendizajeDocente :
+		[
+			{
+				idResultadoAprendizaje : 2,
+			   	codigoResultadoAprendizaje : "1a",
+			   	tituloResultadoAprendizaje : "Titulo RA",
+			   	definicionResultadoAprendizaje : "hola soy una definicion",
+			   	criteriosEvaluacion :
+			  	[
+				    {
+						idCriterioEvaluacion : 1,
+						descripcionCriterioEvaluacion : "soy una descripcion",
+				    },
+				    {
+						idCriterioEvaluacion : 2,
+						descripcionCriterioEvaluacion : "soy una descripcion",
+				    }
+			  	]
+			}
+		]
+	}
+
+
+INPUT :
+
+	{
+		idCurso : 1,
+		idSemestre : 2,
+		fechaInicio : "2014-12-12",
+		fechaFinal : "2014-12-15",
+		docentes : [1,2,3,4],
+		calificacionRubrica : "Alumnos",
+		criteriosEvaluacion : [1,2,3,4],
+		tipoRubrica : 'Curso'
+	};
+
+OUTPUT :
+
+	true // si fue exitosa
+	false // si hubo algun problema

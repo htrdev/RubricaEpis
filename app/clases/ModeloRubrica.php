@@ -9,7 +9,7 @@ class ModeloRubrica{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','192.168.1.35','htrdev','12345');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
 	}
 
 	public function agregarModeloRubrica(){

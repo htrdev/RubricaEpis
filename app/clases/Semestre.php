@@ -13,13 +13,13 @@ class Semestre{
 	}
 
 	public function listarSemestre(){
-		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE");
+		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE",true);
 		$resultado = $this->conexion->convertirJson($usuario);
 		return $resultado;
 	}
 
 	public function listarSemestreActivo(){
-		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'");
+		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
 		$resultado = $this->conexion->convertirJson($usuario);
 		return $resultado;
 	}

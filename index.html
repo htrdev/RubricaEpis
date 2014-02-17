@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" ng-app="rubricaApp">
+<html lang="es" ng-app="rubricaApp" >
 	<head>
 		<meta charset="utf-8" />
 		<title>Rubrica EPIS</title>
@@ -8,11 +8,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<!--basic styles-->
-
+		<style type="text/css">
+			[ng-cloak]{
+				display: none;
+			}
+		</style>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
-
 		<!--[if IE 7]>
 		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
 		<![endif]-->
@@ -36,7 +39,7 @@
 		<!--inline styles related to this page-->
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 
-	<body ng-controller="mainCtrl">
+	<body ng-controller="mainCtrl" ng-cloak="">
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container-fluid">
@@ -137,56 +140,17 @@
 				
 				<ul class="nav nav-list">
 					<li>
-						<a href="#" class="dropdown-toggle">
+						<a href="#rubricas" class="dropdown-toggle">
 							<i class="icon-desktop"></i>
 							<span class="menu-text"> Rubrica </span>
-
-							<b class="arrow icon-angle-down"></b>
 						</a>
-
-						<ul class="submenu">
-							<li>
-								<a href="#CrearRubrica">
-									<i class="icon-double-angle-right"></i>
-									Crear Rubrica
-								</a>
-							</li>
-
-							<li>
-								<a href="#MisRubricas">
-									<i class="icon-double-angle-right"></i>
-									Mis Rubricas
-								</a>
-							</li>
-
-							
-						</ul>
 					</li>
 
 					<li>
-						<a href="#" class="dropdown-toggle">
+						<a href="#resultadoAprendizaje" class="dropdown-toggle">
 							<i class="icon-edit"></i>
-							<span class="menu-text">RA</span>
-
-							<b class="arrow icon-angle-down"></b>
+							<span class="menu-text">R. Aprendizaje</span>
 						</a>
-
-						<ul class="submenu">
-							<li>
-								<a href="#ResultadosAprendizaje/Crear">
-									<i class="icon-double-angle-right"></i>
-									Crear RA
-								</a>
-							</li>
-
-							<li>
-								<a href="#ResultadosAprendizaje">
-									<i class="icon-double-angle-right"></i>
-									Lista de RA
-								</a>
-							</li>
-
-						</ul>
 					</li>
 
 					
@@ -197,33 +161,12 @@
 				</div>
 			</div>
 
-			<div class="main-content">
+			<div class="main-content" style="position:relative">
 
-				<div class="page-content" ng-view>
+				<div ng-view class="page-content">
 					
 				</div><!--/.page-content-->
 
-				<div class="ace-settings-container" id="ace-settings-container">
-					<div class="btn btn-app btn-mini btn-warning ace-settings-btn" id="ace-settings-btn">
-						<i class="icon-cog bigger-150"></i>
-					</div>
-
-					<div class="ace-settings-box" id="ace-settings-box">
-						<div>
-							<div class="pull-left">
-								<select id="skin-colorpicker" class="hide">
-									<option data-class="default" value="#438EB9" />#438EB9
-									<option data-class="skin-1" value="#222A2D" />#222A2D
-									<option data-class="skin-2" value="#C6487E" />#C6487E
-									<option data-class="skin-3" value="#D0D0D0" />#D0D0D0
-								</select>
-							</div>
-							<span>&nbsp; Escoja Tema</span>
-						</div>
-
-						
-					</div>
-				</div><!--/#ace-settings-container-->
 			</div><!--/.main-content-->
 		</div><!--/.main-container-->
 
@@ -287,7 +230,7 @@
 		<script type="text/javascript" src="app/includes/angular/angular.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-sanitize.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-route.js"></script>
-		<script type="text/javascript" src="app/includes/angular/angular-cookies.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular-animate.min.js"></script>
 		<script type="text/javascript" src="app/js/app.js"></script>
 		<script type="text/javascript" src="app/js/directives.js"></script>
 
@@ -304,11 +247,12 @@
 
 		<!--Controladores-->
 		<script type="text/javascript" src="app/js/controllers/mainCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/Rubricas/crearRubricaCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/Rubricas/misRubricasCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/Rubricas/listarEstadoRubricaCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/nuevoRubricaCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/misRubricasCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/listarEstadoRubricaCtrl.js"></script>
 			
 		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
 			<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/nuevoResultadoAprendizajeCtrl.js"></script>
 
 </html>

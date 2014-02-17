@@ -1,6 +1,6 @@
 'use strict';
 rubricaApp.controller('misRubricasCtrl',
-	function misRubricasCtrl($scope,Usuario)
+	function misRubricasCtrl($scope,$location,Usuario)
 	{
 		$scope.rubricasCreadas = [
 		{id:1,semestre:"2013-EXT",curso:"Sistemas Operativos I",califica:"Alumnos",fechaInicio:"12-12-12",fechaFinal:"15-12-12"},
@@ -20,12 +20,10 @@ rubricaApp.controller('misRubricasCtrl',
 		$scope.Interfaz =	{
 			OcultarRubricasAsignadas : function(){
 				$scope.EstaRubricasCreadas = true;
-				Usuario.listarUsuarios();
 			},
 
 			MostrarRubricasAsignadas : function(){
 				$scope.EstaRubricasCreadas = false;
-				Usuario.listarUsuarios();
 			},
 			alert1 : function(){
 				alert("Aqui deberia mandarme al formulario similar al Crear Rubrica pero listo para editar esta Rubrica");
@@ -35,6 +33,10 @@ rubricaApp.controller('misRubricasCtrl',
 			},
 			alert3 : function(){
 				alert("Aqui me mostrara el formulario para llenar esta Rubrica hacia determinado alumno");
+			},
+
+			redireccionarNuevo : function(){
+				$location.path('/rubricas/nuevo');
 			}
 		}
 

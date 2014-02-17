@@ -1,7 +1,7 @@
 'use strict';
 
 rubricaApp.controller('listarResultadoAprendizajeCtrl',
-	function listarResultadoAprendizajeCtrl($scope)
+	function listarResultadoAprendizajeCtrl($scope,$location)
 	{
 		$scope.Interfaz = {
 			EstaResultadoAprendizaje : false,
@@ -12,6 +12,9 @@ rubricaApp.controller('listarResultadoAprendizajeCtrl',
 
 			MostrarResultadoAprendizaje : function(){
 				$scope.Interfaz.EstaResultadoAprendizaje = false;
+			},
+			redireccionarNuevo : function(){
+				$location.path('/resultadoAprendizaje/nuevo');
 			}
 		};
 	});

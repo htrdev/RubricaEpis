@@ -12,5 +12,12 @@ rubricaApp.factory('ResultadoAprendizaje',function($http){
 				 );
 	};
 
+	dataFactory.agregarResultadoAprendizaje = function(presultadoAprendizaje){
+		return $http.post(
+				    urlBase+'ResultadoAprendizaje.php', 
+				    {metodo: 'agregarResultadoAprendizaje',resultadoAprendizaje: presultadoAprendizaje}
+				 );
+	};
+
 	return dataFactory;
 });
