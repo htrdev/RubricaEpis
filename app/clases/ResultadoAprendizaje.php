@@ -37,9 +37,40 @@ class ResultadoAprendizaje{
 		return $resultadoJson;
 	}
 
-	public function agregarResultadoAprendizaje($CriterioEvaluacion){
-		$query = "INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
-		VALUES('".$CriterioEvaluacion["definicionResultadoAprendizaje"]."','".$CriterioEvaluacion["tituloResultadoAprendizaje"]."','".$CriterioEvaluacion["codigoResultadoAprendizaje"]."')";
+	public function agregarResultadoAprendizaje($resultadoAprendizaje){
+		$codigo = $resultadoaprendizaje['codigoResultadoAprendizaje'];
+		$titulo = $tituloresultadoaprendizaje['tituloResultadoAprendizaje'];
+		$definicion = $definicionresultadoaprendizaje['definicionResultadoAprendizaje'];
+
+		$query1="INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
+		VALUES('".$resultadoAprendizaje["definicionResultadoAprendizaje"]."','".$resultadoAprendizaje["tituloResultadoAprendizaje"]."',
+			'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
+
+		$criteriosEvaluacion = $resultadoaprendizaje['codigoResultadoAprendizaje'];
+		if(!empty($criteriosEvaluacion)){
+
+			foreach ($criteriosEvaluacion as $criterioevaluacion) {
+
+				$criterioevaluacion["descripcionCriterioEvaluacion"];
+				$query2="INSERT INTO criterioevaluacion(descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje)
+				VALUES('".$criterioevaluacion["descripcionCriterioEvaluacion"]."','".$criterioevaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."')"
+			}			
+			
+
+		}
+
+
+
+
+		myarray =array(array('nombre'=>'deivi'),array('nombre'=>'abc'));
+		foreach(myarray as numero){
+			echo numero;
+		}
+
+		
+
+
+
 		$resultado = $this->conexion->realizarConsulta($query,false);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
