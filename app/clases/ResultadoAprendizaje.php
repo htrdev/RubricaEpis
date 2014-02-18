@@ -3,6 +3,7 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
+require_once('CriterioEvaluacion');
 
 class ResultadoAprendizaje{
 
@@ -37,44 +38,35 @@ class ResultadoAprendizaje{
 		return $resultadoJson;
 	}
 
+	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
+		$query2="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
+		$query2.=" select LAST_INSERT_ID()";
+		$resultadoQuery2 = $this->conexion->realizarConsulta($query2,true);
+		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
+	}
+
 	public function agregarResultadoAprendizaje($resultadoAprendizaje){
+		
 		$codigo = $resultadoaprendizaje['codigoResultadoAprendizaje'];
 		$titulo = $tituloresultadoaprendizaje['tituloResultadoAprendizaje'];
 		$definicion = $definicionresultadoaprendizaje['definicionResultadoAprendizaje'];
-
-		$query1="INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
+		$queryAgregarResultadoAprendizaje="INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
 		VALUES('".$resultadoAprendizaje["definicionResultadoAprendizaje"]."','".$resultadoAprendizaje["tituloResultadoAprendizaje"]."',
 			'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
-		$query3="select LAST_INSERT_ID(idResultadoAprendizaje) from resultadoaprendizaje"
-		$query4="select LAST_INSERT_ID()"
-
-		$criteriosEvaluacion = $resultadoaprendizaje['codigoResultadoAprendizaje'];
-		if(!empty($criteriosEvaluacion)){
-
-			foreach ($criteriosEvaluacion as $criterioevaluacion) {
-
-				$criterioevaluacion["descripcionCriterioEvaluacion"];
-				$query2="INSERT INTO criterioevaluacion(descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje)
-				VALUES('".$criterioevaluacion["descripcionCriterioEvaluacion"]."','".$criterioevaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."')"
-			}			
-			
-
-		}
-
-
-
-
-		myarray =array(array('nombre'=>'deivi'),array('nombre'=>'abc'));
-		foreach(myarray as numero){
-			echo numero;
-		}
-
 		
+		$criteriosEvaluacion = $resultadoaprendizaje['codigoResultadoAprendizaje'];
+		$objCriterioEvaluacion = new CriterioEvaluacion();
+		if(!empty($criteriosEvaluacion)){
+			foreach ($criteriosEvaluacion as $criterioevaluacion) {
+				$auxCriterioEvaluacion = array(
+					"descripcionCriterio"=>$criterioevaluacion["descripcionCriterio"],
+					"ResultadoAprendizaje_idResultadoAprendizaje"=>$idResultadoAprendizaje
+					);
+				$funciono = $objCriterioEvaluacion->agregarCriterioEvaluacion($auxCriterioEvaluacion);
+			}			
+		}
 
-
-
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
+		$resultadoJson = true;
 		return $resultadoJson;
 	}
 
