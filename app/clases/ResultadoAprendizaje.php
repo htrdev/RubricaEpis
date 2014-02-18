@@ -45,7 +45,8 @@ class ResultadoAprendizaje{
 	}
 
 	public function agregarResultadoAprendizaje($resultadoAprendizaje){
-
+		mysql_query('start transaction;')
+		$this->conexion->realizarConsulta('start transaction');
 		$queryAgregarResultadoAprendizaje="
 			INSERT INTO ResultadoAprendizaje(
 				definicionResultadoAprendizaje
@@ -58,9 +59,17 @@ class ResultadoAprendizaje{
 
 		$funcionoQueryAgregarResultadoAprendizaje = $this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
 		
+		if(mysql_affected_rows($queryAgregarResultadoAprendizaje))	{
+		mysql_query('commit')
+		} else 	{
+		mysql_query('rollback')	
+		}
+
+
 		$objCriterioEvaluacion = new CriterioEvaluacion();
 		
 		if(!empty($resultadoAprendizaje["descripcionCriterioEvaluacion"])){
+
 			foreach ($resultadoAprendizaje["descripcionCriterioEvaluacion"] as $criterioevaluacion) {
 				$auxCriterioEvaluacion = array(
 					"descripcionCriterio"=>$criterioevaluacion["descripcionCriterio"],

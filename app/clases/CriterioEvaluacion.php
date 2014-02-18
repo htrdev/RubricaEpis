@@ -18,8 +18,16 @@ class CriterioEvaluacion{
 	public function agregarCriterioEvaluacion($CriterioEvaluacion){
 		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje) 
 		values ('".$CriterioEvaluacion["descripcionCriterio"]."', '".$CriterioEvaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."')";
+		for($resultado=true)
+		{
+			
+		}
 		$resultado = $this->conexion->realizarConsulta($query,false);
 		return $resultado;
+
+
+
+		
 	}
 
 	public function modificarCriterioEvaluacion($CriterioEvaluacion){
