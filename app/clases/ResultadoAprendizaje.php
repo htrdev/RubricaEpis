@@ -3,7 +3,7 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
-require_once('CriterioEvaluacion');
+require_once('CriterioEvaluacion.php');
 
 class ResultadoAprendizaje{
 
@@ -45,7 +45,7 @@ class ResultadoAprendizaje{
 	}
 
 	public function agregarResultadoAprendizaje($resultadoAprendizaje){
-		
+
 		$queryAgregarResultadoAprendizaje="
 			INSERT INTO ResultadoAprendizaje(
 				definicionResultadoAprendizaje
