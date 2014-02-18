@@ -45,7 +45,7 @@ class ResultadoAprendizaje{
 		$query1="INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
 		VALUES('".$resultadoAprendizaje["definicionResultadoAprendizaje"]."','".$resultadoAprendizaje["tituloResultadoAprendizaje"]."',
 			'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
-		$query3="select LAST_INSERT_ID(idCriterioEvaluacion) from criterioevaluacion"
+		$query3="select LAST_INSERT_ID(idResultadoAprendizaje) from resultadoaprendizaje"
 		$query4="select LAST_INSERT_ID()"
 
 		$criteriosEvaluacion = $resultadoaprendizaje['codigoResultadoAprendizaje'];
