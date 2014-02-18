@@ -20,7 +20,6 @@ class ResultadoAprendizaje{
 	}
 
 	public function listarResultadoAprendizaje(){
-
 		$query = "SELECT  r.idResultadoAprendizaje, r.codigoResultadoAprendizaje , r.tituloResultadoAprendizaje  FROM resultadoaprendizaje as r";
 		$resultadosAprendizaje = $this->conexion->realizarConsulta($query,true);
 		$resultado = array();
@@ -47,17 +46,22 @@ class ResultadoAprendizaje{
 
 	public function agregarResultadoAprendizaje($resultadoAprendizaje){
 		
-		$codigo = $resultadoaprendizaje['codigoResultadoAprendizaje'];
-		$titulo = $tituloresultadoaprendizaje['tituloResultadoAprendizaje'];
-		$definicion = $definicionresultadoaprendizaje['definicionResultadoAprendizaje'];
-		$queryAgregarResultadoAprendizaje="INSERT INTO ResultadoAprendizaje(definicionResultadoAprendizaje, tituloResultadoAprendizaje, codigoResultadoAprendizaje)
-		VALUES('".$resultadoAprendizaje["definicionResultadoAprendizaje"]."','".$resultadoAprendizaje["tituloResultadoAprendizaje"]."',
-			'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
+		$queryAgregarResultadoAprendizaje="
+			INSERT INTO ResultadoAprendizaje(
+				definicionResultadoAprendizaje
+				,tituloResultadoAprendizaje
+				,codigoResultadoAprendizaje)
+			VALUES(
+				'".$resultadoAprendizaje["definicionResultadoAprendizaje"]."'
+				,'".$resultadoAprendizaje["tituloResultadoAprendizaje"]."'
+				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
+
+		$funcionoQueryAgregarResultadoAprendizaje = $this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
 		
-		$criteriosEvaluacion = $resultadoaprendizaje['codigoResultadoAprendizaje'];
 		$objCriterioEvaluacion = new CriterioEvaluacion();
-		if(!empty($criteriosEvaluacion)){
-			foreach ($criteriosEvaluacion as $criterioevaluacion) {
+		
+		if(!empty($resultadoAprendizaje["descripcionCriterioEvaluacion"])){
+			foreach ($resultadoAprendizaje["descripcionCriterioEvaluacion"] as $criterioevaluacion) {
 				$auxCriterioEvaluacion = array(
 					"descripcionCriterio"=>$criterioevaluacion["descripcionCriterio"],
 					"ResultadoAprendizaje_idResultadoAprendizaje"=>$idResultadoAprendizaje
@@ -65,7 +69,7 @@ class ResultadoAprendizaje{
 				$funciono = $objCriterioEvaluacion->agregarCriterioEvaluacion($auxCriterioEvaluacion);
 			}			
 		}
-
+		
 		$resultadoJson = true;
 		return $resultadoJson;
 	}
