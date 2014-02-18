@@ -4,7 +4,9 @@ header('Content-type: application/json');
 
 require_once('../clases/Semestre.php');
 
-$metodo = $_POST['metodo'];
+$json = json_decode(file_get_contents("php://input"),true);
+$metodo = $json['metodo'];
+$resultadoAprendizaje = $json["resultadoAprendizaje"];
 
 $semestre = new Semestre();
 

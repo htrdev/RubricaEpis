@@ -109,22 +109,3 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	}
 
 }
-		
-		
-		$resultadoAprendizaje = array(
-		"definicionResultadoAprendizaje"=>"abc",
-		"tituloResultadoAprendizaje"=>"abc",
-		"codigoResultadoAprendizaje"=>"1e")
-
-		$objetoModeloRubrica = new ResultadoAprendizaje();
-		echo $objetoModeloRubrica->agregarResultadoAprendizaje($resultadoAprendizaje);
-
-
-		/*modificar*/
-		/*$CriterioEvaluacion = array(
-		"definicionResultadoAprendizaje"=>"abc",
-		"tituloResultadoAprendizaje"=>"abc",
-		"codigoResultadoAprendizaje"=>"1e",
-		"idResultadoAprendizaje"=>"1");	
-		$objetoModeloRubrica = new ResultadoAprendizaje();
-		echo $objetoModeloRubrica->modificarResultadoAprendizaje($CriterioEvaluacion);*/
