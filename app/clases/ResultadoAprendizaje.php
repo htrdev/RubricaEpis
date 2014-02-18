@@ -110,13 +110,14 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 
 }
 		
-		/*agregar
-		$CriterioEvaluacion = array(
+		
+		$resultadoAprendizaje = array(
 		"definicionResultadoAprendizaje"=>"abc",
 		"tituloResultadoAprendizaje"=>"abc",
 		"codigoResultadoAprendizaje"=>"1e")
 
-		*/
+		$objetoModeloRubrica = new ResultadoAprendizaje();
+		echo $objetoModeloRubrica->agregarResultadoAprendizaje($resultadoAprendizaje);
 
 
 		/*modificar*/
