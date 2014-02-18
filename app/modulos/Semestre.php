@@ -12,3 +12,4 @@ switch($metodo){
 	case 'listarSemestre' : echo $semestre->listarSemestre();break;
 	case 'listarSemestreActivo' : echo $semestre->listarSemestreActivo();break;
 }
+
