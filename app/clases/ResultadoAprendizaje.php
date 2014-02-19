@@ -37,6 +37,28 @@ class ResultadoAprendizaje{
 		return $resultadoJson;
 	}
 
+	public function listarResultadoAprendizajePorID($listarResultadoAprendizaje){
+
+		
+		$query="select r.idResultadoAprendizaje,r.codigoResultadoAprendizaje,
+		r.tituloResultadoAprendizaje,r.definicionResultadoAprendizaje from resultadoaprendizaje as r
+		where r.idResultadoAprendizaje='".$idResultadoAprendizaje."'";
+		$resultadoaprendizaporid = $this->conexion->realizarConsulta($query,true);
+		
+			foreach ($resultadoaprendizaporid as $idResultado) {	
+
+				$query2 = "select idCriterioEvaluacion, descripcionCriterioEvaluacion  from resultadoaprendizaje as r 
+				inner join criterioevaluacion as c on c.ResultadoAprendizaje_idResultadoAprendizaje=r.idResultadoAprendizaje
+				where r.idResultadoAprendizaje ='".$idResultado["idResultadoAprendizaje"]."'";
+				$criteriosEvaluacion = $this->conexionSqlServer->realizarConsulta($query2,true);
+
+				$resultadoCriterioEvaluacion=
+				array('idCriterioEvaluacion ' => $idResultado["idCriterioEvaluacion"] ,
+					'descripcionCriterioEvaluacion '=> $idResultado["descripcionCriterioEvaluacion"] );	
+					}			
+	}
+
+
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
 		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
 		$resultadoQuery = $this->conexion->realizarConsulta($query1,true);
