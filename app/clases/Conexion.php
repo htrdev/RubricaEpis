@@ -87,6 +87,7 @@ class ConexionMySQL extends Conexion{
 		$this->usuario	= $usuario;
 		$this->password = $password;
 		$this->baseDeDatos = "rubricaepis";
+		$this->obtenerConexion();
 	}
 
 	public static function obtenerObjeto($host,$usuario,$password){
@@ -106,7 +107,7 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
-		$this->obtenerConexion();
+		
 		$resultado =  mysql_query($sql,$this->conexion);
 		if($convertirArray){
 			return $this->convertirArray($resultado);
@@ -130,8 +131,8 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function iniciarTransaccion(){
-		mysql_query("SET AUTOCOMMIT=0"$this->conexion);
-		mysql_query("START TRANSACTION"$this->conexion);
+		mysql_query("SET AUTOCOMMIT=0",$this->conexion);
+		mysql_query("START TRANSACTION",$this->conexion);
 	}
 
 	public function finalizarTransaccion($confirmaciones){
@@ -144,10 +145,10 @@ class ConexionMySQL extends Conexion{
 		}
 
 		if($esCorrecto){
-			mysql_query("COMMIT");
+			mysql_query("COMMIT",$this->conexion);
 		}
 		else{
-			mysql_query("ROLLBACK");
+			mysql_query("ROLLBACK",$this->conexion);
 		}
 		return $esCorrecto;
 	}

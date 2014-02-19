@@ -69,7 +69,7 @@ class ResultadoAprendizaje{
 			$this->listarUltimoPrimaryKey('idResultadoAprendizaje','resultadoaprendizaje');
 
 		$funcionoQueryAgregarCriteriosEvaluacion = 
-			$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje)
+			$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
 		
 		$funcionoTransaccion = 
 			$this->conexion->finalizarTransaccion(
@@ -85,7 +85,7 @@ class ResultadoAprendizaje{
 		$objCriterioEvaluacion = new CriterioEvaluacion();
 		if(!empty($resultadoAprendizaje)){
 			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarCriterioEvaluacion(
-				$resultadoAprendizajen
+				$resultadoAprendizaje
 				,$idResultadoAprendizaje);
 		}
 		return $funcionoQueryAgregarCriteriosEvaluacion;
