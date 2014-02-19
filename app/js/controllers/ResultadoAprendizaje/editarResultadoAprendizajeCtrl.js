@@ -12,7 +12,7 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			tituloResultadoAprendizaje : "",
 			definicionResultadoAprendizaje : "",
 			criteriosEvaluacion : []
-		};
+		}; 
 
 
 		$scope.Interfaz = {
