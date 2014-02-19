@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="rubricaApp" >
+	<head>
+		<meta charset="utf-8" />
+		<title>Rubrica EPIS</title>
+
+		<meta name="description" content="overview &amp; stats" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!--basic styles-->
+		<style type="text/css">
+			[ng-cloak]{
+				display: none;
+			}
+		</style>
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!--page specific plugin styles-->
+
+		<!--fonts-->
+
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+		<!--ace styles-->
+
+		<link rel="stylesheet" href="assets/css/ace.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!--inline styles related to this page-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+	<body ng-controller="mainCtrl" ng-cloak="">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<a href="#" class="brand" ng-click="a()">
+						<small>
+							Rubrica EPIS
+						</small>
+					</a><!--/.brand-->
+
+					<ul class="nav ace-nav pull-right" ng-cloak ng-if="usuario.estado">
+						<li class="purple">
+							<a data-toggle="dropdown" class="dropdown-toggle" >
+								<i class="icon-bell-alt icon-animated-bell"></i>
+								<span class="badge badge-important">2</span>
+							</a>
+
+							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-closer">
+								<li class="nav-header">
+									<i class="icon-warning-sign"></i>
+									2 Notificaciones
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="btn btn-mini btn-primary icon-user"></i>
+										<span class="msg-body">
+											El Ing. Elard Rodriguez completo la Rubrica R002 ...
+										</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="btn btn-mini btn-primary icon-user"></i>
+										<span class="msg-body">
+											El Ing. Ricardo Valcarcel completo la Rubrica R002 ...
+										</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										See all notifications
+										<i class="icon-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="" class="dropdown-toggle">
+								<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
+								<span class="user-info" style="max-width:200px" >
+									<small>Bienvenido,</small>
+									{{usuario.usuario}}
+								</span>
+
+								<i class="icon-caret-down"></i>
+							</a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+								<li>
+									<a href="#">
+										<i class="icon-cog"></i>
+										Settings
+									</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-user"></i>
+										Perfil
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="#">
+										<i class="icon-off"></i>
+										Salir
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul><!--/.ace-nav-->
+				</div><!--/.container-fluid-->
+			</div><!--/.navbar-inner-->
+		</div>
+
+		<div class="main-container container-fluid" >
+			<a class="menu-toggler" id="menu-toggler" href="#">
+				<span class="menu-text"></span>
+			</a>
+
+			<div class="sidebar" id="sidebar" ng-cloak ng-show="usuario.estado">
+				
+				<ul class="nav nav-list">
+					<li>
+						<a href="#rubricas" class="dropdown-toggle">
+							<i class="icon-desktop"></i>
+							<span class="menu-text"> Rubrica </span>
+						</a>
+					</li>
+
+					<li>
+						<a href="#resultadoAprendizaje" class="dropdown-toggle">
+							<i class="icon-edit"></i>
+							<span class="menu-text">R. Aprendizaje</span>
+						</a>
+					</li>
+
+					
+				</ul><!--/.nav-list-->
+
+				<div class="sidebar-collapse" id="sidebar-collapse">
+					<i class="icon-double-angle-left"></i>
+				</div>
+			</div>
+
+			<div class="main-content" style="position:relative">
+
+				<div ng-view class="page-content">
+					
+				</div><!--/.page-content-->
+
+			</div><!--/.main-content-->
+		</div><!--/.main-container-->
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+			<i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+	</body>
+	<!--basic scripts-->
+
+		<!--[if !IE]>-->
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+		<!--<![endif]-->
+
+		<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+		<!--[if !IE]>-->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!--<![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="assets/js/bootstrap.min.js"></script>
+
+		<!--page specific plugin scripts-->
+
+		<!--[if lte IE 8]>
+		  <script src="assets/js/excanvas.min.js"></script>
+		<![endif]-->
+
+		<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="assets/js/jquery.slimscroll.min.js"></script>
+
+		<!--ace scripts-->
+
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+		<script src="assets/js/chosen.jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="assets/css/chosen.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/datepicker.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-timepicker.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/daterangepicker.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/colorpicker.css">
+		<!--inline scripts related to this page-->
+
+		<script type="text/javascript" src="app/includes/angular/angular.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular-sanitize.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular-route.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular-animate.min.js"></script>
+		<script type="text/javascript" src="app/js/app.js"></script>
+		<script type="text/javascript" src="app/js/directives.js"></script>
+
+		<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+		<script type="text/javascript" src="assets/js/sortable.js"></script>
+
+		<!--Servicios-->
+
+		<script type="text/javascript" src="app/js/services/Usuario.js"></script>
+		<script type="text/javascript" src="app/js/services/Semestre.js"></script>
+		<script type="text/javascript" src="app/js/services/ResultadoAprendizaje.js"></script>
+		<script type="text/javascript" src="app/js/services/Docente.js"></script>
+		<script type="text/javascript" src="app/js/services/Curso.js"></script>
+
+		<!--Controladores-->
+		<script type="text/javascript" src="app/js/controllers/mainCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/nuevoRubricaCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/misRubricasCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/rubrica/listarEstadoRubricaCtrl.js"></script>
+			
+		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
+			<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/nuevoResultadoAprendizajeCtrl.js"></script>
+
+</html>

@@ -1,0 +1,52 @@
+<div class="row-fluid" style="text-align:center;margin-top:5em">
+<div class="span4"><h1 style="margin-top:2em">Bievenido al Sistema RubricaEPIS</h1></div>
+<div class="span4 pagination-centered">	
+<div id="login-box" class="login-box visible widget-box no-border">
+	<div class="widget-body">
+		<div class="widget-main">
+			<h4 class="header blue lighter bigger">
+				<i class="icon-coffee green"></i>
+				Porfavor Ingrese sus credenciales
+			</h4>
+
+			<div class="space-6"></div>
+				<fieldset>
+					<label>
+						<span class="block input-icon input-icon-right">
+							<input type="email" ng-model="usuario.credenciales.email" class="span12" placeholder="Email" />
+							<i class="icon-user"></i>
+						</span>
+					</label>
+
+					<label>
+						<span class="block input-icon input-icon-right">
+							<input type="password" ng-model="usuario.credenciales.password" class="span12" placeholder="Password" />
+							<i class="icon-lock"></i>
+						</span>
+					</label>
+
+					<div class="space"></div>
+
+					<div class="clearfix">
+						<label class="inline">
+							<input type="checkbox" />
+							<span class="lbl"> Recordarme</span>
+						</label>
+						<button type="button" ng-click="usuario.ingresarSistema()" class="width-35 pull-right btn btn-small btn-primary">
+							<i class="icon-key"></i>
+							Login
+						</button>
+					</div>
+
+					<div class="space-4"></div>
+				</fieldset>
+			
+
+		
+		</div><!--/widget-main-->
+
+		
+	</div><!--/widget-body-->
+</div><!--/login-box-->
+</div>
+</div>
