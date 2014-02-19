@@ -128,6 +128,29 @@ class ConexionMySQL extends Conexion{
 	public function convertirJson($array){
 		return json_encode($array);
 	}
+
+	public function iniciarTransaccion(){
+		mysql_query("SET AUTOCOMMIT=0"$this->conexion);
+		mysql_query("START TRANSACTION"$this->conexion);
+	}
+
+	public function finalizarTransaccion($confirmaciones){
+		$esCorrecto = true;
+		foreach($confirmaciones as $confirmacion){
+			if(!$confirmacion){
+				$esCorrecto = false;
+				break;
+			}
+		}
+
+		if($esCorrecto){
+			mysql_query("COMMIT");
+		}
+		else{
+			mysql_query("ROLLBACK");
+		}
+		return $esCorrecto;
+	}
 }
 
 

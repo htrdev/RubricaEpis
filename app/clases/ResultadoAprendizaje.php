@@ -38,15 +38,20 @@ class ResultadoAprendizaje{
 	}
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
-		$query2="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
-		$query2.=" select LAST_INSERT_ID()";
+		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
+		$resultadoQuery = $this->conexion->realizarConsulta($query1,true);
+		$query2.="select LAST_INSERT_ID()";
 		$resultadoQuery2 = $this->conexion->realizarConsulta($query2,true);
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
 	public function agregarResultadoAprendizaje($resultadoAprendizaje){
-		mysql_query('start transaction;')
-		$this->conexion->realizarConsulta('start transaction');
+
+		$funcionoQueryAgregarResultadoAprendizaje = false;
+		$funcionoQueryAgregarCriteriosEvaluacion = false;
+
+		$this->conexion->iniciarTransaccion();
+
 		$queryAgregarResultadoAprendizaje="
 			INSERT INTO ResultadoAprendizaje(
 				definicionResultadoAprendizaje
@@ -57,30 +62,33 @@ class ResultadoAprendizaje{
 				,'".$resultadoAprendizaje["tituloResultadoAprendizaje"]."'
 				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
 
-		$funcionoQueryAgregarResultadoAprendizaje = $this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
+		$funcionoQueryAgregarResultadoAprendizaje = 
+			$this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
 		
-		if(mysql_affected_rows($queryAgregarResultadoAprendizaje))	{
-		mysql_query('commit')
-		} else 	{
-		mysql_query('rollback')	
-		}
+		$idResultadoAprendizaje = 
+			$this->listarUltimoPrimaryKey('idResultadoAprendizaje','resultadoaprendizaje');
 
+		$funcionoQueryAgregarCriteriosEvaluacion = 
+			$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje)
+		
+		$funcionoTransaccion = 
+			$this->conexion->finalizarTransaccion(
+				array($funcionoQueryAgregarCriteriosEvaluacion
+						,$funcionoQueryAgregarResultadoAprendizaje)
+				);
+		
+		return $funcionoTransaccion;
+	}
 
+	public function agregarCriteriosEvaluacion($resultadoAprendizaje,$idResultadoAprendizaje){
+		$funcionoQueryAgregarCriteriosEvaluacion = false;
 		$objCriterioEvaluacion = new CriterioEvaluacion();
-		
-		if(!empty($resultadoAprendizaje["descripcionCriterioEvaluacion"])){
-
-			foreach ($resultadoAprendizaje["descripcionCriterioEvaluacion"] as $criterioevaluacion) {
-				$auxCriterioEvaluacion = array(
-					"descripcionCriterio"=>$criterioevaluacion["descripcionCriterio"],
-					"ResultadoAprendizaje_idResultadoAprendizaje"=>$idResultadoAprendizaje
-					);
-				$funciono = $objCriterioEvaluacion->agregarCriterioEvaluacion($auxCriterioEvaluacion);
-			}			
+		if(!empty($resultadoAprendizaje)){
+			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarCriterioEvaluacion(
+				$resultadoAprendizajen
+				,$idResultadoAprendizaje);
 		}
-		
-		$resultadoJson = true;
-		return $resultadoJson;
+		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}
 
 	public function modificarResultadoAprendizaje($CriterioEvaluacion){
@@ -90,7 +98,6 @@ class ResultadoAprendizaje{
 		$resultado = $this->conexion->realizarConsulta($query,false);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
-
 	}
 }
 

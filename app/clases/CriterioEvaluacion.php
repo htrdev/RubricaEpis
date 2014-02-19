@@ -13,21 +13,22 @@ class CriterioEvaluacion{
 		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
 	}
 
-
-
-	public function agregarCriterioEvaluacion($CriterioEvaluacion){
+	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
 		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje) 
-		values ('".$CriterioEvaluacion["descripcionCriterio"]."', '".$CriterioEvaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."')";
-		for($resultado=true)
-		{
-			
+		values";
+		$numeroElementos = count($criterioEvaluacion);
+		$i = 0;
+		foreach($criterioEvaluacion as $criterio){
+			$query.= "('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."')";
+			if(++$i == $numeroElementos){
+				$query.=";";
+			}
+			else{
+				$query.=",";
+			}
 		}
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		return $resultado;
-
-
-
-		
+		$funciono = $this->conexion->realizarConsulta($query,false);
+		return $funciono;		
 	}
 
 	public function modificarCriterioEvaluacion($CriterioEvaluacion){
