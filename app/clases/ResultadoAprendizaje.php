@@ -45,18 +45,24 @@ class ResultadoAprendizaje{
 		where r.idResultadoAprendizaje='".$idResultadoAprendizaje."'";
 		$resultadoaprendizaporid = $this->conexion->realizarConsulta($query,true);
 		
-			foreach ($resultadoaprendizaporid as $idResultado) {	
+		
+		$query2 = "select idCriterioEvaluacion, descripcionCriterioEvaluacion  from resultadoaprendizaje as r 
+		inner join criterioevaluacion as c on c.ResultadoAprendizaje_idResultadoAprendizaje=r.idResultadoAprendizaje
+		where r.idResultadoAprendizaje ='".$resultadoaprendizaporid[0]["idResultadoAprendizaje"]."'";
+		$criteriosEvaluacion = $this->conexionSqlServer->realizarConsulta($query2,true);
 
-				$query2 = "select idCriterioEvaluacion, descripcionCriterioEvaluacion  from resultadoaprendizaje as r 
-				inner join criterioevaluacion as c on c.ResultadoAprendizaje_idResultadoAprendizaje=r.idResultadoAprendizaje
-				where r.idResultadoAprendizaje ='".$idResultado["idResultadoAprendizaje"]."'";
-				$criteriosEvaluacion = $this->conexionSqlServer->realizarConsulta($query2,true);
+		
+		$resultado=
+		array('idResultadoAprendizaje ' => $resultadoaprendizaporid[0]["idResultadoAprendizaje"] ,
+			'codigoResultadoAprendizaje ' => $resultadoaprendizaporid[0]["codigoResultadoAprendizaje"] ,
+			'tituloResultadoAprendizaje ' => $resultadoaprendizaporid[0]["tituloResultadoAprendizaje"] ,
+			'definicionResultadoAprendizaje ' => $resultadoaprendizaporid[0]["definicionResultadoAprendizaje"] ,
+			'criteriosEvaluacion' =>$criteriosEvaluacion);	
 
-				$resultadoCriterioEvaluacion=
-				array('idCriterioEvaluacion ' => $idResultado["idCriterioEvaluacion"] ,
-					'descripcionCriterioEvaluacion '=> $idResultado["descripcionCriterioEvaluacion"] );	
-					}			
+		$resultadoJson = $this->conexion->convertirJson($resultado);
+		return $resultadoJson;	
 	}
+
 
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
