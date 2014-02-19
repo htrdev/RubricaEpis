@@ -81,7 +81,7 @@ class ResultadoAprendizaje{
 	}
 
 	public function agregarCriteriosEvaluacion($resultadoAprendizaje,$idResultadoAprendizaje){
-		$funcionoQueryAgregarCriteriosEvaluacion = false;
+		$funcionoQueryAgregarCriteriosEvaluacion = true;
 		$objCriterioEvaluacion = new CriterioEvaluacion();
 		if(!empty($resultadoAprendizaje)){
 			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarCriterioEvaluacion(
