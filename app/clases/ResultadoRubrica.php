@@ -6,10 +6,13 @@ require_once('Conexion.php');
 
 class ResultadoRubrica{
 
-	private $conexion;
+	private $conexionMysql;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','192.168.1.34','htrdev','12345');
+		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','root','123456');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
+
 	}
 
 
@@ -32,37 +35,52 @@ class ResultadoRubrica{
 		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.PERSONA_IDPERSONA 
 				  FROM RESULTADORUBRICA AS R WHERE R.MODELORUBRICA_IDMODELRUBRICA = '".$idModeloRubrica."'";
 
-		$resultados = $this->conexion->realizarConsulta($query,true);
-		//$personasEvaluadas= array();
-		//$i=0;
+		$resultados = $this->conexionMysql->realizarConsulta($query,true);
+
+		$respaldo=array();
+		$contadorResultado=0;
+		
 		foreach ($resultados as $resultado) {
-			echo $resultado["IDRESULTADORUBRICA"]."\n";
+		
 			$idPersonasEvaluadas= "SELECT a.Persona_idPersona   from asignacionpersonacalificada as a 
 								where a.ResultadoRubrica_idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
-			$resultadosidPersonasEvaluadas = $this->conexion->realizarConsulta($idPersonasEvaluadas,true);
+			$resultadosidPersonasEvaluadas = $this->conexionMysql->realizarConsulta($idPersonasEvaluadas,true);
 			
+			$personasEvaluadas=array();
+			$i=0;
+			$evaluador="";
+
 			foreach ($resultadosidPersonasEvaluadas as $id ) {
-				 echo $id["Persona_idPersona"]."\n";
+				 //select por id 
+					$consulta = "select p.ApepPer , p.ApemPer , p.NomPer  from PERSONA as p 
+								where p.CodPer ='".$id["Persona_idPersona"]."'";
+					$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
+
+					foreach ($resultados as $persona) {	
+						$personasEvaluadas[$i]=array("NomPer"=>$persona["ApepPer"]." ". $persona["ApemPer"]." , ".$persona["NomPer"]);
+				 		$i++;
+					}	
 			}
-			//echo $resultadosidPersonasEvaluadas["Persona_idPersona"]."\n";
-			//$personasEvaluadas[$i]=$idPersonasEvaluadas["PERSONA_IDPERSONA"];
-			//$i++;
+
+			// Evaluador
+			//echo $resultado["PERSONA_IDPERSONA"]."\n";
+			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["PERSONA_IDPERSONA"]."'";
+			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
+			
+			$respaldo[$contadorResultado] = 
+				array("idResultadoRubrica "=>$resultado["IDRESULTADORUBRICA"],
+					"fechaCompletadoRubrica "=>$resultado["FECHACOMPLETADORUBRICA"],
+					"personaEvaluada  "=>$personasEvaluadas,
+					"totalRubrica "=>$resultado["TOTALRUBRICA"],
+					"estadoRubrica "=>$resultado["ESTADORUBRICA"],
+					"evaluadoPor "=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"]." , ".$evaluador[0]["NOMPER"]
+					); 
+			$contadorResultado++;
 		}
 
-		/*
-		foreach ($personasEvaluadas as $id) {
-			echo "hahahha".$id."\n";
-		}
-		*/
-
-		echo "\n\n";
-		$resultadoJson = $this->conexion->convertirJson($resultados);
+		$resultadoJson = $this->conexionMysql->convertirJson($respaldo);
 		return $resultadoJson;
-
-
 	}
-
-
 
 }
 
