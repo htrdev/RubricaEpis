@@ -17,8 +17,11 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			});
 		};
 
-		$scope.hola=function(){
-			alert("hola");
+		$scope.callBackBorrarCriterio = function(criterio){
+			var index = $scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio);
+			$scope.resultadoAprendizaje.criteriosEvaluacion.splice($scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio),1);
+			console.log($scope.resultadoAprendizaje.criteriosEvaluacion);
+			$scope.$apply();
 		}
 
 		$scope.llamarDialogBoxNuevoCriterio = function(){

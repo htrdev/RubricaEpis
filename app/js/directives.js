@@ -33,7 +33,7 @@ interfaz.cuadroConfirmacionBorrar = function(){
     restrict : 'A',
     link : function(scope,element,attrs){
       element.on('click',function(){
-        cuadroMensaje(scope.hola);
+        cuadroMensaje(scope.callBackBorrarCriterio(attrs.item));
       });
     }
   }
