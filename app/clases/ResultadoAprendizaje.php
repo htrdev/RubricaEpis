@@ -10,7 +10,7 @@ class ResultadoAprendizaje{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','root','');
 	}
 
 	public function listarCriterioAprendizaje($idResultadoAprendizaje){
