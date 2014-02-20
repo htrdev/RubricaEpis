@@ -17,6 +17,9 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			});
 		};
 
+		$scope.hola=function(){
+			alert("hola");
+		}
 
 		$scope.llamarDialogBoxNuevoCriterio = function(){
 				llamarDialogBox(function(){

@@ -13,22 +13,31 @@ interfaz.btnAgregar = function() {
 };
 
 interfaz.cuadroConfirmacionBorrar = function(){
-
-  var cuadroMensaje = bootbox.dialog("<h4 class='lighter smaller'>¿Esta seguro que desea borrar este elemento?</h4><hr>"
+  var cuadroMensaje = function(callback){
+                        bootbox.dialog("<h4 class='lighter smaller'>¿Esta seguro que desea borrar este elemento?</h4><hr>"
                         , [{
-                        "label" : "Guardar <i class='icon-ok'></i>",
+                        "label" : "Si <i class='icon-ok'></i>",
                         "class" : "btn-small btn-success",
                         "callback": function() {
                           callback();
                         }
                         }, {
-                        "label" : "Cancelar",
+                        "label" : "No",
                         "class" : "btn-small btn-danger",
                         "callback": function() {
                           //Example.show("uh oh, look out!");
                         }
                         }]);
-}
+                      };
+  return {
+    restrict : 'A',
+    link : function(scope,element,attrs){
+      element.on('click',function(){
+        cuadroMensaje(scope.hola);
+      });
+    }
+  }
+};
 
 rubricaApp.directive("cmbChosen", function(){
   var linker = function(scope,element,attrs){
@@ -52,4 +61,6 @@ rubricaApp.directive("btnAgregar", function(){
       template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'>Guardar<i class='icon-ok'></i></button></div>"
     }
 });
+
+rubricaApp.directive("cuadroConfirmacionBorrar",interfaz.cuadroConfirmacionBorrar);
 
