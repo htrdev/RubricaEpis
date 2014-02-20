@@ -28,6 +28,10 @@ class ModeloRubrica{
 
 	public function agregarModeloRubrica($agregarModeloRubrica){
 
+		$queryAgregarModeloRubrica = false;
+		$funcionoQueryAgregarCriteriosEvaluacion = false;
+
+		$this->conexion->iniciarTransaccion();
 		$queryInsertarModeloRubrica="insert into modelorubrica as m 
 		(m.Curso_idCurso, m.Semestre_idSemestre, m.fechaInicioRubrica,m.fechaFinalRubrica,
 		 m.Docente_Persona_idPersona,m.calificacionRubrica)
@@ -40,18 +44,30 @@ class ModeloRubrica{
 
 		$queryAgregarModeloRubrica= $this->conexion->realizarConsulta($query,false);
 
-		$idResultadoAprendizaje = $this->listarUltimoPrimaryKey('idModeloRubrica','criterioevaluacion');
+		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','criterioevaluacion');
 
+		$funcionoQueryAgregarCriteriosEvaluacion=
+		$this->agregarCriteriosEvaluacion($agregarModeloRubrica["criteriosEvaluacion"],$idModeloRubrica);
 
+		$funcionoTransaccion = 
+			$this->conexion->finalizarTransaccion(
+				array($funcionoQueryAgregarCriteriosEvaluacion
+						,$queryAgregarModeloRubrica)
+				);
 		
-		$queryAsignarCriterioEvaluacion="insert into a.ModeloRubrica_idModeloRubrica, a.CriterioEvaluacion_idCriterioEvaluacion
- 		from asignacioncriterioevaluacion as a values ('".$agregarModeloRubrica["Curso_idCurso"]."'
- 														,'".$agregarModeloRubrica["Curso_idCurso"]."')";
-
-
-
+		return $funcionoTransaccion;
 	}
+	public function agregarCriteriosEvaluacion($agregarModeloRubrica,$idModeloRubrica){
 
+		$funcionoQueryAgregarCriteriosEvaluacion = true;
+		$objCriterioEvaluacion = new AsignacionCriterioEvaluacion();
+		if(!empty($agregarModeloRubrica)){
+			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarAsignacionCriterioEvaluacion(
+				$agregarModeloRubrica
+				,$idModeloRubrica);
+		}
+		return $funcionoQueryAgregarCriteriosEvaluacion;
+	}
 	
 
 }
