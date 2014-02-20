@@ -1,75 +1,55 @@
 'use strict';
-rubricaApp.directive("chosenCiclos", function(){
-  var linker = function(scope,element,attr){
-     scope.$watch('ciclos',function(){
-        element.trigger('liszt:updated');
-      })
-     element.chosen({width:'80%'});
-  };
 
+var interfaz = {};
+
+interfaz.btnAgregar = function() {
+    return {
+      restrict : "E",
+      scope : {
+        action : "&"
+      },
+      template : "<button class='btn btn-success btn-next' ng-click='action()'>Guardar<i class='icon-ok'></i></button"
+    };
+};
+
+interfaz.cuadroConfirmacionBorrar = function(){
+
+  var cuadroMensaje = bootbox.dialog("<h4 class='lighter smaller'>¿Esta seguro que desea borrar este elemento?</h4><hr>"
+                        , [{
+                        "label" : "Guardar <i class='icon-ok'></i>",
+                        "class" : "btn-small btn-success",
+                        "callback": function() {
+                          callback();
+                        }
+                        }, {
+                        "label" : "Cancelar",
+                        "class" : "btn-small btn-danger",
+                        "callback": function() {
+                          //Example.show("uh oh, look out!");
+                        }
+                        }]);
+}
+
+rubricaApp.directive("cmbChosen", function(){
+  var linker = function(scope,element,attrs){
+     scope.$watch(attrs.elementos,function(){
+        element.trigger('liszt:updated');
+      });
+     element.chosen({width:'90%'});
+  };
   return {
     restrict : 'A',
     link : linker
   }
 });
 
-rubricaApp.directive("chosenCursos", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('cursos',function(){
-        element.trigger('liszt:updated');
-      })
-      element.chosen({width:'80%'});
-  };
-
+rubricaApp.directive("btnAgregar", function(){
   return {
-    restrict : 'A',
-    link : linker
-  }
+      restrict : "E",
+      scope : {
+        action : "&"
+      },
+      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'>Guardar<i class='icon-ok'></i></button></div>"
+    }
 });
 
-rubricaApp.directive("chosenDocentes", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('docentes',function(){
-        element.trigger('liszt:updated');
-        
-      })
-      element.chosen({width:'80%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("chosenResultados", function(){
-  var linker = function(scope,element,attr){
-      scope.$watch('resultadosAprendizaje',function(){
-        element.trigger('liszt:updated');
-      })
-      element.chosen({width:'100%'});
-  };
-
-  return {
-    restrict : 'A',
-    link : linker
-  }
-});
-
-rubricaApp.directive("tabla", function(){
-  return function(scope,element,attr){
-    
-
-    scope.$watch(scope.rubricasCreadas,function(value){
-          dataTable.fnClearTable();
-          dataTable.fnAddData(scope.rubricasCreadas[0]);
-          console.log(scope.rubricasCreadas[0]);
-      })
-    var dataTable = element.dataTable( {
-        "aoColumns": [
-            "Semestre", "Curso","Califica", "FechaInicio", "FechaFinal"
-        ]
-         } );
-  }
-
-});

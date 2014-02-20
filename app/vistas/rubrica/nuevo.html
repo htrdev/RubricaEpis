@@ -11,7 +11,10 @@
 			<div class="row-fluid">
 				<div class="span6">
 					<label for="form-field-select-3"><h4>Curso</h4></label>
-					<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
+					<!--<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
+						<option value=""> -- Escoje Curso -- </option>
+					</select>-->
+					<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" cmb-chosen elementos="cursos" ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
 						<option value=""> -- Escoje Curso -- </option>
 					</select>
 				</div>
@@ -84,7 +87,7 @@
 			<div class="span4">
 				<div id="mantenerCriteriosTop" style="max-width:373px">
 					<label for="form-field-select-3"><h4>Resultado de Aprendizaje</h4></label>
-					<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." chosen-resultados ng-options="resultadoAprendizaje.codigoResultadoAprendizaje+ '- '+resultadoAprendizaje.tituloResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
+					<select class="chzn-select" id="cboResultados" data-placeholder="Seleccione el Curso.." cmb-chosen elementos="resultadosAprendizaje" ng-options="resultadoAprendizaje.codigoResultadoAprendizaje+ '- '+resultadoAprendizaje.tituloResultadoAprendizaje for resultadoAprendizaje in resultadosAprendizaje" ng-model="resultadoAprendizajeSeleccionado">
 						<option value=""> -- Seleccione Resultado de Aprendizaje -- </option>
 					</select>
 					<hr>

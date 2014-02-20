@@ -26,7 +26,6 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			Semestre.listarSemestreActivo()
 				.success(function(semestre){
 					$scope.semestre = semestre;
-					debugger;
 				});
 		};
 
@@ -34,7 +33,6 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			ResultadoAprendizaje.listarResultadoAprendizaje()
 				.success(function(resultadosAprendizaje){
 					$scope.resultadosAprendizaje = resultadosAprendizaje;
-					debugger;
 				});
 		};
 
