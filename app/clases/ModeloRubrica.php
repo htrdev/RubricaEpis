@@ -26,7 +26,7 @@ class ModeloRubrica{
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
-	public function agregarModeloRubrica($agregarModeloRubrica){
+		public function agregarModeloRubrica($agregarModeloRubrica){
 
 		$queryAgregarModeloRubrica = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
@@ -142,7 +142,9 @@ public function listarRubricasPorPersona(){
 
 
  
-
+$objeto = new ModeloRubrica();
+echo  $objeto->listarRubricasPorPersona();
+ 
 
 
 

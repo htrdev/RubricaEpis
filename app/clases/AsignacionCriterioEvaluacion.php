@@ -12,6 +12,7 @@ class AsignacionCriterioEvaluacion{
 		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','root','');
 	}
 
+	
 		public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion){
 
 		$query = "INSERT into asignacionCriterioEvaluacion (ModeloRubrica_idModeloRubrica, CriterioEvaluacion_idCriterioEvaluacion)
