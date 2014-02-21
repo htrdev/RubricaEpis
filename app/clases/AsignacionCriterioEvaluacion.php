@@ -11,10 +11,8 @@ class AsignacionCriterioEvaluacion{
 	public function __construct(){
 		$this->conexion = ConexionFactory::obtenerConexion('mysql','127.0.0.1','root','');
 	}
-
 	
-		public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
-
+	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
 		$query = "INSERT into asignacionCriterioEvaluacion (ModeloRubrica_idModeloRubrica, CriterioEvaluacion_idCriterioEvaluacion)
 		values";
 		$numeroElementos = count($CriterioEvaluacion);
@@ -30,13 +28,5 @@ class AsignacionCriterioEvaluacion{
 		}
 		$funciono = $this->conexion->realizarConsulta($query,false);
 		return $funciono;		
-
-
 	}
 }
-		/*agregar*/
-		/*$CriterioEvaluacion = array(
-		"ModeloRubrica_idModeloRubrica"=>"1",
-		"CriterioEvaluacion_idCriterioEvaluacion"=>"11");	
-		$objetoModeloRubrica = new AsignacionCriterioEvaluacion();
-		echo $objetoModeloRubrica->agregarAsignacionCriterioEvaluacion($CriterioEvaluacion);*/

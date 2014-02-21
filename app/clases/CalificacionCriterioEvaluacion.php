@@ -14,7 +14,6 @@ class CalificacionCriterioEvaluacion{
 	}
 
 	public function agregarCalificacionCriterioEvaluacion($CriterioEvaluacion){
-
 		$query = "INSERT into calificacionCriterioEvaluacion (Rubrica_idResultadoRubrica, calificacionResultadoRubrica, AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion) 
 		values ('".$CriterioEvaluacion["Rubrica_idResultadoRubrica"]."', '".$CriterioEvaluacion["calificacionResultadoRubrica"]."', '".$CriterioEvaluacion["AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion"]."')";
 		$resultado = $this->conexion->realizarConsulta($query,false);
