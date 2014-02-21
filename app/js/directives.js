@@ -12,7 +12,7 @@ interfaz.btnAgregar = function() {
     };
 };
 
-interfaz.cuadroConfirmacionBorrar = function(){
+interfaz.linkBorrarItem = function(){
   var cuadroMensaje = function(callback){
                         bootbox.dialog("<h4 class='lighter smaller'>¿Esta seguro que desea borrar este elemento?</h4><hr>"
                         , [{
@@ -30,12 +30,11 @@ interfaz.cuadroConfirmacionBorrar = function(){
                         }]);
                       };
   return {
-    restrict : 'A',
-    link : function(scope,element,attrs){
-      element.on('click',function(){
-        cuadroMensaje(scope.callBackBorrarCriterio(attrs.item));
-      });
-    }
+    restrict : 'E',
+    scope : {
+      action : "&"
+    },
+    template : "<a class='blue' cuadro-confirmacion-borrar><i class='icon-zoom-in bigger-130' ng-click='action'></i></a>"
   }
 };
 
@@ -62,5 +61,5 @@ rubricaApp.directive("btnAgregar", function(){
     }
 });
 
-rubricaApp.directive("cuadroConfirmacionBorrar",interfaz.cuadroConfirmacionBorrar);
+rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
 

@@ -3,6 +3,7 @@
 rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 	function nuevoResultadoAprendizajeCtrl($scope,ResultadoAprendizaje)
 	{
+		
 		$scope.resultadoAprendizaje = {
 			codigoResultadoAprendizaje : "",
 			tituloResultadoAprendizaje : "",
@@ -21,8 +22,7 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			var index = $scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio);
 			$scope.resultadoAprendizaje.criteriosEvaluacion.splice($scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio),1);
 			console.log($scope.resultadoAprendizaje.criteriosEvaluacion);
-			$scope.$apply();
-		}
+		};
 
 		$scope.llamarDialogBoxNuevoCriterio = function(){
 				llamarDialogBox(function(){

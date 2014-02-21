@@ -25,11 +25,3 @@ class CalificacionCriterioEvaluacion{
 	}
 
 }
-		/*agregar*/
-		$CriterioEvaluacion = array(
-		"Rubrica_idResultadoRubrica"=>"1",
-		"calificacionResultadoRubrica"=>"30",
-		"AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion"=>"4"
-		);	
-		$objetoModeloRubrica = new CalificacionCriterioEvaluacion();
-		echo $objetoModeloRubrica->agregarCalificacionCriterioEvaluacion($CriterioEvaluacion);

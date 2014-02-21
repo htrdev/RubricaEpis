@@ -39,9 +39,7 @@
 					<td>{{criterio.descripcionCriterioEvaluacion}}</td>
 					<td class="td-actions">
 						<div class="hidden-phone visible-desktop action-buttons">
-							<a class="blue" cuadro-confirmacion-borrar item="criterio">
-								<i class="icon-zoom-in bigger-130"></i>
-							</a>
+							<link-borrar-item  ng-click="callBackBorrarCriterio(criterio)"></link-borrar-item>
 							<a class="green" href=""  ng-click="llamarDialogBoxEditarCriterio(criterio)">
 								<i class="icon-pencil bigger-130"></i>
 							</a>
