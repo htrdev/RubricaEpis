@@ -13,14 +13,14 @@ class AsignacionCriterioEvaluacion{
 	}
 
 	
-		public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion){
+		public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
 
 		$query = "INSERT into asignacionCriterioEvaluacion (ModeloRubrica_idModeloRubrica, CriterioEvaluacion_idCriterioEvaluacion)
 		values";
-		$numeroElementos = count($idModeloRubrica);
+		$numeroElementos = count($CriterioEvaluacion);
 		$i = 0;
-		foreach($idModeloRubrica as $AsignarCriterioEvaluacion){
-			$query.= "('".$idCriterioEvaluacion."','".$AsignarCriterioEvaluacion["CriterioEvaluacion_idCriterioEvaluacion"]."')";
+		foreach($CriterioEvaluacion as $AsignarCriterioEvaluacion){
+			$query.= "('".$idModeloRubrica."','".$AsignarCriterioEvaluacion["CriterioEvaluacion_idCriterioEvaluacion"]."')";
 			if(++$i == $numeroElementos){
 				$query.=";";
 			}
