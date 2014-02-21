@@ -47,7 +47,7 @@ class ModeloRubrica{
 		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
 
 		$funcionoQueryAgregarCriteriosEvaluacion=
-		$this->agregarCriteriosEvaluacion($agregarModeloRubrica["criteriosEvaluacion"],$idModeloRubrica);
+		$this->agregarCriteriosEvaluacion($agregarModeloRubrica["asignacioncriterioevaluacion"],$idModeloRubrica);
 
 		$funcionoTransaccion = 
 			$this->conexion->finalizarTransaccion(
