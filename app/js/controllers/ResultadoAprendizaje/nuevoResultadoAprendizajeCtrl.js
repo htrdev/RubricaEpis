@@ -13,7 +13,7 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 
 		$scope.agregarResultadoAprendizaje = function(){
 			ResultadoAprendizaje.agregarResultadoAprendizaje($scope.resultadoAprendizaje)
-				.success(function(){
+				.success(function(data){
 					alert("agregado");
 			});
 		};

@@ -1,19 +1,21 @@
 'use strict';
 rubricaApp.controller('misRubricasCtrl',
-	function misRubricasCtrl($scope,$location,Usuario)
+	function misRubricasCtrl($scope,$location,Usuario,ModeloRubrica)
 	{
-		$scope.rubricasCreadas = [
-		{id:1,semestre:"2013-EXT",curso:"Sistemas Operativos I",califica:"Alumnos",fechaInicio:"12-12-12",fechaFinal:"15-12-12"},
-		{id:2,semestre:"2013-EXT",curso:"Programacion III",califica:"Alumnos",fechaInicio:"12-12-12",fechaFinal:"17-12-12"},
-		];
+		
+		$scope.misRubricas = [];
+		$scope.rubricasAsignadas = [];
 
-		$scope.rubricasAsignadas = [
-		{id:3,semestre:"2013-EXT",curso:"Diseño y Arquitectura de Software",califica:"Alumnos",autor:"MARTINEZ PEÑALOZA, MINELLY YSABEL",fechaFinal:"15-12-12"},
-		{id:1,semestre:"2013-EXT",curso:"Sistemas Operativos I",califica:"Alumnos",autor:"LANCHIPA VALENCIA, ENRIQUE FELIX",fechaFinal:"15-12-12"},
-		{id:5,semestre:"2013-EXT",curso:"Diseño de Base de Datos",califica:"Alumnos",autor:"CHAIÑA CONDORI, HENRY WILSON",fechaFinal:"15-12-12"},
-		{id:4,semestre:"2013-EXT",curso:"Programacion Lineal",califica:"Alumnos",autor:"SISA YATACO, HAYDEE RAQUEL",fechaFinal:"15-12-12"},
-		{id:2,semestre:"2013-EXT",curso:"Programacion III",califica:"Alumnos",autor:"LANCHIPA VALENCIA, ENRIQUE FELIX",fechaFinal:"15-12-12"},
-		];
+		var listarMisRubricas = function(){
+			ModeloRubrica.listarRubricasPorPersona()
+				.success(function(data){
+					$scope.misRubricas = data.misRubricas;
+					$scope.rubricasAsignadas = data.rubricasAsignadas;
+				});
+
+		};
+
+		listarMisRubricas();
 
 		$scope.EstaRubricasCreadas = true;
 

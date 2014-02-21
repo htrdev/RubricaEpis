@@ -14,7 +14,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
         templateUrl: urlServidor+'vistas/rubrica/index.html',
         controller: 'misRubricasCtrl',
       }).
-      when('/MisRubricas/:idRubrica/ListarEstadoRubrica',{
+      when('/rubricas/:idRubrica/ver',{
         templateUrl: urlServidor+'vistas/rubrica/ListarEstadoRubrica.html',
         controller: 'listarEstadoRubricaCtrl',
       }).

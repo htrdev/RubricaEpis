@@ -2,7 +2,7 @@
 
 header('Content-type: application/json');
 require_once('Conexion.php');
-
+require_once('AsignacionCriterioEvaluacion.php');
 class ModeloRubrica{
 
 	private $conexionMysql;
@@ -20,9 +20,9 @@ class ModeloRubrica{
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
 		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
-		$resultadoQuery = $this->conexion->realizarConsulta($query1,true);
+		$resultadoQuery = $this->conexionMysql->realizarConsulta($query1,true);
 		$query2.="select LAST_INSERT_ID()";
-		$resultadoQuery2 = $this->conexion->realizarConsulta($query2,true);
+		$resultadoQuery2 = $this->conexionMysql->realizarConsulta($query2,true);
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
@@ -31,27 +31,27 @@ class ModeloRubrica{
 		$queryAgregarModeloRubrica = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
 
-		$this->conexion->iniciarTransaccion();
+		$this->conexionMysql->iniciarTransaccion();
 		
-		$queryInsertarModeloRubrica="insert into modelorubrica as m 
-		(m.Curso_idCurso, m.Semestre_idSemestre, m.fechaInicioRubrica,m.fechaFinalRubrica,
-		 m.Docente_Persona_idPersona,m.calificacionRubrica)
+		$queryInsertarModeloRubrica="insert into modelorubrica
+		(Curso_idCurso, Semestre_idSemestre, fechaInicioRubrica,fechaFinalRubrica,
+		 Docente_Persona_idPersona,calificacionRubrica)
 		values ('".$agregarModeloRubrica["Curso_idCurso"]."'
 				,'".$agregarModeloRubrica["Semestre_idSemestre"]."'
 				,'".$agregarModeloRubrica["fechaInicioRubrica"]."'
 				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
 				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
 				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
-
-		$queryAgregarModeloRubrica= $this->conexion->realizarConsulta($query,false);
+	
+		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
 
 		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
 
 		$funcionoQueryAgregarCriteriosEvaluacion=
-		$this->agregarCriteriosEvaluacion($agregarModeloRubrica["asignacioncriterioevaluacion"],$idModeloRubrica);
+		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
 
 		$funcionoTransaccion = 
-			$this->conexion->finalizarTransaccion(
+			$this->conexionMysql->finalizarTransaccion(
 				array($funcionoQueryAgregarCriteriosEvaluacion
 						,$queryAgregarModeloRubrica)
 				);
@@ -76,11 +76,8 @@ public function listarRubricasPorPersona(){
 		//MIS RUBRICAS
 
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");
-		echo "Variable Sesion : ".$CodPer;
-		session_start();
-		echo var_dump($_SESSION);
-		$query = "SELECT  M.Semestre_idSemestre ,M.Curso_idCurso ,M.calificacionRubrica ,M.fechaInicioRubrica ,M.fechaFinalRubrica  FROM modelorubrica AS M 
-				  WHERE M.Docente_Persona_idPersona = '".$CodPer."'";
+		$query = "SELECT  Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,fechaInicioRubrica ,fechaFinalRubrica  FROM modelorubrica AS M 
+				  WHERE Docente_Persona_idPersona = '".$CodPer."'";
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 
 		$misRubricas=array();
@@ -93,18 +90,18 @@ public function listarRubricasPorPersona(){
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
 			$misRubricas[$contadorResultado] = 
-				array("semestre "=>$semestre[0]["Semestre"],
-					"curso "=>$curso[0]["DesCurso"],
-					"calificaA  "=>$resultado["calificacionRubrica"],
-					"fechaInicio "=>$resultado["fechaInicioRubrica"],
-					"fechaFinal  "=>$resultado["fechaFinalRubrica"]
+				array("semestre"=>$semestre[0]["Semestre"],
+					"curso"=>$curso[0]["DesCurso"],
+					"calificaA"=>$resultado["calificacionRubrica"],
+					"fechaInicio"=>$resultado["fechaInicioRubrica"],
+					"fechaFinal"=>$resultado["fechaFinalRubrica"]
 					); 
 			$contadorResultado++;
 		}
 
 		//MIS RUBRICAS ASIGNADAS
-		$query = "SELECT  M.idModeloRubrica , M.Semestre_idSemestre ,M.Curso_idCurso ,M.calificacionRubrica ,M.Docente_Persona_idPersona ,M.fechaFinalRubrica  FROM resultadorubrica AS R 
-				  INNER JOIN modelorubrica AS M ON M.idModeloRubrica = R.ModeloRubrica_idModelRubrica 
+		$query = "SELECT  idModeloRubrica , Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,Docente_Persona_idPersona ,fechaFinalRubrica  FROM resultadorubrica AS R 
+				  INNER JOIN modelorubrica AS M ON idModeloRubrica = R.ModeloRubrica_idModelRubrica 
 				  WHERE R.Persona_idPersona = '".$CodPer."'";
 
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
@@ -122,29 +119,22 @@ public function listarRubricasPorPersona(){
 			$docente = $this->conexionSqlServer->realizarConsulta($queryDocente,true);
 
 			$misRubricasAsignadas[$contadorResultado] = 
-				array("idModeloRubrica "=>$resultado["idModeloRubrica"],
-					"semestre "=>$semestre[0]["Semestre"],
-					"curso "=>$curso[0]["DesCurso"],
-					"calificaA  "=>$resultado["calificacionRubrica"],
-					"autor "=>$docente[0]["ApepPer"]." ". $docente[0]["ApemPer"].", ".$docente[0]["NomPer"],
-					"fechaFinal  "=>$resultado["fechaFinalRubrica"]
+				array("idModeloRubrica"=>$resultado["idModeloRubrica"],
+					"semestre"=>$semestre[0]["Semestre"],
+					"curso"=>$curso[0]["DesCurso"],
+					"calificaA"=>$resultado["calificacionRubrica"],
+					"autor"=>$docente[0]["ApepPer"]." ". $docente[0]["ApemPer"].", ".$docente[0]["NomPer"],
+					"fechaFinal"=>$resultado["fechaFinalRubrica"]
 					); 
 			$contadorResultado++;
 		}
 
 		$misRubricas_rubricasAsignadas=array();
-		$misRubricas_rubricasAsignadas=array("misRubricas "=>$misRubricas,"rubricasAsignadas "=>$misRubricasAsignadas);
+		$misRubricas_rubricasAsignadas=array("misRubricas"=>$misRubricas,"rubricasAsignadas"=>$misRubricasAsignadas);
 		$resultadoJson = $this->conexionMysql->convertirJson($misRubricas_rubricasAsignadas);
 		return $resultadoJson;
 	}
 
 
 }
-
-$objetoModeloRubrica = new ModeloRubrica();
-echo $objetoModeloRubrica->agregarModeloRubrica($agregarModeloRubrica);
- 
-
-
-
 

@@ -26,10 +26,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="rubricaCreada in rubricasCreadas | filter: txtBusqueda">
+						<tr ng-repeat="rubricaCreada in misRubricas | filter: txtBusqueda">
 							<td>{{rubricaCreada.semestre}}</td>
 							<td>{{rubricaCreada.curso}}</td>
-							<td>{{rubricaCreada.califica}}</td>
+							<td>{{rubricaCreada.calificaA}}</td>
 							<td>{{rubricaCreada.fechaInicio}}</td>
 							<td>{{rubricaCreada.fechaFinal}}</td>
 							
@@ -99,7 +99,7 @@
 						<tr ng-repeat="rubricaAsignada in rubricasAsignadas | filter: txtBusqueda">
 							<td>{{rubricaAsignada.semestre}}</td>
 							<td>{{rubricaAsignada.curso}}</td>
-							<td>{{rubricaAsignada.califica}}</td>
+							<td>{{rubricaAsignada.calificaA}}</td>
 							<td>{{rubricaAsignada.autor}}</td>
 							<td>{{rubricaAsignada.fechaFinal}}</td>
 							

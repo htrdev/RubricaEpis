@@ -11,5 +11,4 @@ $CriterioEvaluacion = new CriterioEvaluacion();
 
 switch($metodo){
 	case 'agregarCriterioEvaluacion' : echo $CriterioEvaluacion->agregarCriterioEvaluacion();break;
-	
 }

@@ -20,8 +20,6 @@ class CalificacionCriterioEvaluacion{
 		$resultado = $this->conexion->realizarConsulta($query,false);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
-
-
 	}
 
 }
