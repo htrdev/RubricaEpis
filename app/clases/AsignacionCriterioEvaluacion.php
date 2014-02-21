@@ -9,7 +9,7 @@ class AsignacionCriterioEvaluacion{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','root','');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','127.0.0.1','root','');
 	}
 
 	
