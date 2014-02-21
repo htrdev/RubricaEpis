@@ -128,7 +128,7 @@ class ResultadoAprendizaje{
 		return $resultadoJson;	
 	}
 
-	public function listarResultadoAprendizaje(){
+	/*public function listarResultadoAprendizaje(){
 		
 		$queryListarResultadoAprendisajeCreadosPorDocentes = "SELECT R.ResultadoAprendizaje_idResultadoAprendizaje  FROM resultadoaprendizajedocente AS R";
 		$resultadosListarResultadoAprendisajeCreadosPorDocentes = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorDocentes,true);		
@@ -255,6 +255,12 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
-	}
+	}*/
 
 }
+
+$objetoModeloRubrica = new ResultadoAprendizaje();
+echo $objetoModeloRubrica->agregarResultadoAprendizaje($resultadoAprendizaje);
+ 
+
+

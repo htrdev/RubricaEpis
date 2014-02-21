@@ -13,10 +13,10 @@ class ModeloRubrica{
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
 
-	public function listarRubricasPorPersona(){
+	/*public function listarRubricasPorPersona(){
 		//echo $this->conexion->obtenerVariableSesion("CodPer");
 		echo $this->conexionMysql->obtenerVariableSesion("CodPer");
-	}
+	} */
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
 		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
@@ -32,6 +32,7 @@ class ModeloRubrica{
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
 
 		$this->conexion->iniciarTransaccion();
+		
 		$queryInsertarModeloRubrica="insert into modelorubrica as m 
 		(m.Curso_idCurso, m.Semestre_idSemestre, m.fechaInicioRubrica,m.fechaFinalRubrica,
 		 m.Docente_Persona_idPersona,m.calificacionRubrica)
@@ -140,7 +141,8 @@ public function listarRubricasPorPersona(){
 
 }
 
-
+$objetoModeloRubrica = new ModeloRubrica();
+echo $objetoModeloRubrica->agregarModeloRubrica($agregarModeloRubrica);
  
 
 
