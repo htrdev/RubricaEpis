@@ -9,7 +9,7 @@ class ModeloRubrica{
 	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','192.168.1.35','htrdev','12345');
+		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','127.0.0.1','root','');
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
 
@@ -142,10 +142,6 @@ public function listarRubricasPorPersona(){
 
 
  
-$objeto = new ModeloRubrica();
-echo  $objeto->listarRubricasPorPersona();
- 
-
 
 
 
