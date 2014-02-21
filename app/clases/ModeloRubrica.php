@@ -71,8 +71,6 @@ class ModeloRubrica{
 	}
 
 public function listarRubricasPorPersona(){
-
-		//$CodPer=1 deberá ser cambiado por : $this->conexion->obtenerVariableSesion("CodPer");
 		//MIS RUBRICAS
 
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");

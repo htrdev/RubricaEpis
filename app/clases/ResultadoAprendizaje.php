@@ -128,7 +128,7 @@ class ResultadoAprendizaje{
 		return $resultadoJson;	
 	}
 
-	/*public function listarResultadoAprendizaje(){
+	public function listarResultadoAprendizaje(){
 		
 		$queryListarResultadoAprendisajeCreadosPorDocentes = "SELECT R.ResultadoAprendizaje_idResultadoAprendizaje  FROM resultadoaprendizajedocente AS R";
 		$resultadosListarResultadoAprendisajeCreadosPorDocentes = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorDocentes,true);		
@@ -162,19 +162,19 @@ class ResultadoAprendizaje{
 				foreach ($resultadosCriterio as $criterio) {
 
 					$criteriosEvaluacion[$i] = 
-					array("idCriterioEvaluacion "=>$criterio["idCriterioEvaluacion"],
-						"descripcionCriterioEvaluacion "=>$criterio["descripcionCriterioEvaluacion"]
+					array("idCriterioEvaluacion"=>$criterio["idCriterioEvaluacion"],
+						"descripcionCriterioEvaluacion"=>$criterio["descripcionCriterioEvaluacion"]
 						); 
 
 					$i++;
 				}
 
 				$resultadosAprendizaje[$contador] = 
-					array("idResultadoAprendizaje "=>$resultadosResultadoAprendisaje[0]["idResultadoAprendizaje"],
-						"codigoResultadoAprendizaje "=>$resultadosResultadoAprendisaje[0]["codigoResultadoAprendizaje"],
-						"tituloResultadoAprendizaje  "=>$resultadosResultadoAprendisaje[0]["tituloResultadoAprendizaje"],
-						"definicionResultadoAprendizaje  "=>$resultadosResultadoAprendisaje[0]["definicionResultadoAprendizaje"],
-						"criteriosEvaluacion "=>$criteriosEvaluacion
+					array("idResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["idResultadoAprendizaje"],
+						"codigoResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["codigoResultadoAprendizaje"],
+						"tituloResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["tituloResultadoAprendizaje"],
+						"definicionResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["definicionResultadoAprendizaje"],
+						"criteriosEvaluacion"=>$criteriosEvaluacion
 						); 
 				$contador++;
 			}	
@@ -206,19 +206,19 @@ class ResultadoAprendizaje{
 			foreach ($resultadosCriterio as $criterio) {
 
 				$criteriosEvaluacion[$i] = 
-				array("idCriterioEvaluacion "=>$criterio["idCriterioEvaluacion"],
-					"descripcionCriterioEvaluacion "=>$criterio["descripcionCriterioEvaluacion"]
+				array("idCriterioEvaluacion"=>$criterio["idCriterioEvaluacion"],
+					"descripcionCriterioEvaluacion"=>$criterio["descripcionCriterioEvaluacion"]
 					); 
 
 				$i++;
 			}
 
 			$resultadosAprendisajeDocentes[$contador] = 
-				array("idResultadoAprendizaje "=>$resultadosResultadoAprendisaje[0]["idResultadoAprendizaje"],
-					"codigoResultadoAprendizaje "=>$resultadosResultadoAprendisaje[0]["codigoResultadoAprendizaje"],
-					"tituloResultadoAprendizaje  "=>$resultadosResultadoAprendisaje[0]["tituloResultadoAprendizaje"],
-					"definicionResultadoAprendizaje  "=>$resultadosResultadoAprendisaje[0]["definicionResultadoAprendizaje"],
-					"criteriosEvaluacion "=>$criteriosEvaluacion
+				array("idResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["idResultadoAprendizaje"],
+					"codigoResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["codigoResultadoAprendizaje"],
+					"tituloResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["tituloResultadoAprendizaje"],
+					"definicionResultadoAprendizaje"=>$resultadosResultadoAprendisaje[0]["definicionResultadoAprendizaje"],
+					"criteriosEvaluacion"=>$criteriosEvaluacion
 					); 
 
 			$contador++;
@@ -255,12 +255,10 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 		$resultado = $this->conexion->realizarConsulta($query,true);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
-	}*/
+	}
 
 }
 
-$objetoModeloRubrica = new ResultadoAprendizaje();
-echo $objetoModeloRubrica->agregarResultadoAprendizaje($resultadoAprendizaje);
  
 
 

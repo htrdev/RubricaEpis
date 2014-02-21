@@ -30,58 +30,7 @@ class ResultadoRubrica{
 
 	}
 
-	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
-
-		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.PERSONA_IDPERSONA 
-				  FROM RESULTADORUBRICA AS R WHERE R.MODELORUBRICA_IDMODELRUBRICA = '".$idModeloRubrica."'";
-
-		$resultados = $this->conexionMysql->realizarConsulta($query,true);
-
-		$respaldo=array();
-		$contadorResultado=0;
-		
-		foreach ($resultados as $resultado) {
-		
-			$idPersonasEvaluadas= "SELECT a.Persona_idPersona   from asignacionpersonacalificada as a 
-								where a.ResultadoRubrica_idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
-			$resultadosidPersonasEvaluadas = $this->conexionMysql->realizarConsulta($idPersonasEvaluadas,true);
-			
-			$personasEvaluadas=array();
-			$i=0;
-			$evaluador="";
-
-			foreach ($resultadosidPersonasEvaluadas as $id ) {
-				 //select por id 
-					$consulta = "select p.ApepPer , p.ApemPer , p.NomPer  from PERSONA as p 
-								where p.CodPer ='".$id["Persona_idPersona"]."'";
-					$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
-
-					foreach ($resultados as $persona) {	
-						$personasEvaluadas[$i]=array("NomPer"=>$persona["ApepPer"]." ". $persona["ApemPer"]." , ".$persona["NomPer"]);
-				 		$i++;
-					}	
-			}
-
-			// Evaluador
-			//echo $resultado["PERSONA_IDPERSONA"]."\n";
-			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["PERSONA_IDPERSONA"]."'";
-			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
-			
-			$respaldo[$contadorResultado] = 
-				array("idResultadoRubrica "=>$resultado["IDRESULTADORUBRICA"],
-					"fechaCompletadoRubrica "=>$resultado["FECHACOMPLETADORUBRICA"],
-					"personaEvaluada  "=>$personasEvaluadas,
-					"totalRubrica "=>$resultado["TOTALRUBRICA"],
-					"estadoRubrica "=>$resultado["ESTADORUBRICA"],
-					"evaluadoPor "=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"]." , ".$evaluador[0]["NOMPER"]
-					); 
-			$contadorResultado++;
-		}
-
-		$resultadoJson = $this->conexionMysql->convertirJson($respaldo);
-		return $resultadoJson;
-	}
-
+	
 
 public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
 
@@ -121,12 +70,12 @@ public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
 			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
 			
 			$respaldo[$contadorResultado] = 
-				array("idResultadoRubrica "=>$resultado["IDRESULTADORUBRICA"],
-					"fechaCompletadoRubrica "=>$resultado["FECHACOMPLETADORUBRICA"],
-					"personaEvaluada  "=>$personasEvaluadas,
-					"totalRubrica "=>$resultado["TOTALRUBRICA"],
-					"estadoRubrica "=>$resultado["ESTADORUBRICA"],
-					"evaluadoPor "=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"].", ".$evaluador[0]["NOMPER"]
+				array("idResultadoRubrica"=>$resultado["IDRESULTADORUBRICA"],
+					"fechaCompletadoRubrica"=>$resultado["FECHACOMPLETADORUBRICA"],
+					"personaEvaluada"=>$personasEvaluadas,
+					"totalRubrica"=>$resultado["TOTALRUBRICA"],
+					"estadoRubrica"=>$resultado["ESTADORUBRICA"],
+					"evaluadoPor"=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"].", ".$evaluador[0]["NOMPER"]
 					); 
 			$contadorResultado++;
 		}
