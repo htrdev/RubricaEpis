@@ -1,14 +1,16 @@
 'use strict';
 
+//DIRECTIVAS REUTILIZABLES
+
 var interfaz = {};
 
-interfaz.btnAgregar = function() {
+interfaz.btnGuardar = function() {
     return {
       restrict : "E",
       scope : {
         action : "&"
       },
-      template : "<button class='btn btn-success btn-next' ng-click='action()'>Guardar<i class='icon-ok'></i></button"
+      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'> Guardar<i class='icon-ok'></i></button></div>"
     };
 };
 
@@ -38,6 +40,10 @@ interfaz.linkBorrarItem = function(){
   }
 };
 
+rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
+rubricaApp.directive("btnAgregar",interfaz.btnGuardar);
+
+
 rubricaApp.directive("cmbChosen", function(){
   var linker = function(scope,element,attrs){
      scope.$watch(attrs.elementos,function(){
@@ -50,16 +56,3 @@ rubricaApp.directive("cmbChosen", function(){
     link : linker
   }
 });
-
-rubricaApp.directive("btnAgregar", function(){
-  return {
-      restrict : "E",
-      scope : {
-        action : "&"
-      },
-      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'>Guardar<i class='icon-ok'></i></button></div>"
-    }
-});
-
-rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
-

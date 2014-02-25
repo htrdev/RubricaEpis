@@ -1,0 +1,12 @@
+.loader{
+	height:     100%;
+	width:      100%;
+
+}
+.loading {
+	background: url('images/loader.gif');
+}
+[ng-cloak]
+{
+	display: none;
+}

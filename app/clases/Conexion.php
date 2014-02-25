@@ -39,6 +39,7 @@ class ConexionSQLServer extends Conexion{
 		$this->usuario	= $usuario;
 		$this->password = $password;
 		$this->baseDeDatos = "matrixupt";
+		$this->obtenerConexion();
 	}
 
 	public static function obtenerObjeto($host,$usuario,$password){
@@ -56,7 +57,6 @@ class ConexionSQLServer extends Conexion{
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
-		$this->obtenerConexion();
 		$resultado =  mssql_query($sql,$this->conexion);
 		if($convertirArray){
 			return $this->convertirArray($resultado);
