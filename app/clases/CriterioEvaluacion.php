@@ -37,6 +37,14 @@ class CriterioEvaluacion{
 		$query = "update criterioevaluacion set
 		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
 		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
+
+		$funciono = $this->conexion->realizarConsulta($query,true);
+
+		return $funciono;
+
+/*
+
+
 		$numeroElementos = count($criterioEvaluacion);
 		$i = 0;
 		foreach($criterioEvaluacion as $criterio){
@@ -51,7 +59,7 @@ class CriterioEvaluacion{
 			}
 		}
 		$funciono = $this->conexion->realizarConsulta($query,false);
-		return $funciono;
+		return $funciono;*/
 
 	}
 
