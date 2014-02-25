@@ -31,14 +31,28 @@ class CriterioEvaluacion{
 		return $funciono;		
 	}
 
-	public function modificarCriterioEvaluacion($CriterioEvaluacion){
+	public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
 	
 
-		$query = "update criterioevaluacion set descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',ResultadoAprendizaje_idResultadoAprendizaje='".$CriterioEvaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."'
-		 where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."'";
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
+		$query = "update criterioevaluacion set
+		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
+		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
+		$numeroElementos = count($criterioEvaluacion);
+		$i = 0;
+		foreach($criterioEvaluacion as $criterio){
+			$query.= "update criterioevaluacion set
+		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
+		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
+			if(++$i == $numeroElementos){
+				$query.=";";
+			}
+			else{
+				$query.=",";
+			}
+		}
+		$funciono = $this->conexion->realizarConsulta($query,false);
+		return $funciono;
+
 	}
 
 

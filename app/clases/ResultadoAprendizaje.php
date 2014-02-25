@@ -119,14 +119,51 @@ class ResultadoAprendizaje{
 		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}
 
-	public function modificarResultadoAprendizaje($CriterioEvaluacion){
+	public function modificarResultadoAprendizaje($ResultadoAprendizaje){
 
-		$query = "update ResultadoAprendizaje set definicionResultadoAprendizaje='".$CriterioEvaluacion["definicionResultadoAprendizaje"]."', tituloResultadoAprendizaje='".$CriterioEvaluacion["tituloResultadoAprendizaje"]."', codigoResultadoAprendizaje='".$CriterioEvaluacion["codigoResultadoAprendizaje"]."'
-		 where idResultadoAprendizaje='".$CriterioEvaluacion["idResultadoAprendizaje"]."'";
-		$resultado = $this->conexion->realizarConsulta($query,false);
+		$resultadoModificarResultadoAprendizaje = false;
+		$funcionoQueryModificarCriteriosEvaluacion = false;
+
+		$this->conexion->iniciarTransaccion();
+
+
+		$query = "update ResultadoAprendizaje set
+		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
+		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
+		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
+		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
+		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false);
+
+		$funcionoQueryModificarCriteriosEvaluacion = 
+			$this->asignarCriteriosParaModificar($ResultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
+
+		$funcionoTransaccion = 
+			$this->conexion->finalizarTransaccion(
+				array($funcionoQueryModificarCriteriosEvaluacion
+						,$resultadoModificarResultadoAprendizaje)
+				);
+		
+		return $funcionoTransaccion;
+
+		
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;	
 	}
+
+	public function asignarCriteriosParaModificar($ResultadoAprendizaje, $idResultadoAprendizaje){
+		$funcionoQueryModificarCriteriosEvaluacion = true;
+		$objCriterioEvaluacion = new CriterioEvaluacion();
+		if(!empty($ResultadoAprendizaje)){
+			$funcionoQueryModificarCriteriosEvaluacion = $objCriterioEvaluacion->modificarCriterioEvaluacion(
+				$ResultadoAprendizaje
+				,$idResultadoAprendizaje);
+		}
+		return $funcionoQueryModificarCriteriosEvaluacion;
+
+
+
+	}
+
 
 	public function listarResultadoAprendizaje(){
 		
