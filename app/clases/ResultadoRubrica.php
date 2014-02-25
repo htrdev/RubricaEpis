@@ -85,6 +85,51 @@ public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
 	}
 
 
+public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica=33,$docenteCalificador=1 ){
+
+		$query = "SELECT R.idResultadoRubrica , R.fechaCompletadoRubrica , R.totalRubrica , R.estadoRubrica  FROM resultadorubrica AS R
+				  WHERE R.ModeloRubrica_idModelRubrica = '".$idModeloRubrica."'" ." AND R.idDocenteCalificador = '".$docenteCalificador."'";
+
+		$resultados = $this->conexionMysql->realizarConsulta($query,true);
+		$resultadoRubricaAsigada=array();	
+		$contadorResultado=0;
+
+		foreach ($resultados as $resultado) {
+			
+			$query = "SELECT A.idPersonaCalificada FROM  asignacionpersonacalificada AS A
+				      WHERE A.ResultadoRubrica_idResultadoRubrica = '".$resultado["idResultadoRubrica"]."'";
+			$queryResultadosAlumnosEvaluados = $this->conexionMysql->realizarConsulta($query,true);
+			$resultadosAlumnosEvaluados=array();
+			$i=0;
+			foreach ($queryResultadosAlumnosEvaluados as $alumno) {
+
+				$query = "SELECT P.ApepPer,P.ApemPer,P.NomPer FROM PERSONA AS P
+						  WHERE P.CodPer = '".$alumno["idPersonaCalificada"]."'";
+				$alumnos = $this->conexionSqlServer->realizarConsulta($query,true);
+
+				$resultadosAlumnosEvaluados[$i] = 
+				array("nombreCompleto"=>$alumnos[0]["ApepPer"]." ".$alumnos[0]["ApemPer"].", ".$alumnos[0]["NomPer"]
+					); 
+				$i++;
+			}
+
+			$resultadoRubricaAsigada[$contadorResultado] = 
+				array("idResultadoRubrica"=>$resultado["idResultadoRubrica"],
+					"alumnosCalificados"=>$resultadosAlumnosEvaluados,
+					"fechaCompletadoRubrica"=>$resultado["fechaCompletadoRubrica"],
+					"totalRubrica"=>$resultado["totalRubrica"],
+					"estadoRubrica"=>$resultado["estadoRubrica"]
+					); 
+			$contadorResultado++;
+
+		}
+		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
+		return $resultadoJson;
+
+	}
+
+
+
 }
 
 
