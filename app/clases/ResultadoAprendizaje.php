@@ -225,8 +225,7 @@ class ResultadoAprendizaje{
 
 		$queryListarResultadoAprendisajeCreadosPorDocente = "SELECT R.ResultadoAprendizaje_idResultadoAprendizaje FROM resultadoaprendizajedocente AS R
 															 WHERE R.Docente_Persona_idPersona = '".$codPer."'";
-		$resultadoListarResultadoAprendisajeCreadosPorDocente = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorDocente,true);		
-		
+		$resultadoListarResultadoAprendisajeCreadosPorDocente = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorDocente,true);			
 		$resultadosAprendizajeDocente= array();
 		$contador=0;
 		foreach ($resultadoListarResultadoAprendisajeCreadosPorDocente as $resultado) {
