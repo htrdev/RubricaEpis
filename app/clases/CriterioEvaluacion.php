@@ -31,37 +31,18 @@ class CriterioEvaluacion{
 		return $funciono;		
 	}
 
-	public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
+	/*public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
 	
-
 		$query = "update criterioevaluacion set
 		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
-		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
+		where idCriterioEvaluacion='".$criterio["idCriterioEvaluacion"]."'";
 
 		$funciono = $this->conexion->realizarConsulta($query,true);
 
 		return $funciono;
 
-/*
 
-
-		$numeroElementos = count($criterioEvaluacion);
-		$i = 0;
-		foreach($criterioEvaluacion as $criterio){
-			$query.= "update criterioevaluacion set
-		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
-		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
-		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
-		return $funciono;*/
-
-	}
+	}*/
 
 
 	public function listarCriterioEvaluacionPorResultadoAprendizaje(){
