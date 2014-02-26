@@ -5,7 +5,7 @@ header('Content-type: application/json');
 require_once('Conexion.php');
 require_once('CriterioEvaluacion.php');
 
-class ResultadoAprendizaje extends Singleton{
+class ResultadoAprendizaje{
 
 	private $conexion;
 
@@ -220,7 +220,8 @@ class ResultadoAprendizaje extends Singleton{
 							"resultadosAprendizaje"=>$resultadosAprendizajeEscuela,
 							"resultadosAprendizajeDocente"=>$resultadosAprendizajeDocente);
 
-		return $resultadosAprendizajeEscuelaresultadosAprendizajeEscuela;
+		$resultadoJson = $this->conexion->convertirJson($resultadosAprendizajeEscuelaresultadosAprendizajeEscuela);
+		return $resultadoJson;
 
 	}
 
