@@ -10,7 +10,7 @@ class ResultadoAprendizaje extends Singleton{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','root','');
 	}
 
 	public function listarCriterioAprendizaje($idResultadoAprendizaje){
@@ -121,73 +121,38 @@ class ResultadoAprendizaje extends Singleton{
 	}
 
 	public function modificarResultadoAprendizaje($ResultadoAprendizaje){
-
-
-		$resultadoModificarResultadoAprendizaje = false;
-		$funcionoQueryModificarCriteriosEvaluacion = false;
-
-		$this->conexion->iniciarTransaccion();
-
+		
 
 		$query = "update ResultadoAprendizaje set
 		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
 		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
 		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
-		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false);
 
+		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
 
+		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
+		foreach ($ResultadoAprendizaje["criteriosEvaluacion"]   as $idCriterioEvaluacion) {
 
-		$funcionoQueryModificarCriteriosEvaluacion = 
-			$this->asignarCriteriosParaModificar($ResultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
+			$queryCriterio = "update criterioevaluacion set
+		descripcionCriterioEvaluacion='".$idCriterioEvaluacion["descripcionCriterioEvaluacion"]."'
+		where idCriterioEvaluacion='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
 
-		$funcionoTransaccion = 
-			$this->conexion->finalizarTransaccion(
-				array($funcionoQueryModificarCriteriosEvaluacion
-						,$resultadoModificarResultadoAprendizaje)
-				);
-		
-		return $funcionoTransaccion;
-
-
-		$resultadoModificarResultadoAprendizaje = false;
-		$funcionoQueryModificarCriteriosEvaluacion = false;
-
-		$this->conexion->iniciarTransaccion();
-
-
-		$query = "update ResultadoAprendizaje set
-		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
-		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
-		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
-		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
-		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false);
-
-		$funcionoQueryModificarCriteriosEvaluacion = 
-			$this->asignarCriteriosParaModificar($ResultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
-
-		$funcionoTransaccion = 
-			$this->conexion->finalizarTransaccion(
-				array($funcionoQueryModificarCriteriosEvaluacion
-						,$resultadoModificarResultadoAprendizaje)
-				);
-		
-		return $funcionoTransaccion;
-
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;	
-	}
-
-
-	public function asignarCriteriosParaModificar($ResultadoAprendizaje, $idResultadoAprendizaje){
-		$funcionoQueryModificarCriteriosEvaluacion = true;
-		$objCriterioEvaluacion = new CriterioEvaluacion();
-		if(!empty($ResultadoAprendizaje)){
-			$funcionoQueryModificarCriteriosEvaluacion = $objCriterioEvaluacion->modificarCriterioEvaluacion(
-				$ResultadoAprendizaje
-				,$idResultadoAprendizaje);
+		 $this->conexion->realizarConsulta($queryCriterio,false);
 		}
-		return $funcionoQueryModificarCriteriosEvaluacion;
+		}
+		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
+		foreach ($ResultadoAprendizaje["criteriosEvaluacionBorrados"]   as $idCriterioEvaluacion) {
+
+			$queryCriterio = "delete from criterioevaluacion
+			where idCriterioEvaluacion ='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
+
+
+		 $this->conexion->realizarConsulta($queryCriterio,false);
+		}
+	}
+	
+
 	}
 
 

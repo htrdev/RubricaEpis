@@ -30,14 +30,27 @@ class CriterioEvaluacion extends Singleton{
 		return $funciono;		
 	}
 
-	public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
+	/*public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
 		$query = "update criterioevaluacion set
 		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
-		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
+		where idCriterioEvaluacion='".$criterio["idCriterioEvaluacion"]."'";
+
 		$funciono = $this->conexion->realizarConsulta($query,true);
 		return $funciono;
+
+
+	}*/
+
+
+	public function listarCriterioEvaluacionPorResultadoAprendizaje(){
+
 	}
-	
+
+
+	public function listarCriterioEvaluacionPorModeloRubrica(){
+		
+	}
+
 }
 
 
