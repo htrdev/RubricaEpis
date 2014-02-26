@@ -115,12 +115,14 @@ rubricaApp.controller('misRubricasCtrl',
 		
 		$scope.misRubricas = [];
 		$scope.rubricasAsignadas = [];
+		$scope.loader = true;
 
 		var listarMisRubricas = function(){
 			ModeloRubrica.listarRubricasPorPersona()
 				.success(function(data){
 					$scope.misRubricas = data.misRubricas;
 					$scope.rubricasAsignadas = data.rubricasAsignadas;
+					$scope.loader = false;
 				});
 
 		};

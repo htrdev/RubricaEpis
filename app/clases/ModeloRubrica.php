@@ -9,14 +9,9 @@ class ModeloRubrica{
 	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','127.0.0.1','root','');
+		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
-
-	/*public function listarRubricasPorPersona(){
-		//echo $this->conexion->obtenerVariableSesion("CodPer");
-		echo $this->conexionMysql->obtenerVariableSesion("CodPer");
-	} */
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
 		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
@@ -98,9 +93,9 @@ public function listarRubricasPorPersona(){
 		}
 
 		//MIS RUBRICAS ASIGNADAS
-		$query = "SELECT  idModeloRubrica , Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,Docente_Persona_idPersona ,fechaFinalRubrica  FROM resultadorubrica AS R 
+		$query = "SELECT  idModeloRubrica , Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,idDocenteCalificador ,fechaFinalRubrica  FROM resultadorubrica AS R 
 				  INNER JOIN modelorubrica AS M ON idModeloRubrica = R.ModeloRubrica_idModelRubrica 
-				  WHERE R.Persona_idPersona = '".$CodPer."'";
+				  WHERE R.idDocenteCalificador = '".$CodPer."'";
 
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 		$misRubricasAsignadas=array();
@@ -113,7 +108,7 @@ public function listarRubricasPorPersona(){
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
 			//docente
-			$queryDocente = "select p.ApepPer, p.ApemPer ,p.NomPer  from PERSONA as p where p.CodPer =  '".$resultado["Docente_Persona_idPersona"]."'";
+			$queryDocente = "select p.ApepPer, p.ApemPer ,p.NomPer  from PERSONA as p where p.CodPer =  '".$resultado["idDocenteCalificador"]."'";
 			$docente = $this->conexionSqlServer->realizarConsulta($queryDocente,true);
 
 			$misRubricasAsignadas[$contadorResultado] = 

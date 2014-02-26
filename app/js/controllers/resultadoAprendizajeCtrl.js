@@ -3,10 +3,6 @@
 rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 	function nuevoResultadoAprendizajeCtrl($scope,ResultadoAprendizaje)
 	{
-
-		//TO DO
-
-
 		$scope.resultadoAprendizaje = {
 			codigoResultadoAprendizaje : "",
 			tituloResultadoAprendizaje : "",
@@ -154,6 +150,13 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 					//Example.show("uh oh, look out!");
 				}
 				}]);
+		};
+
+		$scope.Interfaz = {
+			mensajeGuardar : {
+				titulo : "Guardando ...",
+				contenido : "La informacion se esta guardando!"
+			}
 		};
 
 	});

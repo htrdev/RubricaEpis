@@ -10,7 +10,7 @@ interfaz.btnGuardar = function() {
       scope : {
         action : "&"
       },
-      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'> Guardar<i class='icon-ok'></i></button></div>"
+      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'>Guardar <i class='icon-ok'></i></button></div>",
     };
 };
 
@@ -40,8 +40,31 @@ interfaz.linkBorrarItem = function(){
   }
 };
 
+interfaz.pantallaLoading = function(){
+    return {
+      restrict : "E",
+      scope : {
+        loader : '='
+      },
+      template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4>Cargando Informacion ...<br><br><img src='assets/css/images/loader.gif' style='width:6em;height:1em'></h4></div>"
+    }
+}
+
+interfaz.gridVacio = function(){
+  return {
+    restrict : "E",
+    transclude : true,
+    scope : {
+      array : "="
+    },
+    template : "<div ng-if='!array.length' style='text-align:center;width:100%;font-style:italic' ng-transclude></div>"
+  }
+}
+
 rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
 rubricaApp.directive("btnAgregar",interfaz.btnGuardar);
+rubricaApp.directive("pantallaLoading",interfaz.pantallaLoading);
+rubricaApp.directive("gridVacio",interfaz.gridVacio);
 
 
 rubricaApp.directive("cmbChosen", function(){
