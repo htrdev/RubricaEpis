@@ -43,7 +43,7 @@ class ResultadoRubrica extends Singleton{
 			$evaluador="";
 
 			foreach ($resultadosidPersonasEvaluadas as $id ) {
-				 //select por id 
+				
 					$consulta = "select p.ApepPer , p.ApemPer , p.NomPer  from PERSONA as p 
 								where p.CodPer ='".$id["Persona_idPersona"]."'";
 					$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
@@ -54,8 +54,6 @@ class ResultadoRubrica extends Singleton{
 					}	
 			}
 
-			// Evaluador
-			//echo $resultado["PERSONA_IDPERSONA"]."\n";
 			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["PERSONA_IDPERSONA"]."'";
 			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
 			

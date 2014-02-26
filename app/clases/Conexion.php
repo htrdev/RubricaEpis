@@ -84,11 +84,11 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function obtenerConexion(){
-	//	if(!is_null($this->conexion)){
+
         $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
-        //}
+
         mysql_select_db($this->baseDeDatos,$this->conexion);
-       // return $this->conexion;
+   
 	}
 
 	public function realizarConsulta($sql,$convertirArray){

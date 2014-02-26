@@ -19,25 +19,6 @@ class ResultadoAprendizaje extends Singleton{
 		return $this->conexion->realizarConsulta($query,true);
 	}
 
-/*
-	public function listarResultadoAprendizaje(){
-		$query = "SELECT  r.idResultadoAprendizaje, r.codigoResultadoAprendizaje , r.tituloResultadoAprendizaje  FROM resultadoaprendizaje as r";
-		$resultadosAprendizaje = $this->conexion->realizarConsulta($query,true);
-		$resultado = array();
-		$contadorResultado = 0;
-		foreach($resultadosAprendizaje as $resultadoAprendizaje){
-			$idResultadoAprendizaje = $resultadoAprendizaje["idResultadoAprendizaje"];
-			$criteriosAprendizaje = $this->listarCriterioAprendizaje($idResultadoAprendizaje);
-			$resultado[$contadorResultado] = 
-				array("tituloResultadoAprendizaje"=>$resultadoAprendizaje["tituloResultadoAprendizaje"],
-					"codigoResultadoAprendizaje"=>$resultadoAprendizaje["codigoResultadoAprendizaje"],
-					"criteriosEvaluacion"=>$criteriosAprendizaje); 
-			$contadorResultado++;
-		}
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
-	}
-*/
 	public function listarResultadoAprendizajePorID($listarResultadoAprendizaje){
 
 		
@@ -168,7 +149,7 @@ class ResultadoAprendizaje extends Singleton{
 		$contador=0;
 		foreach ($resultadoListarResultadoAprendisajeCreadosPorEscuela as $resultado) {
 			
-			    //criteros
+			
 				$queryCriterios = "SELECT C.idCriterioEvaluacion ,C.descripcionCriterioEvaluacion  FROM criterioevaluacion AS C
 									WHERE C.ResultadoAprendizaje_idResultadoAprendizaje = '".$resultado["idResultadoAprendizaje"]."'";
 				$resultadosCriterio = $this->conexion->realizarConsulta($queryCriterios,true);
@@ -184,8 +165,7 @@ class ResultadoAprendizaje extends Singleton{
 		
 		}
 
-		////////////
-
+	
 		$codPer=$this->conexion->obtenerVariableSesion("CodPer");
 
 		$queryListarResultadoAprendisajeCreadosPorDocente = "SELECT R.ResultadoAprendizaje_idResultadoAprendizaje FROM resultadoaprendizajedocente AS R
@@ -196,12 +176,12 @@ class ResultadoAprendizaje extends Singleton{
 		foreach ($resultadoListarResultadoAprendisajeCreadosPorDocente as $resultado) {
 
 
-				//Resultado Aprendizaje
+		
 				$queryRA = "SELECT R.idResultadoAprendizaje ,R.codigoResultadoAprendizaje ,R.tituloResultadoAprendizaje ,R.definicionResultadoAprendizaje  FROM resultadoaprendizaje AS R
 							WHERE R.idResultadoAprendizaje = '".$resultado["ResultadoAprendizaje_idResultadoAprendizaje"]."'";
 				$resultadosRA = $this->conexion->realizarConsulta($queryRA,true);
 
-			    //criteros
+		
 				$queryCriterios = "SELECT C.idCriterioEvaluacion ,C.descripcionCriterioEvaluacion  FROM criterioevaluacion AS C
 								   WHERE C.ResultadoAprendizaje_idResultadoAprendizaje = '".$resultadosRA[0]["idResultadoAprendizaje"]."'";
 				$resultadosCriterio = $this->conexion->realizarConsulta($queryCriterios,true);
