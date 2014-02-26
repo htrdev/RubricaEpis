@@ -129,6 +129,8 @@ class ResultadoAprendizaje extends Singleton{
 		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
 
+
+
 		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
 
 		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
