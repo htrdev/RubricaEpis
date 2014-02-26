@@ -12,7 +12,6 @@ class Usuario{
 	public function __construct(){
 		$this->conexionsql = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
-	
 	}
 
 	public function listarUsuarios(){
@@ -34,7 +33,6 @@ class Usuario{
 		$usuario[0]["Email"]=$persona[0]["Email"];
 		return $usuario;
 	}
-
 
 	public function ingresarSistema($emailUsuario,$passwordUsuario){
 		$usuario = $this->buscarUsuarioPorEmail($emailUsuario);

@@ -1,31 +1,33 @@
 <?php
 
+require_once('Singleton.php');
 
 class ConexionFactory{
 
-	public function obtenerConexion($tipoConexion,$host,$usuario,$password){
+	public static function obtenerConexion($tipoConexion){
 		$conexion = "h1";
 		switch($tipoConexion)
 		{
-			case 'sqlserver' : $conexion = ConexionSQLServer::obtenerObjeto($host,$usuario,$password);break;
-			case 'mysql' : $conexion = ConexionMySQL::obtenerObjeto($host,$usuario,$password);break;
+			case 'sqlserver' : $conexion = ConexionSQLServer::obtenerObjeto();break;
+			case 'mysql' : $conexion = ConexionMySQL::obtenerObjeto();break;
 		}
 		return $conexion;
 	}
 }
 
-abstract class Conexion{
+abstract class Conexion extends Singleton{
 
 	protected $conexion;
-	protected static $objetoConexion;
 
 	protected $servidor;
 	protected $usuario;
 	protected $password;
 	protected $baseDeDatos;
 
-	public abstract static function obtenerObjeto($host,$usuario,$password);
 	public abstract function obtenerConexion();
+	protected abstract function convertirArray($resultado);
+	public abstract function convertirJson($array);
+
 	public function obtenerVariableSesion($variable){
 		session_start();
 		return $_SESSION[$variable];
@@ -34,25 +36,16 @@ abstract class Conexion{
 
 class ConexionSQLServer extends Conexion{
 
-	private function __construct($host,$usuario,$password){
-		$this->servidor = $host;
-		$this->usuario	= $usuario;
-		$this->password = $password;
+	protected function __construct(){
+		$this->servidor = '192.168.1.38';
+		$this->usuario	= 'sa';
+		$this->password = '123cuatro';
 		$this->baseDeDatos = "matrixupt";
 		$this->obtenerConexion();
 	}
 
-	public static function obtenerObjeto($host,$usuario,$password){
-		if(!self::$objetoConexion instanceof self)
-		{
-			self::$objetoConexion = new self($host,$usuario,$password);
-		}
-		return self::$objetoConexion;
-	}
-
 	public function obtenerConexion(){
 		 $this->conexion = mssql_connect($this->servidor,$this->usuario,$this->password) or die(mssql_get_last_message());
-        //}
         mssql_select_db($this->baseDeDatos,$this->conexion);
 	}
 
@@ -67,7 +60,7 @@ class ConexionSQLServer extends Conexion{
 		}
 	}
 
-	private function convertirArray($resultado){
+	protected function convertirArray($resultado){
 		$objetos = array();
 		while($r = mssql_fetch_assoc($resultado)) {
 		    $objetos[] = array_map('utf8_encode', $r);
@@ -82,20 +75,12 @@ class ConexionSQLServer extends Conexion{
 
 class ConexionMySQL extends Conexion{
 
-	private function __construct($host,$usuario,$password){
-		$this->servidor = $host;
-		$this->usuario	= $usuario;
-		$this->password = $password;
+	protected function __construct(){
+		$this->servidor = 'localhost';
+		$this->usuario	= 'htrdev';
+		$this->password = '12345';
 		$this->baseDeDatos = "rubricaepis";
 		$this->obtenerConexion();
-	}
-
-	public static function obtenerObjeto($host,$usuario,$password){
-		if(!self::$objetoConexion instanceof self)
-		{
-			self::$objetoConexion = new self($host,$usuario,$password);
-		}
-		return self::$objetoConexion;
 	}
 
 	public function obtenerConexion(){
@@ -107,7 +92,6 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
-		
 		$resultado =  mysql_query($sql,$this->conexion);
 		if($convertirArray){
 			return $this->convertirArray($resultado);
@@ -118,7 +102,7 @@ class ConexionMySQL extends Conexion{
 		}
 	}
 
-	private function convertirArray($resultado){
+	protected function convertirArray($resultado){
 		$objetos = array();
 		while($r = mysql_fetch_assoc($resultado)) {
 		    $objetos[] = array_map('utf8_encode', $r);
@@ -143,7 +127,6 @@ class ConexionMySQL extends Conexion{
 				break;
 			}
 		}
-
 		if($esCorrecto){
 			mysql_query("COMMIT",$this->conexion);
 		}
@@ -153,7 +136,5 @@ class ConexionMySQL extends Conexion{
 		return $esCorrecto;
 	}
 }
-
-
 
 ?>

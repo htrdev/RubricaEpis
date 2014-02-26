@@ -37,6 +37,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
 
 rubricaApp.config(function ($httpProvider) {
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
+
   /*
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     $httpProvider.defaults.transformRequest = function(data){

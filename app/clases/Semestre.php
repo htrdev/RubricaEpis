@@ -4,12 +4,12 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 
-class Semestre{
+class Semestre extends Singleton{
 
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
+		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarSemestre(){
@@ -19,8 +19,7 @@ class Semestre{
 	}
 
 	public function listarSemestreActivo(){
-		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
-		$resultado = $this->conexion->convertirJson($usuario);
+		$resultado = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
 		return $resultado;
 	}
 }

@@ -4,13 +4,12 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 
-class CriterioEvaluacion{
-
+class CriterioEvaluacion extends Singleton{
 
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql');
 	}
 
 	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
@@ -32,47 +31,13 @@ class CriterioEvaluacion{
 	}
 
 	public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
-	
-
 		$query = "update criterioevaluacion set
 		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
 		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
-
 		$funciono = $this->conexion->realizarConsulta($query,true);
-
 		return $funciono;
-
-/*
-
-
-		$numeroElementos = count($criterioEvaluacion);
-		$i = 0;
-		foreach($criterioEvaluacion as $criterio){
-			$query.= "update criterioevaluacion set
-		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
-		where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."' and '".$idResultadoAprendizaje."'";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
-		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
-		return $funciono;*/
-
 	}
-
-
-	public function listarCriterioEvaluacionPorResultadoAprendizaje(){
-
-	}
-
-
-	public function listarCriterioEvaluacionPorModeloRubrica(){
-		
-	}
-
+	
 }
 
 

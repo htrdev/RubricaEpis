@@ -3,7 +3,12 @@
 header('Content-type: application/json');
 require_once('Conexion.php');
 require_once('AsignacionCriterioEvaluacion.php');
-class ModeloRubrica{
+require_once('Semestre.php');
+require_once('ResultadoAprendizaje.php');
+require_once('Docente.php');
+require_once('Curso.php');
+
+class ModeloRubrica extends Singleton{
 
 	private $conexionMysql;
 	private $conexionSqlServer;
@@ -21,13 +26,10 @@ class ModeloRubrica{
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
-		public function agregarModeloRubrica($agregarModeloRubrica){
-
+	public function agregarModeloRubrica($agregarModeloRubrica){
 		$queryAgregarModeloRubrica = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
-
 		$this->conexionMysql->iniciarTransaccion();
-		
 		$queryInsertarModeloRubrica="insert into modelorubrica
 		(Curso_idCurso, Semestre_idSemestre, fechaInicioRubrica,fechaFinalRubrica,
 		 Docente_Persona_idPersona,calificacionRubrica)
@@ -37,24 +39,18 @@ class ModeloRubrica{
 				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
 				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
 				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
-	
 		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
-
 		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
-
 		$funcionoQueryAgregarCriteriosEvaluacion=
 		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
-
 		$funcionoTransaccion = 
 			$this->conexionMysql->finalizarTransaccion(
 				array($funcionoQueryAgregarCriteriosEvaluacion
 						,$queryAgregarModeloRubrica)
 				);
-		
 		return $funcionoTransaccion;
 	}
 	public function agregarCriteriosEvaluacion($agregarModeloRubrica,$idModeloRubrica){
-
 		$funcionoQueryAgregarCriteriosEvaluacion = true;
 		$objCriterioEvaluacion = new AsignacionCriterioEvaluacion();
 		if(!empty($agregarModeloRubrica)){
@@ -65,7 +61,7 @@ class ModeloRubrica{
 		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}
 
-public function listarRubricasPorPersona(){
+	public function listarRubricasPorPersona(){
 		//MIS RUBRICAS
 
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");
@@ -74,7 +70,6 @@ public function listarRubricasPorPersona(){
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 
 		$misRubricas=array();
-		$contadorResultado=0;
 		foreach ($resultados as $resultado) {
 			//semestre
 			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
@@ -82,14 +77,13 @@ public function listarRubricasPorPersona(){
 			//curso
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
-			$misRubricas[$contadorResultado] = 
+			$misRubricas[] = 
 				array("semestre"=>$semestre[0]["Semestre"],
 					"curso"=>$curso[0]["DesCurso"],
 					"calificaA"=>$resultado["calificacionRubrica"],
 					"fechaInicio"=>$resultado["fechaInicioRubrica"],
 					"fechaFinal"=>$resultado["fechaFinalRubrica"]
 					); 
-			$contadorResultado++;
 		}
 
 		//MIS RUBRICAS ASIGNADAS
@@ -99,7 +93,6 @@ public function listarRubricasPorPersona(){
 
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 		$misRubricasAsignadas=array();
-		$contadorResultado=0;
 		foreach ($resultados as $resultado) {
 			//semestre
 			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
@@ -111,7 +104,7 @@ public function listarRubricasPorPersona(){
 			$queryDocente = "select p.ApepPer, p.ApemPer ,p.NomPer  from PERSONA as p where p.CodPer =  '".$resultado["idDocenteCalificador"]."'";
 			$docente = $this->conexionSqlServer->realizarConsulta($queryDocente,true);
 
-			$misRubricasAsignadas[$contadorResultado] = 
+			$misRubricasAsignadas[] = 
 				array("idModeloRubrica"=>$resultado["idModeloRubrica"],
 					"semestre"=>$semestre[0]["Semestre"],
 					"curso"=>$curso[0]["DesCurso"],
@@ -119,15 +112,26 @@ public function listarRubricasPorPersona(){
 					"autor"=>$docente[0]["ApepPer"]." ". $docente[0]["ApemPer"].", ".$docente[0]["NomPer"],
 					"fechaFinal"=>$resultado["fechaFinalRubrica"]
 					); 
-			$contadorResultado++;
 		}
 
 		$misRubricas_rubricasAsignadas=array();
 		$misRubricas_rubricasAsignadas=array("misRubricas"=>$misRubricas,"rubricasAsignadas"=>$misRubricasAsignadas);
-		$resultadoJson = $this->conexionMysql->convertirJson($misRubricas_rubricasAsignadas);
-		return $resultadoJson;
+		return $misRubricas_rubricasAsignadas;
 	}
 
+	public function obtenerInformacionNuevaRubrica(){
+		$cursosPorDocente = Curso::obtenerObjeto()->listarCursosDocente();
+		$semestreActivo = Semestre::obtenerObjeto()->listarSemestreActivo();
+		$resultadosAprendizaje = ResultadoAprendizaje::obtenerObjeto()->listarResultadoAprendizaje();
+		$docentesActivos = Docente::obtenerObjeto()->listarDocenteActivo();
+		return $this->conexionMysql->convertirJson(array("semestre"=>$semestreActivo
+								,"cursos"=>$cursosPorDocente
+								,"resultadosAprendizaje"=>$resultadosAprendizaje
+								,"docentes"=>$docentesActivos));
+	}
 
+	public function obtenerRubricasPorPersona(){
+		return $this->conexionMysql->convertirJson($this->listarRubricasPorPersona());
+	}
 }
 

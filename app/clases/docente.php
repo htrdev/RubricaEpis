@@ -3,13 +3,14 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
+require_once('Singleton.php');
 
-class Docente{
+class Docente extends Singleton{
 
 	private $conexion;
 
-	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
+	protected function __construct(){
+		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarDocenteActivo(){
@@ -18,16 +19,7 @@ class Docente{
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem where p.CodEstamento =1 and s.Activo='1'";
 		$resultado = $this->conexion->realizarConsulta($query,true);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
+		return $resultado;
 	}
-	public function agregarDocente(){
-	}
-	public function modificarDocente(){
-	}
-
-	
-
-
 }
 

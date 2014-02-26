@@ -1,12 +1,9 @@
 'use strict';
 
 rubricaApp.controller('nuevoRubricaCtrl',
-	function nuevoRubricaCtrl($scope,Semestre,ResultadoAprendizaje,Docente,Curso)
+	function nuevoRubricaCtrl($scope,Rubrica)
 	{
 		$scope.loader = true;
-		$scope.semestre;
-		$scope.resultadosAprendizaje;
-		$scope.docentes;
 		$scope.rubrica = {
 			idCurso : 1,
 			idSemestre : 2,
@@ -18,37 +15,14 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			tipoRubrica : 'Curso'
 		};
 
-		listarSemestreActivo();
-		listarResultadoAprendizaje();
-		listarDocenteActivo();
-		listarCursosDocente();
-
-		function listarSemestreActivo(){
-			Semestre.listarSemestreActivo()
-				.success(function(semestre){
-					$scope.semestre = semestre;
-				});
-		};
-
-		function listarResultadoAprendizaje(){
-			ResultadoAprendizaje.listarResultadoAprendizaje()
-				.success(function(resultadosAprendizaje){
-					$scope.resultadosAprendizaje = resultadosAprendizaje;
-				});
-		};
-
-		function listarDocenteActivo(){
-			Docente.listarDocenteActivo()
-				.success(function(docentes){
-					$scope.docentes = docentes;
+		var obtenerInformacionNuevaRubrica = function(){
+			Rubrica.obtenerInformacionNuevaRubrica()
+				.success(function(data){
+					$scope.semestre = data.semestre;
+					$scope.resultadosAprendizaje = data.resultadosAprendizaje.resultadosAprendizaje;
+					$scope.docentes = data.docentes;
+					$scope.cursos = data.cursos;
 					$scope.loader = false;
-				});
-		};
-
-		function listarCursosDocente(){
-			Curso.listarCursosDocente()
-				.success(function(cursos){
-					$scope.cursos = cursos;
 				});
 		};
 
@@ -73,13 +47,15 @@ rubricaApp.controller('nuevoRubricaCtrl',
 
 			EstaCuestionario : false
 		}
+
+		obtenerInformacionNuevaRubrica();
 	});
 
 
 rubricaApp.controller('listarEstadoRubricaCtrl',
 	function listarEstadoRubricaCtrl($scope,$location,$routeParams)
 	{
-		//el campo evaluado debe ser un array
+
 		$scope.rubricasCalificadas = [
 		{id:1,fecha:"13-12-12",evaluado:"OCHOA LOMA, SCHARLY; AROCUTIPA SERRANO, DEIVI; CHURA MAMANI, BRISEIDA",promedio:"16",docente:"LANCHIPA VALENCIA, ENRIQUE FELIX"},
 		{id:2,fecha:"14-12-12",evaluado:"LOMA ESPEZUA, HALAN",promedio:"13",docente:"CHAIÑA CONDORI, HENRY WILSON"},
@@ -110,15 +86,15 @@ rubricaApp.controller('listarEstadoRubricaCtrl',
 
 
 rubricaApp.controller('misRubricasCtrl',
-	function misRubricasCtrl($scope,$location,Usuario,ModeloRubrica)
+	function misRubricasCtrl($scope,$location,Rubrica)
 	{
 		
 		$scope.misRubricas = [];
 		$scope.rubricasAsignadas = [];
 		$scope.loader = true;
 
-		var listarMisRubricas = function(){
-			ModeloRubrica.listarRubricasPorPersona()
+		var obtenerRubricasPorPersona = function(){
+			Rubrica.obtenerRubricasPorPersona()
 				.success(function(data){
 					$scope.misRubricas = data.misRubricas;
 					$scope.rubricasAsignadas = data.rubricasAsignadas;
@@ -126,8 +102,6 @@ rubricaApp.controller('misRubricasCtrl',
 				});
 
 		};
-
-		listarMisRubricas();
 
 		$scope.EstaRubricasCreadas = true;
 
@@ -154,4 +128,6 @@ rubricaApp.controller('misRubricasCtrl',
 			}
 		}
 
+		//EJECUCION DE METODOS
+		obtenerRubricasPorPersona();
 	});

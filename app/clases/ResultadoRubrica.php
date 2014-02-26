@@ -4,35 +4,25 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 
-class ResultadoRubrica{
+class ResultadoRubrica extends Singleton{
 
 	private $conexionMysql;
 	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','root','123456');
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
-
+		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
-
 	public function agregarResultadoRubrica($CriterioEvaluacion){
-
 		$query = "INSERT into resultadoRubrica (idResultadoRubrica, fechaCompletadoRubrica, estadoRubrica, totalRubrica ) 
 		values ('".$CriterioEvaluacion["idResultadoRubrica"]."', '".$CriterioEvaluacion["fechaCompletadoRubrica"]."', '".$CriterioEvaluacion["estadoRubrica"]."', '".$CriterioEvaluacion["totalRubrica"]."')";
 		$resultado = $this->conexion->realizarConsulta($query,false);
 		$resultadoJson = $this->conexion->convertirJson($resultado);
 		return $resultadoJson;
-
 	}
 
-	public function listarResultadoRubrica(){
-
-	}
-
-	
-
-public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
+	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
 
 		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.PERSONA_IDPERSONA 
 				  FROM RESULTADORUBRICA AS R WHERE R.MODELORUBRICA_IDMODELRUBRICA = '".$idModeloRubrica."'";
@@ -85,7 +75,7 @@ public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
 	}
 
 
-public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica=33,$docenteCalificador=1 ){
+	public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica=33,$docenteCalificador=1 ){
 
 		$query = "SELECT R.idResultadoRubrica , R.fechaCompletadoRubrica , R.totalRubrica , R.estadoRubrica  FROM resultadorubrica AS R
 				  WHERE R.ModeloRubrica_idModelRubrica = '".$idModeloRubrica."'" ." AND R.idDocenteCalificador = '".$docenteCalificador."'";
@@ -125,24 +115,6 @@ public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica=33
 		}
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
-
 	}
 
-
-
 }
-
-
-
-
-		/*agregar*/
-		/*$CriterioEvaluacion = array(
-		"idResultadoRubrica"=>"3",
-		"fechaCompletadoRubrica"=>"2014-03-03",
-		"estadoRubrica"=>"1",
-		"totalRubrica"=>"90",
-		);	
-		$objetoModeloRubrica = new ResultadoRubrica();
-		echo $objetoModeloRubrica->agregarResultadoRubrica($CriterioEvaluacion);
-
-		*/
