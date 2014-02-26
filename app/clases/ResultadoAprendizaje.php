@@ -5,12 +5,12 @@ header('Content-type: application/json');
 require_once('Conexion.php');
 require_once('CriterioEvaluacion.php');
 
-class ResultadoAprendizaje{
+class ResultadoAprendizaje extends Singleton{
 
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','root','');
+		$this->conexion = ConexionFactory::obtenerConexion('mysql');
 	}
 
 	public function listarCriterioAprendizaje($idResultadoAprendizaje){
@@ -220,8 +220,7 @@ class ResultadoAprendizaje{
 							"resultadosAprendizaje"=>$resultadosAprendizajeEscuela,
 							"resultadosAprendizajeDocente"=>$resultadosAprendizajeDocente);
 
-		$resultadoJson = $this->conexion->convertirJson($resultadosAprendizajeEscuelaresultadosAprendizajeEscuela);
-		return $resultadoJson;
+		return $resultadosAprendizajeEscuelaresultadosAprendizajeEscuela;
 
 	}
 

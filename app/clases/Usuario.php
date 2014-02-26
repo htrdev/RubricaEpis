@@ -10,8 +10,8 @@ class Usuario{
 	private $conexionmysql;
 
 	public function __construct(){
-		$this->conexionsql = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
-		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionsql = ConexionFactory::obtenerConexion('sqlserver');
+		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql');
 	}
 
 	public function listarUsuarios(){
