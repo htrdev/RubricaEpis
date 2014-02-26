@@ -10,8 +10,8 @@ interfaz.btnGuardar = function() {
       scope : {
         action : "&"
       },
-      template : "<div style='text-align:right'><button class='btn btn-success btn-next' ng-click='action()'>Guardar <i class='icon-ok'></i></button></div>",
-    };
+      template : "<div style='text-align:right'><button class='btn btn-success' ng-click='action()'>Guardar <i class='icon-ok'></i></button></div>",
+     };
 };
 
 interfaz.linkBorrarItem = function(){
@@ -46,7 +46,7 @@ interfaz.pantallaLoading = function(){
       scope : {
         loader : '='
       },
-      template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4>Cargando Informacion ...<br><br><img src='assets/css/images/loader.gif' style='width:6em;height:1em'></h4></div>"
+      template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4>Cargando Informacion ...<br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
     }
 }
 

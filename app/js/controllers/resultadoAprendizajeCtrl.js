@@ -154,8 +154,8 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 
 		$scope.Interfaz = {
 			mensajeGuardar : {
-				titulo : "Guardando ...",
-				contenido : "La informacion se esta guardando!"
+				texto : "Guardar ",
+				clase : ""
 			}
 		};
 
