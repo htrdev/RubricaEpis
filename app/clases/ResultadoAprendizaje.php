@@ -128,7 +128,55 @@ class ResultadoAprendizaje extends Singleton{
 		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
 		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
+<<<<<<< HEAD
 
+		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
+
+		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
+		foreach ($ResultadoAprendizaje["criteriosEvaluacion"]   as $idCriterioEvaluacion) {
+
+			$queryCriterio = "update criterioevaluacion set
+		descripcionCriterioEvaluacion='".$idCriterioEvaluacion["descripcionCriterioEvaluacion"]."'
+		where idCriterioEvaluacion='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
+||||||| merged common ancestors
+		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false);
+
+
+
+		$funcionoQueryModificarCriteriosEvaluacion = 
+			$this->asignarCriteriosParaModificar($ResultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
+=======
+>>>>>>> 268c240ed151cf2127729ff574e37172a1f759c9
+
+<<<<<<< HEAD
+		 $this->conexion->realizarConsulta($queryCriterio,false);
+		}
+		}
+		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
+		foreach ($ResultadoAprendizaje["criteriosEvaluacionBorrados"]   as $idCriterioEvaluacion) {
+||||||| merged common ancestors
+		$funcionoTransaccion = 
+			$this->conexion->finalizarTransaccion(
+				array($funcionoQueryModificarCriteriosEvaluacion
+						,$resultadoModificarResultadoAprendizaje)
+				);
+		
+		return $funcionoTransaccion;
+
+
+		$resultadoModificarResultadoAprendizaje = false;
+		$funcionoQueryModificarCriteriosEvaluacion = false;
+
+		$this->conexion->iniciarTransaccion();
+
+
+		$query = "update ResultadoAprendizaje set
+		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
+		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
+		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
+		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
+		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false);
+=======
 		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
 
 		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
@@ -143,6 +191,7 @@ class ResultadoAprendizaje extends Singleton{
 		}
 		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
 		foreach ($ResultadoAprendizaje["criteriosEvaluacionBorrados"]   as $idCriterioEvaluacion) {
+>>>>>>> 268c240ed151cf2127729ff574e37172a1f759c9
 
 			$queryCriterio = "delete from criterioevaluacion
 			where idCriterioEvaluacion ='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
