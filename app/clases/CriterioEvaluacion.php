@@ -31,6 +31,7 @@ class CriterioEvaluacion extends Singleton{
 	}
 
 	/*public function modificarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
+	
 		$query = "update criterioevaluacion set
 		descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',
 		where idCriterioEvaluacion='".$criterio["idCriterioEvaluacion"]."'";
