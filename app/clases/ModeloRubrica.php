@@ -63,7 +63,7 @@ class ModeloRubrica extends Singleton{
 	}
 
 	public function listarRubricasPorPersona(){
-		//MIS RUBRICAS
+
 
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");
 		$query = "SELECT  Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,fechaInicioRubrica ,fechaFinalRubrica  FROM modelorubrica AS M 
@@ -72,10 +72,10 @@ class ModeloRubrica extends Singleton{
 
 		$misRubricas=array();
 		foreach ($resultados as $resultado) {
-			//semestre
+	
 			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
 			$semestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
-			//curso
+
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
 			$misRubricas[] = 
@@ -87,7 +87,7 @@ class ModeloRubrica extends Singleton{
 					); 
 		}
 
-		//MIS RUBRICAS ASIGNADAS
+	
 		$query = "SELECT  idModeloRubrica , Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,idDocenteCalificador ,fechaFinalRubrica  FROM resultadorubrica AS R 
 				  INNER JOIN modelorubrica AS M ON idModeloRubrica = R.ModeloRubrica_idModelRubrica 
 				  WHERE R.idDocenteCalificador = '".$CodPer."'";
@@ -95,13 +95,13 @@ class ModeloRubrica extends Singleton{
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 		$misRubricasAsignadas=array();
 		foreach ($resultados as $resultado) {
-			//semestre
+		
 			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
 			$semestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
-			//curso
+		
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
-			//docente
+		
 			$queryDocente = "select p.ApepPer, p.ApemPer ,p.NomPer  from PERSONA as p where p.CodPer =  '".$resultado["idDocenteCalificador"]."'";
 			$docente = $this->conexionSqlServer->realizarConsulta($queryDocente,true);
 

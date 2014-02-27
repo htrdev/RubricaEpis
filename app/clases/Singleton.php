@@ -6,7 +6,7 @@ abstract class Singleton{
 
 	protected function __construct()
 	{
-	// Your "heavy" initialization stuff here
+
 	}
 
 	public static function obtenerObjeto()
