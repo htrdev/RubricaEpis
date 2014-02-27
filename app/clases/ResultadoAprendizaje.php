@@ -219,7 +219,9 @@ class ResultadoAprendizaje extends Singleton{
 
 	}
 
-
+	public function obtenerResultadosAprendizaje(){
+		return $this->conexion->convertirJson($this->listarResultadoAprendizaje());
+	}
 }
 
 class ResultadoAprendizajeDocente extends ResultadoAprendizaje{

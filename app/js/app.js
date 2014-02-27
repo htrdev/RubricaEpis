@@ -24,7 +24,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
       }).
       when('/resultadoAprendizaje',{
         templateUrl: urlServidor+'vistas/resultadoAprendizaje/index.html',
-        controller : 'listarResultadoAprendizajeCtrl',
+        controller : 'misResultadosAprendizajeCtrl',
       }).
       when('/',{
         templateUrl: urlServidor+'vistas/bienvenida.html',

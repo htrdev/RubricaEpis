@@ -11,7 +11,7 @@ $resultadoAprendizaje = $json["resultadoAprendizaje"];
 $objResultadoAprendizaje = ResultadoAprendizaje::obtenerObjeto();
 
 switch($metodo){
-	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->listarResultadoAprendizaje();break;
+	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->obtenerResultadosAprendizaje();break;
 	case 'agregarResultadoAprendizaje' : $ResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);
 	case 'modificarResultadoAprendizaje' : $ResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);
 }

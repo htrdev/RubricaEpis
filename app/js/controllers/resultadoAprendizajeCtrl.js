@@ -75,7 +75,18 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 rubricaApp.controller('misResultadosAprendizajeCtrl',
 	function misResultadosAprendizajeCtrl($scope,$location,ResultadoAprendizaje)
 	{
-		
+		$scope.loader = true;
+		$scope.resultadosAprendizaje = [];
+		$scope.resultadosAprendizajeDocente = [];
+
+		var obtenerResultadosAprendizaje = function(){
+			ResultadoAprendizaje.obtenerResultadosAprendizaje()
+				.success(function(data){
+					$scope.resultadosAprendizaje = data.resultadosAprendizaje;
+					$scope.resultadosAprendizajeDocente = data.resultadosAprendizajeDocente;
+					$scope.loader = false;
+				});
+		}
 
 		$scope.Interfaz = {
 			EstaResultadoAprendizaje : false,
@@ -91,6 +102,10 @@ rubricaApp.controller('misResultadosAprendizajeCtrl',
 				$location.path('/resultadoAprendizaje/nuevo');
 			}
 		};
+
+		//METODOS
+
+		obtenerResultadosAprendizaje();
 	});
 
 

@@ -4,7 +4,7 @@
 		<small ng-hide="Interfaz.EstaResultadoAprendizaje"><i class="icon-double-angle-right"></i> Mis R.A.</small>
 		<small ng-show="Interfaz.EstaResultadoAprendizaje"><i class="icon-double-angle-right"></i> R.A. Generales</small></h3>
 	</div>
-	<div id="contenedorPrincipal">
+	<div id="contenedorPrincipal" ng-if="!loader">
 		<div class="row-fluid" id="MisResultadoAprendizaje" ng-hide="Interfaz.EstaResultadoAprendizaje">
 			<div class="span12">
 				<div class="row-fluid">
@@ -24,10 +24,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>First</td>
-								<td>First</td>
-								<td class="td-actions">
+							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizaje | filter: txtBusqueda">
+								<td>{{resultadoAprendizaje.tituloResultadoAprendizaje}}</td>
+								<td>{{resultadoAprendizaje.definicionResultadoAprendizaje}}</td>
+								<td class="td-actions" style="min-width:80px">
 									<div class="hidden-phone visible-desktop action-buttons">
 										<a class="blue" href="#MisRubricas/{{rubricaCreada.id}}/ListarEstadoRubrica">
 											<i class="icon-zoom-in bigger-130"></i>
@@ -85,10 +85,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="rubricaCalificada in rubricasCalificadas | filter: txtBusqueda">
-								<td></td>
-								<td></td>
-								
+							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizajeDocente | filter: txtBusqueda">
+								<td>{{resultadoAprendizaje.tituloResultadoAprendizaje}}</td>
+								<td>{{resultadoAprendizaje.definicionResultadoAprendizaje}}</td>
 								<td class="td-actions">
 									<div class="hidden-phone visible-desktop action-buttons">
 										<a class="blue" href="#">
