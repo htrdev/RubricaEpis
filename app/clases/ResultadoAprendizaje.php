@@ -19,19 +19,21 @@ class ResultadoAprendizaje extends Singleton{
 		return $this->conexion->realizarConsulta($query,true);
 	}
 
-	public function listarResultadoAprendizajePorID($listarResultadoAprendizaje){
+	public function listarResultadoAprendizajePorID($resultadoAprendizaje){
 
 		
 		$query="select r.idResultadoAprendizaje,r.codigoResultadoAprendizaje,
 		r.tituloResultadoAprendizaje,r.definicionResultadoAprendizaje from resultadoaprendizaje as r
-		where r.idResultadoAprendizaje='".$idResultadoAprendizaje."'";
+		where r.idResultadoAprendizaje='".$resultadoAprendizaje['idResultadoAprendizaje']."'";
+
+
 		$resultadoaprendizaporid = $this->conexion->realizarConsulta($query,true);
 		
 		
 		$query2 = "select idCriterioEvaluacion, descripcionCriterioEvaluacion  from resultadoaprendizaje as r 
 		inner join criterioevaluacion as c on c.ResultadoAprendizaje_idResultadoAprendizaje=r.idResultadoAprendizaje
 		where r.idResultadoAprendizaje ='".$resultadoaprendizaporid[0]["idResultadoAprendizaje"]."'";
-		$criteriosEvaluacion = $this->conexionSqlServer->realizarConsulta($query2,true);
+		$criteriosEvaluacion = $this->conexion->realizarConsulta($query2,true);
 
 		
 		$resultado=
@@ -231,9 +233,3 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 	}
 
 }
-
-
-
- 
-
-
