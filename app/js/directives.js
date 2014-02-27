@@ -43,10 +43,11 @@ interfaz.linkBorrarItem = function(){
 interfaz.pantallaLoading = function(){
     return {
       restrict : "E",
+      transclude : true,
       scope : {
         loader : '='
       },
-      template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4>Cargando Informacion ...<br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
+      template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
     }
 }
 

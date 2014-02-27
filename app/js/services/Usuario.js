@@ -30,8 +30,8 @@ rubricaApp.factory('Usuario',function($http){
 		usuario = pusuario;
 	};	
 
-	dataFactory.estaLogeado = function(){
-		return usuario.estado;
+	dataFactory.obtenerUsuario = function(){
+		return usuario;
 	}
 
 	return dataFactory;

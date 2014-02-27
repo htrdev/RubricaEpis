@@ -13,9 +13,6 @@
 					<div class="row-fluid">
 						<div class="span6">
 							<label for="form-field-select-3"><h4>Curso</h4></label>
-							<!--<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" chosen-cursos ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
-								<option value=""> -- Escoje Curso -- </option>
-							</select>-->
 							<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" cmb-chosen elementos="cursos" ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
 								<option value=""> -- Escoje Curso -- </option>
 							</select>

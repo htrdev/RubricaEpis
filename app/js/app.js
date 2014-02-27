@@ -30,7 +30,7 @@ rubricaApp.config(['$routeProvider','$locationProvider',
         templateUrl: urlServidor+'vistas/bienvenida.html',
       }).
       otherwise({
-        redirectTo: '/IngresarSistema',
+        redirectTo: '/login',
         templateUrl: urlServidor+'vistas/usuario/login.html',
       });
   }]);
@@ -51,37 +51,11 @@ rubricaApp.config(function ($httpProvider) {
 rubricaApp.run(['$rootScope', '$location', 'Usuario', function ($rootScope, $location, Usuario) {
 
     $rootScope.$on('$routeChangeStart', function () {
-        if (!Usuario.estaLogeado()) {
+        if (!Usuario.obtenerUsuario().estado) {
             event.preventDefault();
-            $location.path('/IngresarSistema');
+            $location.path('/login');
         }
     });
 
 
 }]);
-
-
-var verificarEstadoUsuario = function(Usuario){
-    if (!Usuario.estaLogeado()) {
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-//DIRECTIVA PARA EL CHZN-SELECT Y EL NG-REPEAT
-//REVISA SI RENDERIZA TODO Y LUEGO EJECUTA
-/*rubricaApp.directive("complete", function($timeout){
-  return {
-    restrict: "A",
-    link: function($scope, element){
-      $timeout(function(){
-        $('.chzn-select').chosen();
-      }, 0)
-    }
-  }
-});*/
-
-
-

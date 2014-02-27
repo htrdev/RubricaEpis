@@ -73,7 +73,7 @@ class Usuario{
 	public function salirSistema(){
 		session_start();
 		session_destroy();
-		$this->verificarUsuario();
+		return $this->verificarUsuario();
 	}
 }
 ?>

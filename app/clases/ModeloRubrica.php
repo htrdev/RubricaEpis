@@ -15,6 +15,7 @@ class ModeloRubrica extends Singleton{
 
 	public function __construct(){
 		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
 
