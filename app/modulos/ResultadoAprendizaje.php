@@ -8,11 +8,10 @@ $json = json_decode(file_get_contents("php://input"),true);
 $metodo = $json['metodo'];
 $resultadoAprendizaje = $json["resultadoAprendizaje"];
 
-
-$ResultadoAprendizaje = new ResultadoAprendizaje();
+$objResultadoAprendizaje = ResultadoAprendizaje::obtenerObjeto();
 
 switch($metodo){
-	case 'listarResultadoAprendizajePorID' : echo $ResultadoAprendizaje->listarResultadoAprendizajePorID($resultadoAprendizaje);break;
+	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->listarResultadoAprendizaje();break;
 	case 'agregarResultadoAprendizaje' : $ResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);
 	case 'modificarResultadoAprendizaje' : $ResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);
 }

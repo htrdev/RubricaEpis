@@ -72,9 +72,11 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 	});
 
 
-rubricaApp.controller('listarResultadoAprendizajeCtrl',
-	function listarResultadoAprendizajeCtrl($scope,$location)
+rubricaApp.controller('misResultadosAprendizajeCtrl',
+	function misResultadosAprendizajeCtrl($scope,$location,ResultadoAprendizaje)
 	{
+		
+
 		$scope.Interfaz = {
 			EstaResultadoAprendizaje : false,
 

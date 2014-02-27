@@ -21,10 +21,12 @@ rubricaApp.controller('mainCtrl',
 				$scope.nombreUsuario = nombreUsuario;
 			},
 			ingresarSistema : function(){
+				$scope.loader = true;
 				Usuario.ingresarSistema($scope.usuario.credenciales)
 				.success(function(usuario){
 					Usuario.establecerUsuario(usuario);
 					$scope.usuario.cargarInformacionUsuario(usuario);
+					$scope.loader=false;
 				}).
 				error(function(data,status){
 					console.log(status);
