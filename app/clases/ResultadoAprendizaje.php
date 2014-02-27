@@ -105,14 +105,18 @@ class ResultadoAprendizaje extends Singleton{
 
 	public function modificarResultadoAprendizaje($ResultadoAprendizaje){
 		
-
+		$this->conexion->iniciarTransaccion();
 		$query = "update ResultadoAprendizaje set
 		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
 		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
 		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
+		
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
 
 		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
+
+		$resultado=array();
+		$resultado[]=$resultadoModificarResultadoAprendizaje;
 
 		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
 		foreach ($ResultadoAprendizaje["criteriosEvaluacion"]   as $idCriterioEvaluacion) {
@@ -121,8 +125,15 @@ class ResultadoAprendizaje extends Singleton{
 		descripcionCriterioEvaluacion='".$idCriterioEvaluacion["descripcionCriterioEvaluacion"]."'
 		where idCriterioEvaluacion='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
 
-		 $this->conexion->realizarConsulta($queryCriterio,false);
+		$funionoActualizarCriterioEvaluacion=$this->conexion->realizarConsulta($queryCriterio,false);
+
+		$resultado[]=$funionoActualizarCriterioEvaluacion;
+
 		}
+  
+		$this->conexion->finalizarTransaccion($resultado);
+
+
 		}
 		if(!empty($ResultadoAprendizaje["criteriosEvaluacionBorrados"])){
 		foreach ($ResultadoAprendizaje["criteriosEvaluacionBorrados"]   as $idCriterioEvaluacion) {
@@ -131,10 +142,12 @@ class ResultadoAprendizaje extends Singleton{
 			where idCriterioEvaluacion ='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
 
 
-		 $this->conexion->realizarConsulta($queryCriterio,false);
+		$funcionoEliminarCriteriosEvaluacion=$this->conexion->realizarConsulta($queryCriterio,false);
+		$resultado[]=$funcionoEliminarCriteriosEvaluacion;
+
 		}
 	}
-	
+		$this->conexion->finalizarTransaccion($resultado);
 
 	}
 
