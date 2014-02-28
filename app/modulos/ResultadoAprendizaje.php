@@ -12,7 +12,7 @@ $objResultadoAprendizaje = ResultadoAprendizaje::obtenerObjeto();
 
 switch($metodo){
 	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->obtenerResultadosAprendizaje();break;
-	case 'agregarResultadoAprendizaje' : $ResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);
-	case 'modificarResultadoAprendizaje' : $ResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);
+	case 'agregarResultadoAprendizaje' : $objResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);
+	case 'modificarResultadoAprendizaje' : $objResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);
 }
 

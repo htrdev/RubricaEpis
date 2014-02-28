@@ -68,11 +68,13 @@ class ResultadoAprendizaje extends Singleton{
 			INSERT INTO ResultadoAprendizaje(
 				definicionResultadoAprendizaje
 				,tituloResultadoAprendizaje
-				,codigoResultadoAprendizaje)
+				,codigoResultadoAprendizaje
+				,tipoResultadoAprendizaje)
 			VALUES(
 				'".$resultadoAprendizaje["definicionResultadoAprendizaje"]."'
 				,'".$resultadoAprendizaje["tituloResultadoAprendizaje"]."'
-				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
+				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."'
+				,'".$resultadoAprendizaje["tipoResultadoAprendizaje"]."')";
 
 		$funcionoQueryAgregarResultadoAprendizaje = 
 			$this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
