@@ -111,7 +111,8 @@ class ResultadoAprendizaje extends Singleton{
 		$query = "update ResultadoAprendizaje set
 		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
 		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
-		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."'
+		codigoResultadoAprendizaje='".$ResultadoAprendizaje["codigoResultadoAprendizaje"]."',
+		tipoResultadoAprendizaje='".$ResultadoAprendizaje["tipoResultadoAprendizaje"]."'
 		
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
 
