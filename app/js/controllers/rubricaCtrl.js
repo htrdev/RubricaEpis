@@ -51,7 +51,6 @@ rubricaApp.controller('nuevoRubricaCtrl',
 		obtenerInformacionNuevaRubrica();
 	});
 
-
 rubricaApp.controller('listarEstadoRubricaCtrl',
 	function listarEstadoRubricaCtrl($scope,$location,$routeParams)
 	{
@@ -84,11 +83,11 @@ rubricaApp.controller('listarEstadoRubricaCtrl',
 
 	});
 
-
 rubricaApp.controller('misRubricasCtrl',
 	function misRubricasCtrl($scope,$location,Rubrica)
 	{
-		
+		$scope.currentPage = 1;
+		$scope.asd = 50;
 		$scope.misRubricas = [];
 		$scope.rubricasAsignadas = [];
 		$scope.loader = true;

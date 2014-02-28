@@ -23,7 +23,12 @@ angular.module('ui.sortable', [])
                   return first;
               }
 
-            var opts = {};
+            var opts = {opacity:0.6,
+                        revert:true,
+                        forceHelperSize:true,
+                        placeholder: 'draggable-placeholder',
+                        forcePlaceholderSize:true,
+                        tolerance:'pointer'};
 
             var callbacks = {
                 receive: null,

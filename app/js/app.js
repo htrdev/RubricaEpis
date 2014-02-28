@@ -1,6 +1,6 @@
 'use strict';
 
-var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate']);
+var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate','ui.bootstrap.pagination']);
 var urlServidor = "http://rubricaepis:8080/app/";
 
 rubricaApp.config(['$routeProvider','$locationProvider',

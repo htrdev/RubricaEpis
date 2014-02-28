@@ -7,12 +7,47 @@ var interfaz = {};
 interfaz.btnGuardar = function() {
     return {
       restrict : "E",
+      transclude : true,
       scope : {
         action : "&"
       },
-      template : "<div style='text-align:right'><button class='btn btn-success' ng-click='action()'>Guardar <i class='icon-ok'></i></button></div>",
+      template : "<button class='btn btn-success' ng-click='action()'><span ng-transclude> </span><i class='icon-ok'></i></button>",
      };
 };
+
+interfaz.btnAtras = function() {
+    return {
+      restrict : "E",
+      transclude : true,
+      scope : {
+        action : "&"
+      },
+      template : "<button class='btn btn-prev' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-left'></i></button>",
+     };
+};
+
+interfaz.btnSiguiente = function() {
+    return {
+      restrict : "E",
+      transclude : true,
+      scope : {
+        action : "&"
+      },
+      template : "<button class='btn btn-primary btn-next' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-right'></i></button>",
+     };
+};
+
+interfaz.grupoBotones = function() {
+    return {
+      restrict : "E",
+      transclude : true,
+      scope : {
+        action : "&"
+      },
+      template : "<br><div class='row-fluid' style='text-align:right;margin-top:2em;margin-right:2em' ng-transclude></div>"
+     };
+};
+
 
 interfaz.linkBorrarItem = function(){
   var cuadroMensaje = function(callback){
@@ -49,7 +84,18 @@ interfaz.pantallaLoading = function(){
       },
       template : "<div class='row-fluid loader' ng-if='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
     }
-}
+};
+
+interfaz.pantallaLoading = function(){
+    return {
+      restrict : "E",
+      transclude : true,
+      scope : {
+        loader : '='
+      },
+      template : "<div class='row-fluid loader' ng-show='loader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
+    }
+};
 
 interfaz.gridVacio = function(){
   return {
@@ -63,9 +109,13 @@ interfaz.gridVacio = function(){
 }
 
 rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
-rubricaApp.directive("btnAgregar",interfaz.btnGuardar);
+rubricaApp.directive("btnGuardar",interfaz.btnGuardar);
 rubricaApp.directive("pantallaLoading",interfaz.pantallaLoading);
 rubricaApp.directive("gridVacio",interfaz.gridVacio);
+rubricaApp.directive("btnAtras",interfaz.btnAtras);
+rubricaApp.directive("btnSiguiente",interfaz.btnSiguiente);
+rubricaApp.directive("grupoBotones",interfaz.grupoBotones);
+
 
 
 rubricaApp.directive("cmbChosen", function(){
