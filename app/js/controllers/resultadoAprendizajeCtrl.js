@@ -135,8 +135,14 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			$scope.loader.estadoFormulario = false;
 			ResultadoAprendizaje.agregarResultadoAprendizaje($scope.resultadoAprendizaje)
 				.success(function(data){
+				console.log(data);
 				$scope.loader.estadoLoader = false;
-				$scope.loader.estadoGuardar = true;
+				if(data){
+					$scope.loader.estadoGuardar = true;
+				}
+				else{
+					console.log(data);
+				}
 					
 			});
 		};
