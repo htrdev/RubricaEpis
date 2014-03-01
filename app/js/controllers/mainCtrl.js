@@ -2,7 +2,9 @@
 rubricaApp.controller('mainCtrl',
 	function mainCtrl($scope,$rootScope,$location,Usuario)
 	{
-		$scope.loader = true;
+		$scope.loader = {
+			estadoLoader : true
+		};
 		
 		$scope.usuario = {
 			usuario : {
@@ -21,12 +23,12 @@ rubricaApp.controller('mainCtrl',
 				$scope.nombreUsuario = nombreUsuario;
 			},
 			ingresarSistema : function(){
-				$scope.loader = true;
+				$scope.loader.estadoLoader = true;
 				Usuario.ingresarSistema($scope.usuario.credenciales)
 				.success(function(usuario){
 					Usuario.establecerUsuario(usuario);
 					$scope.usuario.cargarInformacionUsuario(usuario);
-					$scope.loader=false;
+					$scope.loader.estadoLoader=false;
 				}).
 				error(function(data,status){
 					console.log(status);
@@ -38,11 +40,11 @@ rubricaApp.controller('mainCtrl',
 					Usuario.establecerUsuario(usuario);
 					if(usuario.estado){
 						$scope.usuario.cargarInformacionUsuario(usuario);
-						$scope.loader = false;
+						$scope.loader.estadoLoader = false;
 					}
 					else{
 						$location.path('/login');
-						$scope.loader = false;
+						$scope.loader.estadoLoader = false;
 					}
 				})
 			},

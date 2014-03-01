@@ -110,9 +110,19 @@ rubricaApp.controller('misResultadosAprendizajeCtrl',
 
 
 rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
-	function nuevoResultadoAprendizajeCtrl($scope,ResultadoAprendizaje)
+	function nuevoResultadoAprendizajeCtrl($scope,$timeout,ResultadoAprendizaje,$location)
 	{
-		
+		$scope.loader = {
+			estadoLoader : false,
+			mensajeGuardar : "Guardando el Resultado de Aprendizaje ...",
+			estadoGuardar : false,
+			mensajeGuardado : "Resultado de Aprendizaje Guardado!",
+			estadoFormulario : true
+		};
+
+		$scope.guardar = false;
+		$scope.showFormulario = true;
+
 		$scope.resultadoAprendizaje = {
 			codigoResultadoAprendizaje : "",
 			tituloResultadoAprendizaje : "",
@@ -121,11 +131,19 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 		};
 
 		$scope.agregarResultadoAprendizaje = function(){
+			$scope.loader.estadoLoader = true;
+			$scope.loader.estadoFormulario = false;
 			ResultadoAprendizaje.agregarResultadoAprendizaje($scope.resultadoAprendizaje)
 				.success(function(data){
-					alert("agregado");
+				$scope.loader.estadoLoader = false;
+				$scope.loader.estadoGuardar = true;
+					
 			});
 		};
+
+		$scope.callBackGuardar = function(){
+			$location.path('/resultadoAprendizaje');
+		}
 
 		$scope.callBackBorrarCriterio = function(criterio){
 			var index = $scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio);
@@ -146,7 +164,6 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 					var descripcion = $("#criteriosEvaluacion").val();
 					var index = $scope.resultadoAprendizaje.criteriosEvaluacion.indexOf(criterio);
 					$scope.resultadoAprendizaje.criteriosEvaluacion[index].descripcionCriterioEvaluacion = descripcion;
-					console.log($scope.resultadoAprendizaje.criteriosEvaluacion);
 					$scope.$apply();
 				});
 				$("#criteriosEvaluacion").val(criterio.descripcionCriterioEvaluacion);

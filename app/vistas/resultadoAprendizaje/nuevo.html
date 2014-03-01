@@ -3,7 +3,7 @@
 		<h3 class="header lighter blue" style="margin-top:0">Resultados de Aprendizaje
 		<small><i class="icon-double-angle-right"></i> Nuevo R.A.</small></h3>
 	</div>
-	<div class="row-fluid" id="NuevoRA" >
+	<div class="row-fluid" id="NuevoRA" ng-show="loader.estadoFormulario">
 		<div class="row-fluid">
 			<div class="row-fluid">
 				<div class="control-group span2">
@@ -85,7 +85,9 @@
 			</grupo-botones>
 		</div>
 	</div>
-	<pantalla-loading loader="loader">Guardando Resultado de Aprendizaje ... </pantalla-loading>
+	<pantalla-loading loader="loader">{{loader.mensajeGuardar}}</pantalla-loading>
+	<pantalla-guardar-exitoso loader="loader" ng-click="callBackGuardar()">{{loader.mensajeGuardado}}</pantalla-guardar-exitoso>
+
 </div><!--/.row-fluid-->
 <script src="assets/js/bootbox.min.js"></script>
 <script type="text/javascript">
