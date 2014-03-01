@@ -14,6 +14,7 @@ switch($metodo){
 	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->obtenerResultadosAprendizaje();break;
 	case 'agregarResultadoAprendizaje' : echo $objResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);break;
 	case 'modificarResultadoAprendizaje' : $objResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);break;
+	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->obtenerResultadosAprendizaje();break;
 	case 'listarResultadoAprendizajePorID': echo $objResultadoAprendizaje->listarResultadoAprendizajePorID($resultadoAprendizaje);break;
 }
 
