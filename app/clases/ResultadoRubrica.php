@@ -114,8 +114,19 @@ class ResultadoRubrica extends Singleton{
 			$contadorResultado++;
 
 		}
+
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
+	}
+
+
+	public listarCalificacionesPromedioPorModeloRubrica(){
+
+
+	$query="";
+	
+	$resultados = $this->conexionSqlServer->realizarConsulta($query,true);
+		
 	}
 
 }
