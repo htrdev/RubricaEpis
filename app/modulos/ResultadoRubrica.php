@@ -7,7 +7,8 @@ require_once('../clases/ResultadoRubrica.php');
 $json = json_decode(file_get_contents("php://input"),true);
 $metodo = $json['metodo'];
 
-$ResultadoRubrica = new ResultadoRubrica();
+$resultadoRubrica = ResultadoRubrica::obtenerObjeto();
+
 
 switch($metodo){
 
@@ -15,4 +16,5 @@ switch($metodo){
 	case 'listarResultadoRubricaPorcionRubricaAsignada' : 
 		$idModeloRubrica= $json['idModeloRubrica'];
 		echo $ResultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica);break;
+	case 'listarResultadoRubricaPorIDModeloRubrica' : echo $resultadoRubrica->listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica);break;
 }

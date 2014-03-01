@@ -41,16 +41,19 @@ class ModeloRubrica extends Singleton{
 				,'".$agregarModeloRubrica["Semestre_idSemestre"]."'
 				,'".$agregarModeloRubrica["fechaInicioRubrica"]."'
 				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
-				,'".$agregarModeloRubrica["calificacionRubrica"]."'
-				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'";
+				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
+				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
 
+			
 		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
 		
 		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
 		
 		$funcionoQueryAgregarCriteriosEvaluacion=
 		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
+	
 /*
+	e
 		
 		$this->agregarModelosDocentes($idModeloRubrica,$agregarModeloRubrica["docentesAsignados"]); */
 
@@ -91,13 +94,13 @@ class ModeloRubrica extends Singleton{
 */
 
 
-	public function agregarCriteriosEvaluacion($agregarModeloRubrica,$idModeloRubrica){
+	public function agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica){
 		$funcionoQueryAgregarCriteriosEvaluacion = true;
 		$objCriterioEvaluacion = new AsignacionCriterioEvaluacion();
 		if(!empty($agregarModeloRubrica)){
 			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarAsignacionCriterioEvaluacion(
-				$agregarModeloRubrica
-				,$idModeloRubrica);
+				$idModeloRubrica 
+				,$agregarModeloRubrica);
 		}
 		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}

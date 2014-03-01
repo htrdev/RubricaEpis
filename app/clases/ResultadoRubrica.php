@@ -49,7 +49,7 @@ class ResultadoRubrica extends Singleton{
 					$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
 
 					foreach ($resultados as $persona) {	
-						$personasEvaluadas[$i]=array("NomPer"=>$persona["ApepPer"]." ". $persona["ApemPer"].", ".$persona["NomPer"]);
+						$personasEvaluadas[$i]=array("nombreCompletoAlumno"=>$persona["ApepPer"]." ". $persona["ApemPer"].", ".$persona["NomPer"]);
 				 		$i++;
 					}	
 			}
@@ -58,12 +58,13 @@ class ResultadoRubrica extends Singleton{
 			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
 			
 			$respaldo[$contadorResultado] = 
-				array("idResultadoRubrica"=>$resultado["IDRESULTADORUBRICA"],
+				array("idResultadoRubrica"=>$resultado["IDRESULTADORUBRICA"],					
+					"alumnosCalificados"=>$personasEvaluadas,
+					"docenteCalificador"=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"].", ".$evaluador[0]["NOMPER"],
 					"fechaCompletadoRubrica"=>$resultado["FECHACOMPLETADORUBRICA"],
-					"personaEvaluada"=>$personasEvaluadas,
 					"totalRubrica"=>$resultado["TOTALRUBRICA"],
-					"estadoRubrica"=>$resultado["ESTADORUBRICA"],
-					"evaluadoPor"=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"].", ".$evaluador[0]["NOMPER"]
+					"estadoRubrica"=>$resultado["ESTADORUBRICA"]
+					
 					); 
 			$contadorResultado++;
 		}
