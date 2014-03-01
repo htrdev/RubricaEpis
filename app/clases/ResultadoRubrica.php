@@ -73,8 +73,10 @@ class ResultadoRubrica extends Singleton{
 	}
 
 
-	public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica=33,$docenteCalificador=1 ){
+	public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica){
 
+
+		$docenteCalificador=$this->conexionMysql->obtenerVariableSesion("CodPer");
 		$query = "SELECT R.idResultadoRubrica , R.fechaCompletadoRubrica , R.totalRubrica , R.estadoRubrica  FROM resultadorubrica AS R
 				  WHERE R.ModeloRubrica_idModelRubrica = '".$idModeloRubrica."'" ." AND R.idDocenteCalificador = '".$docenteCalificador."'";
 

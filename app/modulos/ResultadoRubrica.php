@@ -13,5 +13,5 @@ $ResultadoRubrica = new ResultadoRubrica();
 switch($metodo){
 
 	case 'listarResultadoRubricaPorIDModeloRubrica' : echo $ResultadoRubrica->listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica);break;
-	case 'listarResultadoRubricaPorcionRubricaAsignada' : echo $ResultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada();break;
+	case 'listarResultadoRubricaPorcionRubricaAsignada' : echo $ResultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica);break;
 }
