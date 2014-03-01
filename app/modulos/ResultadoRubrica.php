@@ -12,9 +12,6 @@ $resultadoRubrica = ResultadoRubrica::obtenerObjeto();
 
 switch($metodo){
 
-	case 'listarResultadoRubricaPorIDModeloRubrica' : echo $ResultadoRubrica->listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica);break;
-	case 'listarResultadoRubricaPorcionRubricaAsignada' : 
-		$idModeloRubrica= $json['idModeloRubrica'];
-		echo $ResultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica);break;
 	case 'listarResultadoRubricaPorIDModeloRubrica' : echo $resultadoRubrica->listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica);break;
+	case 'listarResultadoRubricaPorcionRubricaAsignada' : echo $resultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica);break;
 }
