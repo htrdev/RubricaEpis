@@ -22,9 +22,9 @@ class ResultadoRubrica extends Singleton{
 		return $resultadoJson;
 	}
 
-	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica=1){
-
-		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.PERSONA_IDPERSONA 
+	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica){
+	
+		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.idDocenteCalificador 
 				  FROM RESULTADORUBRICA AS R WHERE R.MODELORUBRICA_IDMODELRUBRICA = '".$idModeloRubrica."'";
 
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
@@ -34,7 +34,7 @@ class ResultadoRubrica extends Singleton{
 		
 		foreach ($resultados as $resultado) {
 		
-			$idPersonasEvaluadas= "SELECT a.Persona_idPersona   from asignacionpersonacalificada as a 
+			$idPersonasEvaluadas= "SELECT a.idPersonaCalificada   from asignacionpersonacalificada as a 
 								where a.ResultadoRubrica_idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
 			$resultadosidPersonasEvaluadas = $this->conexionMysql->realizarConsulta($idPersonasEvaluadas,true);
 			
@@ -45,7 +45,7 @@ class ResultadoRubrica extends Singleton{
 			foreach ($resultadosidPersonasEvaluadas as $id ) {
 				
 					$consulta = "select p.ApepPer , p.ApemPer , p.NomPer  from PERSONA as p 
-								where p.CodPer ='".$id["Persona_idPersona"]."'";
+								where p.CodPer ='".$id["idPersonaCalificada"]."'";
 					$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
 
 					foreach ($resultados as $persona) {	
@@ -54,7 +54,7 @@ class ResultadoRubrica extends Singleton{
 					}	
 			}
 
-			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["PERSONA_IDPERSONA"]."'";
+			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["idDocenteCalificador"]."'";
 			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
 			
 			$respaldo[$contadorResultado] = 
