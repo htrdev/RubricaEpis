@@ -114,7 +114,6 @@ class ResultadoRubrica extends Singleton{
 			$contadorResultado++;
 
 		}
-
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
 	}

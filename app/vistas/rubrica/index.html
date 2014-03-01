@@ -36,7 +36,7 @@
 								
 								<td class="td-actions">
 									<div class="hidden-phone visible-desktop action-buttons">
-										<a class="blue" href="#MisRubricas/{{rubricaCreada.id}}/ListarEstadoRubrica">
+										<a class="blue" href="#rubricas/misrubricas/{{rubricaCreada.idModeloRubrica}}">
 											<i class="icon-zoom-in bigger-130"></i>
 										</a>
 									</div>
@@ -48,7 +48,7 @@
 
 											<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
 												<li>
-													<a href="#MisRubricas/{{rubricaCreada.id}}/ListarEstadoRubrica" class="tooltip-info" data-rel="tooltip" title="View">
+													<a href="#rubricas/misrubricas/{{rubricaCreada.idModeloRubrica}}" class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="icon-zoom-in bigger-120"></i>
 														</span>
@@ -93,11 +93,10 @@
 							
 							<td class="td-actions">
 								<div class="hidden-phone visible-desktop action-buttons">
-									<a class="blue" href="#rubricas/{{rubricaAsignada.idModeloRubrica}}/ver">
+									<a class="blue" href="#rubricas/asignadas/{{rubricaAsignada.idModeloRubrica}}">
 										<i class="icon-zoom-in bigger-130"></i>
 									</a>
 
-									
 								</div>
 								<div class="hidden-desktop visible-phone">
 									<div class="inline position-relative">
@@ -107,14 +106,13 @@
 
 										<ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
 											<li>
-												<a ng-click="Interfaz.alert2()" class="tooltip-info" data-rel="tooltip" title="View">
+												<a href="#rubricas/asignadas/{{rubricaAsignada.idModeloRubrica}}" class="tooltip-info" data-rel="tooltip" title="View">
 													<span class="blue">
 														<i class="icon-zoom-in bigger-120"></i>
 													</span>
 												</a>
 											</li>
 
-											
 										</ul>
 									</div>
 								</div>

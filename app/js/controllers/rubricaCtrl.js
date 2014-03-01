@@ -135,8 +135,8 @@ rubricaApp.controller('misRubricasCtrl',
 		obtenerRubricasPorPersona();
 	});
 
-rubricaApp.controller('verResultadoRubricaCtrl',
-	function verResultadoRubricaCtrl($scope,Rubrica,$routeParams){
+rubricaApp.controller('verRubricasAsignadasCtrl',
+	function verRubricasAsignadasCtrl($scope,Rubrica,$routeParams){
 		$scope.resultadoRubricaPorRubricaAsignada = [];
 		$scope.idRubricaAsignada = $routeParams.idRubricaAsignada;
 
@@ -150,3 +150,19 @@ rubricaApp.controller('verResultadoRubricaCtrl',
 		};
 		$scope.obtenerResultadoRubricaPorRubricaAsignada();
 	});
+
+rubricaApp.controller('verRubricasCreadasCtrl',
+	function verRubricasCreadasCtrl($scope,Rubrica,$routeParams){
+		$scope.resultadoRubricaPorRubricaCreada = [];
+		$scope.idRubricaCreada = $routeParams.idRubricaCreada;
+
+		$scope.obtenerResultadoRubricaPorRubricaCreada = function(){
+			console.log($routeParams.idRubricaAsignada);
+				Rubrica.obtenerResultadoRubricaPorRubricaCreada($routeParams.idRubricaCreada)
+				.success(function(data){
+					$scope.resultadoRubricaPorRubricaCreada = data;
+				});
+		};
+		$scope.obtenerResultadoRubricaPorRubricaAsignada();
+	});
+
