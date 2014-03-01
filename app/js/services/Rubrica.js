@@ -5,6 +5,14 @@ rubricaApp.factory('Rubrica',function($http){
 	var urlBase = 'http://rubricaepis:8080/app/modulos/';
 	var dataFactory = {};
 
+	dataFactory.agregarModeloRubrica = function(){
+		return $http.post(
+				    urlBase+'Rubrica.php', 
+				    {metodo: 'obtenerInformacionNuevaRubrica'}
+				 );
+	};
+
+
 	dataFactory.obtenerInformacionNuevaRubrica = function(){
 		return $http.post(
 				    urlBase+'Rubrica.php', 
@@ -23,6 +31,14 @@ rubricaApp.factory('Rubrica',function($http){
 		return $http.post(
 				    urlBase+'ResultadoRubrica.php', 
 				    {metodo: 'listarResultadoRubricaPorcionRubricaAsignada'
+				    ,idModeloRubrica : pidModeloRubrica}
+				 );
+	};
+
+	dataFactory.obtenerResultadoRubricaPorRubricaCreada = function(pidModeloRubrica){
+		return $http.post(
+				    urlBase+'ResultadoRubrica.php', 
+				    {metodo: 'listarResultadoRubricaPorIDModeloRubrica'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
 	};

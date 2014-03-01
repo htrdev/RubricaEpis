@@ -109,7 +109,7 @@ class ModeloRubrica extends Singleton{
 
 
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");
-		$query = "SELECT  Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,fechaInicioRubrica ,fechaFinalRubrica  FROM modelorubrica AS M 
+		$query = "SELECT idModeloRubrica,Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,fechaInicioRubrica ,fechaFinalRubrica  FROM modelorubrica AS M 
 				  WHERE Docente_Persona_idPersona = '".$CodPer."'";
 		$resultados = $this->conexionMysql->realizarConsulta($query,true);
 
@@ -122,7 +122,9 @@ class ModeloRubrica extends Singleton{
 			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
 			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
 			$misRubricas[] = 
-				array("semestre"=>$semestre[0]["Semestre"],
+				array(
+					"idModeloRubrica"=>$resultado["idModeloRubrica"],
+					"semestre"=>$semestre[0]["Semestre"],
 					"curso"=>$curso[0]["DesCurso"],
 					"calificaA"=>$resultado["calificacionRubrica"],
 					"fechaInicio"=>$resultado["fechaInicioRubrica"],

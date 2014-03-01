@@ -163,6 +163,6 @@ rubricaApp.controller('verRubricasCreadasCtrl',
 					$scope.resultadoRubricaPorRubricaCreada = data;
 				});
 		};
-		$scope.obtenerResultadoRubricaPorRubricaAsignada();
+		$scope.obtenerResultadoRubricaPorRubricaCreada();
 	});
 

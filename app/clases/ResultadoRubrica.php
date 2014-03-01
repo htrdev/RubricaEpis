@@ -99,7 +99,7 @@ class ResultadoRubrica extends Singleton{
 				$alumnos = $this->conexionSqlServer->realizarConsulta($query,true);
 
 				$resultadosAlumnosEvaluados[$i] = 
-				array("nombreCompleto"=>$alumnos[0]["ApepPer"]." ".$alumnos[0]["ApemPer"].", ".$alumnos[0]["NomPer"]
+				array("nombreCompletoAlumno"=>$alumnos[0]["ApepPer"]." ".$alumnos[0]["ApemPer"].", ".$alumnos[0]["NomPer"]
 					); 
 				$i++;
 			}

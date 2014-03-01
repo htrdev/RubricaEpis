@@ -6,7 +6,7 @@ rubricaApp.filter('alumnos',function(){
 	return function(alumnos){
 		var listaAlumnos ="<ul>";
 		alumnos.forEach(function(alumno){
-			listaAlumnos += "<li>"+alumno.nombreCompleto+"</li>"
+			listaAlumnos += "<li>"+alumno.nombreCompletoAlumno+"</li>"
 		});
 		listaAlumnos += "</ul>"
 		return listaAlumnos;
