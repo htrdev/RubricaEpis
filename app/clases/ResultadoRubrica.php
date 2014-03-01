@@ -118,15 +118,4 @@ class ResultadoRubrica extends Singleton{
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
 	}
-
-
-	public listarCalificacionesPromedioPorModeloRubrica(){
-
-
-	$query="";
-	
-	$resultados = $this->conexionSqlServer->realizarConsulta($query,true);
-		
-	}
-
 }
