@@ -14,6 +14,7 @@ $objRubrica = ModeloRubrica::obtenerObjeto();
 switch($metodo){
 	case 'obtenerInformacionNuevaRubrica' : echo $objRubrica->obtenerInformacionNuevaRubrica();break;
 	case 'obtenerRubricasPorPersona' : echo $objRubrica->obtenerRubricasPorPersona();break;
+	case 'agregarModeloRubrica' : $objRubrica->agregarModeloRubrica($modeloRubrica);
 }
 
 //Metodos

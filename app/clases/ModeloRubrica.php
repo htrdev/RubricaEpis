@@ -30,7 +30,10 @@ class ModeloRubrica extends Singleton{
 	public function agregarModeloRubrica($agregarModeloRubrica){
 		$queryAgregarModeloRubrica = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
+		$queryAgregarDocentes = false;
+
 		$this->conexionMysql->iniciarTransaccion();
+
 		$queryInsertarModeloRubrica="insert into modelorubrica
 		(Curso_idCurso, Semestre_idSemestre, fechaInicioRubrica,fechaFinalRubrica,
 		 Docente_Persona_idPersona,calificacionRubrica)
@@ -38,19 +41,56 @@ class ModeloRubrica extends Singleton{
 				,'".$agregarModeloRubrica["Semestre_idSemestre"]."'
 				,'".$agregarModeloRubrica["fechaInicioRubrica"]."'
 				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
-				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
-				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
+				,'".$agregarModeloRubrica["calificacionRubrica"]."'
+				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'";
+
 		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
+		
 		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
+		
 		$funcionoQueryAgregarCriteriosEvaluacion=
 		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
+/*
+		
+		$this->agregarModelosDocentes($idModeloRubrica,$agregarModeloRubrica["docentesAsignados"]); */
+
 		$funcionoTransaccion = 
 			$this->conexionMysql->finalizarTransaccion(
-				array($funcionoQueryAgregarCriteriosEvaluacion
-						,$queryAgregarModeloRubrica)
+				array($funcionoQueryAgregarCriteriosEvaluacion					
+					,$queryAgregarModeloRubrica)
 				);
 		return $funcionoTransaccion;
+		}
+
+
+/*	public function agregarModelosDocentes($idModeloRubrica,$docentes){
+		
+		$query = "INSERT INTO resultadorubrica (fechaCompletadoRubrica,idDocenteCalificador,ModeloRubrica_idModelRubrica,estadoRubrica,totalRubrica)
+		values";
+
+		$numeroElementos = count($docentes);
+		$fechaCompletadoRubrica="";
+		$estadoRubrica=0;
+		$totalRubrica=0.00;
+		$i = 0;
+		foreach($docentes as $asignarDocentes){
+			
+			$query.= "('".$fechaCompletadoRubrica."','".$asignarDocentes["idDocentesAsignados"]."','".$idModeloRubrica."','".$estadoRubrica."','".$totalRubrica."')";
+			if(++$i == $numeroElementos){
+				$query.=";";
+			}
+			else{
+				$query.=",";
+			}
+		}
+		$funciono = $this->conexionMysql->realizarConsulta($query,false);
+		//return $funciono;
+				
 	}
+	
+*/
+
+
 	public function agregarCriteriosEvaluacion($agregarModeloRubrica,$idModeloRubrica){
 		$funcionoQueryAgregarCriteriosEvaluacion = true;
 		$objCriterioEvaluacion = new AsignacionCriterioEvaluacion();

@@ -159,8 +159,7 @@ class ResultadoAprendizaje extends Singleton{
 
 		$queryListarResultadoAprendisajeCreadosPorEscuela = "SELECT R.idResultadoAprendizaje,R.codigoResultadoAprendizaje ,R.tituloResultadoAprendizaje ,R.definicionResultadoAprendizaje   FROM resultadoaprendizaje AS R 
 															 WHERE R.tipoResultadoAprendizaje = '".$escuela."'";
-		$resultadoListarResultadoAprendisajeCreadosPorEscuela = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorEscuela,true);		
-		
+		$resultadoListarResultadoAprendisajeCreadosPorEscuela = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorEscuela,true);
 		$resultadosAprendizajeEscuela= array();
 		$contador=0;
 		foreach ($resultadoListarResultadoAprendisajeCreadosPorEscuela as $resultado) {
@@ -183,7 +182,6 @@ class ResultadoAprendizaje extends Singleton{
 
 	
 		$codPer=$this->conexion->obtenerVariableSesion("CodPer");
-
 		$queryListarResultadoAprendisajeCreadosPorDocente = "SELECT R.ResultadoAprendizaje_idResultadoAprendizaje FROM resultadoaprendizajedocente AS R
 															 WHERE R.Docente_Persona_idPersona = '".$codPer."'";
 		$resultadoListarResultadoAprendisajeCreadosPorDocente = $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorDocente,true);			
