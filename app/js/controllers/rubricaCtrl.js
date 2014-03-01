@@ -3,7 +3,9 @@
 rubricaApp.controller('nuevoRubricaCtrl',
 	function nuevoRubricaCtrl($scope,Rubrica)
 	{
-		$scope.loader = true;
+		$scope.loader = {
+			estadoLoader : true
+		};
 		$scope.rubrica = {
 			idCurso : 1,
 			idSemestre : 2,
@@ -22,7 +24,7 @@ rubricaApp.controller('nuevoRubricaCtrl',
 					$scope.resultadosAprendizaje = data.resultadosAprendizaje.resultadosAprendizaje;
 					$scope.docentes = data.docentes;
 					$scope.cursos = data.cursos;
-					$scope.loader = false;
+					$scope.loader.estadoLoader = false;
 				});
 		};
 
@@ -90,14 +92,16 @@ rubricaApp.controller('misRubricasCtrl',
 		$scope.asd = 50;
 		$scope.misRubricas = [];
 		$scope.rubricasAsignadas = [];
-		$scope.loader = true;
+		$scope.loader = {
+			estadoLoader : true
+		};
 
 		var obtenerRubricasPorPersona = function(){
 			Rubrica.obtenerRubricasPorPersona()
 				.success(function(data){
 					$scope.misRubricas = data.misRubricas;
 					$scope.rubricasAsignadas = data.rubricasAsignadas;
-					$scope.loader = false;
+					$scope.loader.estadoLoader = false;
 				});
 
 		};
@@ -129,4 +133,20 @@ rubricaApp.controller('misRubricasCtrl',
 
 		//EJECUCION DE METODOS
 		obtenerRubricasPorPersona();
+	});
+
+rubricaApp.controller('verResultadoRubricaCtrl',
+	function verResultadoRubricaCtrl($scope,Rubrica,$routeParams){
+		$scope.resultadoRubricaPorRubricaAsignada = [];
+		$scope.idRubricaAsignada = $routeParams.idRubricaAsignada;
+
+		$scope.obtenerResultadoRubricaPorRubricaAsignada = function(){
+			console.log($routeParams.idRubricaAsignada);
+				Rubrica.obtenerResultadoRubricaPorRubricaAsignada($routeParams.idRubricaAsignada)
+				.success(function(data){
+					$scope.resultadosRubricaPorRubricaAsignada = data;
+					console.log($scope.resultadosRubricaPorRubricaAsignada);
+				});
+		};
+		$scope.obtenerResultadoRubricaPorRubricaAsignada();
 	});

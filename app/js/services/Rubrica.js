@@ -19,6 +19,14 @@ rubricaApp.factory('Rubrica',function($http){
 				 );
 	};
 
+	dataFactory.obtenerResultadoRubricaPorRubricaAsignada = function(pidModeloRubrica){
+		return $http.post(
+				    urlBase+'ResultadoRubrica.php', 
+				    {metodo: 'listarResultadoRubricaPorcionRubricaAsignada'
+				    ,idModeloRubrica : pidModeloRubrica}
+				 );
+	};
+
 	return dataFactory;
 	
 });

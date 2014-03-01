@@ -4,7 +4,7 @@
 		<small ng-show="EstaRubricasCreadas"><i class="icon-double-angle-right"></i> Mis Rubricas</small>
 		<small ng-hide="EstaRubricasCreadas"><i class="icon-double-angle-right"></i> Rubricas Asignadas</small></h3>
 	</div>
-	<div id="contenedorPrincipal"	ng-if="!loader">
+	<div id="contenedorPrincipal"	ng-if="!loader.estadoLoader" class="animation">
 		<div class="row-fluid" id="RubricasCreadas" ng-show="EstaRubricasCreadas">
 			<div class="span12">
 				<div class="row-fluid">
@@ -39,13 +39,7 @@
 										<a class="blue" href="#MisRubricas/{{rubricaCreada.id}}/ListarEstadoRubrica">
 											<i class="icon-zoom-in bigger-130"></i>
 										</a>
-
-										<a class="green"  ng-click="Interfaz.alert1()">
-											<i class="icon-pencil bigger-130"></i>
-										</a>
-
 									</div>
-
 									<div class="hidden-desktop visible-phone">
 										<div class="inline position-relative">
 											<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
@@ -57,14 +51,6 @@
 													<a href="#MisRubricas/{{rubricaCreada.id}}/ListarEstadoRubrica" class="tooltip-info" data-rel="tooltip" title="View">
 														<span class="blue">
 															<i class="icon-zoom-in bigger-120"></i>
-														</span>
-													</a>
-												</li>
-
-												<li>
-													<a  ng-click="Interfaz.alert1()" class="tooltip-success" data-rel="tooltip" title="Edit">
-														<span class="green">
-															<i class="icon-edit bigger-120"></i>
 														</span>
 													</a>
 												</li>
@@ -107,13 +93,11 @@
 							
 							<td class="td-actions">
 								<div class="hidden-phone visible-desktop action-buttons">
-									<a class="blue" ng-click="Interfaz.alert2()">
+									<a class="blue" href="#rubricas/{{rubricaAsignada.idModeloRubrica}}/ver">
 										<i class="icon-zoom-in bigger-130"></i>
 									</a>
 
-									<a class="green" ng-click="Interfaz.alert3()">
-										<i class=" icon-edit bigger-130"></i>
-									</a>
+									
 								</div>
 								<div class="hidden-desktop visible-phone">
 									<div class="inline position-relative">
@@ -130,13 +114,7 @@
 												</a>
 											</li>
 
-											<li>
-												<a ng-click="Interfaz.alert3()" class="tooltip-success" data-rel="tooltip" title="Edit">
-													<span class="green">
-														<i class=" icon-edit bigger-120"></i>
-													</span>
-												</a>
-											</li>
+											
 										</ul>
 									</div>
 								</div>
@@ -148,5 +126,7 @@
 			</div>	
 		</div>
 	</div>
+	<div ng-if="loader.estadoLoader" class="animation">
 	<pantalla-loading loader="loader">Cargando Rubricas ... </pantalla-loading>
+	</div>
 </div>

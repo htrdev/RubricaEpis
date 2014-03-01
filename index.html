@@ -9,7 +9,30 @@
 
 		<!--basic styles-->
 		<link rel="stylesheet" type="text/css" href="assets/css/estilo.css">
-		<style type="text/css"></style>
+		<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+		<style type="text/css">
+			.animation.ng-enter, .animation.ng-leave {
+			  -webkit-transition:1s linear all;
+			  transition:1s linear all;
+			}
+
+			.animation.ng-enter {
+			  opacity: 0;
+			}
+
+			.animation.ng-enter.ng-enter-active {
+			  opacity: 1;
+			}
+
+			.animation.ng-leave {
+			  opacity: 1;
+			}
+
+			.animation.ng-leave.ng-leave-active {
+			  opacity: 0;
+			}
+
+		</style>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
@@ -28,7 +51,6 @@
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
-		<link rel="stylesheet" href="assets/css/magic.css" />
 
 
 		<!--[if lte IE 8]>
@@ -36,7 +58,8 @@
 		<![endif]-->
 
 		<!--inline styles related to this page-->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	</head>
 
 	<body ng-controller="mainCtrl" ng-cloak="">
 		<div class="navbar">
@@ -159,12 +182,12 @@
 				</div>
 			</div>
 
-			<div class="main-content" style="position:relative">
-
-				<div ng-view class="page-content">
-					
-				</div><!--/.page-content-->
-
+			<div class="main-content">
+				<div>
+					<div ng-view class="page-content">
+						
+					</div><!--/.page-content-->
+				</div>
 			</div><!--/.main-content-->
 		</div><!--/.main-container-->
 
@@ -225,7 +248,7 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/colorpicker.css">
 		<!--inline scripts related to this page-->
 
-		<script type="text/javascript" src="app/includes/angular/angular.js"></script>
+		<script type="text/javascript" src="app/includes/angular/angular.min.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-sanitize.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-route.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-animate.min.js"></script>
@@ -233,6 +256,8 @@
 		<script type="text/javascript" src="assets/js/sortable.js"></script>
 		<script type="text/javascript" src="app/js/app.js"></script>
 		<script type="text/javascript" src="app/js/directives.js"></script>
+		<script type="text/javascript" src="app/js/filters.js"></script>
+
 
 		<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate','ui.bootstrap.pagination']);
+var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate']);
 var urlServidor = "http://rubricaepis:8080/app/";
 
 rubricaApp.config(['$routeProvider','$locationProvider',
@@ -14,9 +14,9 @@ rubricaApp.config(['$routeProvider','$locationProvider',
         templateUrl: urlServidor+'vistas/rubrica/index.html',
         controller: 'misRubricasCtrl',
       }).
-      when('/rubricas/:idRubrica/completar',{
-        templateUrl: urlServidor+'vistas/rubrica/ListarEstadoRubrica.html',
-        controller: 'listarEstadoRubricaCtrl',
+      when('/rubricas/:idRubricaAsignada/ver',{
+        templateUrl: urlServidor+'vistas/rubrica/ver.html',
+        controller: 'verResultadoRubricaCtrl',
       }).
       when('/resultadoAprendizaje/nuevo',{
         templateUrl: urlServidor+'vistas/resultadoAprendizaje/nuevo.html',

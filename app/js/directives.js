@@ -82,7 +82,7 @@ interfaz.pantallaLoading = function(){
               loader : '='
             },
 
-            template : "<div class='row-fluid' ng-if='loader.estadoLoader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
+            template : "<div class='row-fluid animate' ng-if='loader.estadoLoader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
           };
   
 };
