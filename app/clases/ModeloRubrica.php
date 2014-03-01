@@ -41,8 +41,8 @@ class ModeloRubrica extends Singleton{
 				,'".$agregarModeloRubrica["Semestre_idSemestre"]."'
 				,'".$agregarModeloRubrica["fechaInicioRubrica"]."'
 				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
-				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
-				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
+				,'".$agregarModeloRubrica["calificacionRubrica"]."'
+				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'";
 
 		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
 		
