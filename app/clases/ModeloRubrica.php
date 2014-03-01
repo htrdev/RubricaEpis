@@ -50,21 +50,20 @@ class ModeloRubrica extends Singleton{
 		
 		$funcionoQueryAgregarCriteriosEvaluacion=
 		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
-
-		$funcionoQueryAgregarDocentes
-		$this->agregarModelosDocentes($idModeloRubrica,$agregarModeloRubrica["docentesAsignados"]);
+/*
+		
+		$this->agregarModelosDocentes($idModeloRubrica,$agregarModeloRubrica["docentesAsignados"]); */
 
 		$funcionoTransaccion = 
 			$this->conexionMysql->finalizarTransaccion(
-				array($funcionoQueryAgregarCriteriosEvaluacion
-					,$funcionoQueryAgregarDocentes
+				array($funcionoQueryAgregarCriteriosEvaluacion					
 					,$queryAgregarModeloRubrica)
 				);
 		return $funcionoTransaccion;
 		}
 
 
-	public function agregarModelosDocentes($idModeloRubrica,$docentes){
+/*	public function agregarModelosDocentes($idModeloRubrica,$docentes){
 		
 		$query = "INSERT INTO resultadorubrica (fechaCompletadoRubrica,idDocenteCalificador,ModeloRubrica_idModelRubrica,estadoRubrica,totalRubrica)
 		values";
@@ -89,7 +88,7 @@ class ModeloRubrica extends Singleton{
 				
 	}
 	
-
+*/
 
 
 	public function agregarCriteriosEvaluacion($agregarModeloRubrica,$idModeloRubrica){
