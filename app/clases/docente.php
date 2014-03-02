@@ -14,7 +14,7 @@ class Docente extends Singleton{
 	}
 
 	public function listarDocenteActivo(){
-		$query = "select distinct p.NomPer, p.ApepPer, p.ApemPer, s.Semestre from carga as c
+		$query = "select distinct p.CodPer, p.NomPer, p.ApepPer, p.ApemPer, s.Semestre from carga as c
 		inner join PERSONA as p on p.CodPer = c.codper
 		inner join curso as cu on cu.idcurso = c.idcurso
 		inner join SEMESTRE as s on s.IdSem = c.idsem where p.CodEstamento =1 and s.Activo='1'";

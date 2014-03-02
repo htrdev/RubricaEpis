@@ -19,7 +19,7 @@ class AsignacionCriterioEvaluacion{
 		$numeroElementos = count($CriterioEvaluacion);
 		$i = 0;
 		foreach($CriterioEvaluacion as $AsignarCriterioEvaluacion){
-			$query.= "('".$idModeloRubrica."','".$AsignarCriterioEvaluacion["CriterioEvaluacion_idCriterioEvaluacion"]."')";
+			$query.= "('".$idModeloRubrica."','".$AsignarCriterioEvaluacion["idCriterioEvaluacion"]."')";
 			if(++$i == $numeroElementos){
 				$query.=";";
 			}

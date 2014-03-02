@@ -3,16 +3,16 @@
 	<div>
 		<h3 class="header lighter blue" style="margin-top:0">Rubricas
 		<small><i class="icon-double-angle-right"></i> Nueva Rubrica</small>
-		<small ng-hide="Interfaz.EstaCuestionario"><i class="icon-double-angle-right"></i> Datos Generales</small>
-		<small ng-show="Interfaz.EstaCuestionario"><i class="icon-double-angle-right"></i> Cuestionario</small></h3>
+		<small ng-hide="Formulario.EstaCuestionario"><i class="icon-double-angle-right"></i> Datos Generales</small>
+		<small ng-show="Formulario.EstaCuestionario"><i class="icon-double-angle-right"></i> Cuestionario</small></h3>
 	</div>
 	<div class="row-fluid" id="main" ng-if="!loader.estadoLoader" >
-		<div id="DatosGenerales" ng-hide="Interfaz.EstaCuestionario" >
+		<div id="DatosGenerales" ng-hide="Formulario.EstaCuestionario" >
 			<div class="row-fluid">
 				<div class="control-group span6">
 					<label class="control-label" for="cboCurso">Curso </label>
 					<div class="controls">
-						<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" cmb-chosen elementos="cursos" ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado">
+						<select class="chzn-select" id="cboCurso" data-placeholder="Seleccione el Curso.." style="width:250px" cmb-chosen elementos="cursos" ng-options="curso.CodCurso+' - '+curso.DesCurso group by curso.CicloCurso for curso in cursos" ng-model="cursoSeleccionado" ng-change="Formulario.callBackCboCurso(cursoSeleccionado)">
 							<option value=""> -- Escoje Curso -- </option>
 						</select>
 					</div>
@@ -22,13 +22,13 @@
 						<label class="control-label" for="tipoRubrica">Rubrica en </label>
 						<div class="controls">
 							<label class="radio inline" style:"padding-left:0px">
-								<input name="tipoRubrica" type="radio"> Curso
+								<input name="tipoRubrica" ng-model="modeloRubrica.tipoModeloRubrica" value="Curso" type="radio"> Curso
 							</label>
 							<label class="radio inline">
-								<input name="tipoRubrica" type="radio"> Proyecto
+								<input name="tipoRubrica" ng-model="modeloRubrica.tipoModeloRubrica" value="Proyecto" type="radio"> Proyecto
 							</label>
 							<label class="radio inline">
-								<input name="tipoRubrica" type="radio"> Otro 
+								<input name="tipoRubrica" ng-model="modeloRubrica.tipoModeloRubrica" value="Otro" type="radio"> Otro 
 							</label>
 							<input type="text" name="semestreAcademico" value="" style="margin:0 0 0 4px;max-width:150px">
 						</div>
@@ -48,10 +48,10 @@
 							<label for="cboDocente" class="control-label">Calificacion A</label>
 							<div class="controls">
 								<label class="radio inline">
-									<input name="calificacionA" type="radio">Alumnos	
+									<input name="calificacionA" ng-model="modeloRubrica.calificacionRubrica" type="radio" value="Alumnos">Alumnos	
 								</label>
 								<label class="radio inline">
-									<input name="calificacionA" type="radio">Docentes
+									<input name="calificacionA" ng-model="modeloRubrica.calificacionRubrica" type="radio" value="Docentes">Docentes
 								</label>
 							</div>
 						</div>
@@ -70,10 +70,9 @@
 											<div class="slim-scroll" data-height="250px">
 												<div class="content">
 													<div ng-repeat="docente in docentes | filter : txtBusqueda" >
-														 <div class="alert-{{docente.estaSeleccionado}} alert" >
-															<input type="checkbox" ng-model="docente.estaSeleccionado" style="opacity:1;position:static" ng-true-value="success" ng-false-value=""/>
-															{{docente.ApepPer+' '+docente.ApemPer+', '+docente.NomPer}}
-														</div>
+														<label class="checkbox">
+															<input type="checkbox" ng-model="docente.estaSeleccionado" ng-change="Formulario.AgregarDocente(docente)"/>{{docente.ApepPer+' '+docente.ApemPer+', '+docente.NomPer}}
+														</label>
 													</div>
 												</div>
 											</div>
@@ -91,11 +90,11 @@
 							<div class="controls">
 								<div class="control-group">
 									<label for="fechaInicio" class="control-label inline">Fecha Inicio</label>
-									<input class="date-picker fecha" id="fechaInicio" type="text" data-date-format="dd-mm-yyyy" />
+									<input class="date-picker fecha" fecha id="fechaInicio" type="text" data-date-format="dd-mm-yyyy" ng-model="modeloRubrica.fechaInicio"/>
 								</div>
 								<div class="control-group">
 									<label for="fechaInicio" class="control-label inline">Fecha Final</label>
-									<input class="date-picker fecha" id="fechaInicio" type="text" data-date-format="dd-mm-yyyy" />
+									<input class="date-picker fecha" fecha id="fechaFinal" type="text" data-date-format="dd-mm-yyyy" ng-model="modeloRubrica.fechaFinal"/>
 								</div>
 							</div>
 						</div>
@@ -104,10 +103,10 @@
 			</div>
 			<hr>
 			<grupo-botones>
-				<btn-siguiente ng-click="Interfaz.MostrarCuestionario()">Cuestionario </btn-siguiente>
+				<btn-siguiente ng-click="Formulario.MostrarCuestionario()">Cuestionario </btn-siguiente>
 			</grupo-botones>
 		</div>
-		<div id="Cuestionario" ng-show="Interfaz.EstaCuestionario" >
+		<div id="Cuestionario" ng-show="Formulario.EstaCuestionario" >
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="row-fluid">
@@ -132,7 +131,7 @@
 										<div class="content">
 											<div ng-repeat="criterioEvaluacion in resultadoAprendizajeSeleccionado.criteriosEvaluacion | filter : txtBusqueda" style="margin-bottom:5px">
 												<label class="checkbox">
-													<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Interfaz.AgregarCriterioSeleccionado(criterioEvaluacion)"/>{{criterioEvaluacion.descripcionCriterioEvaluacion}}
+													<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Formulario.AgregarCriterioSeleccionado(criterioEvaluacion)"/>{{criterioEvaluacion.descripcionCriterioEvaluacion}}
 												</label>
 											</div>
 										</div>
@@ -151,8 +150,8 @@
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
-								<ul id="tasks" class="item-list" ui-sortable ng-model="rubrica.criteriosEvaluacion">
-									<li class="item-blue clearfix" ng-repeat="criterio in rubrica.criteriosEvaluacion">
+								<ul id="tasks" class="item-list" ui-sortable ng-model="modeloRubrica.criteriosEvaluacion">
+									<li class="item-blue clearfix" ng-repeat="criterio in modeloRubrica.criteriosEvaluacion">
 											<input type="checkbox" style="opacity:1;position:static"/>
 											{{criterio.descripcionCriterioEvaluacion}}
 									</li>
@@ -164,8 +163,8 @@
 			</div>
 			<hr>
 			<grupo-botones>
-				<btn-atras ng-click="Interfaz.OcultarCuestionario()">Datos Generales </btn-atras>
-				<btn-guardar ng-click="Interfaz.Guardar()">Guardar </btn-guardar>
+				<btn-atras ng-click="Formulario.OcultarCuestionario()">Datos Generales </btn-atras>
+				<btn-guardar ng-click="Formulario.Guardar()">Guardar </btn-guardar>
 			</grupo-botones>
 		</div>
 	</div>
@@ -177,15 +176,14 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('.fecha').datepicker();
 		var agent = navigator.userAgent.toLowerCase();
-				if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
-				  $('#tasks').on('touchstart', function(e){
-					var li = $(e.target).closest('#tasks li');
-					if(li.length == 0)return;
-					var label = li.find('label.inline').get(0);
-					if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
-				});
+			if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+			  $('#tasks').on('touchstart', function(e){
+				var li = $(e.target).closest('#tasks li');
+				if(li.length == 0)return;
+				var label = li.find('label.inline').get(0);
+				if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+			});
 		$('#tasks').sortable({
 				opacity:0.8,
 				revert:true,
@@ -207,8 +205,7 @@
 				railVisible:true
 			});
 		});
-		
-		//mantener paleta criterios top
-		// $('#mantenerCriteriosTop').sticky({topSpacing:0});
+	//mantener paleta criterios top
+	// $('#mantenerCriteriosTop').sticky({topSpacing:0});
 	});
 </script>

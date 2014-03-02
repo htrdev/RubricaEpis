@@ -119,6 +119,17 @@ interfaz.gridVacio = function(){
     },
     template : "<div ng-if='!array.length' style='text-align:center;width:100%;font-style:italic' ng-transclude></div>"
   }
+};
+
+interfaz.fecha = function(){
+  return {
+    restrict: 'A',
+    link : function(scope,element,attrs){
+      element.datepicker({
+        language: "es"
+      });
+    }
+  }
 }
 
 
@@ -131,8 +142,7 @@ rubricaApp.directive("btnSiguiente",interfaz.btnSiguiente);
 rubricaApp.directive("grupoBotones",interfaz.grupoBotones);
 rubricaApp.directive("pantallaLoadingShow",interfaz.pantallaLoadingShow);
 rubricaApp.directive("pantallaGuardarExitoso",interfaz.pantallaGuardarExitoso);
-
-
+rubricaApp.directive("fecha",interfaz.fecha);
 
 rubricaApp.directive("cmbChosen", function(){
   var linker = function(scope,element,attrs){

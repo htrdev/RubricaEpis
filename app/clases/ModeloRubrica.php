@@ -31,17 +31,18 @@ class ModeloRubrica extends Singleton{
 		$queryAgregarModeloRubrica = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
 		$queryAgregarDocentes = false;
+		$CodPer = $this->conexionMysql->obtenerVariableSesion("CodPer");
 
 		$this->conexionMysql->iniciarTransaccion();
 
 		$queryInsertarModeloRubrica="insert into modelorubrica
 		(Curso_idCurso, Semestre_idSemestre, fechaInicioRubrica,fechaFinalRubrica,
 		 Docente_Persona_idPersona,calificacionRubrica)
-		values ('".$agregarModeloRubrica["Curso_idCurso"]."'
-				,'".$agregarModeloRubrica["Semestre_idSemestre"]."'
-				,'".$agregarModeloRubrica["fechaInicioRubrica"]."'
-				,'".$agregarModeloRubrica["fechaFinalRubrica"]."'
-				,'".$agregarModeloRubrica["Docente_Persona_idPersona"]."'
+		values ('".$agregarModeloRubrica["idCurso"]."'
+				,'".$agregarModeloRubrica["idSemestre"]."'
+				,'".$agregarModeloRubrica["fechaInicio"]."'
+				,'".$agregarModeloRubrica["fechaFinal"]."'
+				,'".$CodPer."'
 				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
 
 			

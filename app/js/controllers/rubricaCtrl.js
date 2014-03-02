@@ -3,24 +3,35 @@
 rubricaApp.controller('nuevoRubricaCtrl',
 	function nuevoRubricaCtrl($scope,Rubrica)
 	{
+		$scope.itemsSeleccionados = {
+			cursoSeleccionado : {
+				idcurso : 0,
+				DesCurso : "",
+				CodCurso : "",
+				CicloCurso : ""
+			}
+		};
+		
 		$scope.loader = {
 			estadoLoader : true
 		};
-		$scope.rubrica = {
-			idCurso : 1,
-			idSemestre : 2,
+
+		$scope.modeloRubrica = {
+			idCurso : 0,
+			idSemestre : 0,
 			fechaInicio : "",
 			fechaFinal : "",
-			docentes : [1,2,3,4],
-			calificacionRubrica : [],
+			docentes :[],
+			calificacionRubrica : "",
 			criteriosEvaluacion : [],
-			tipoRubrica : 'Curso'
+			tipoModeloRubrica : "",
 		};
 
-		var obtenerInformacionNuevaRubrica = function(){
+		$scope.obtenerInformacionNuevaRubrica = function(){
 			Rubrica.obtenerInformacionNuevaRubrica()
 				.success(function(data){
 					$scope.semestre = data.semestre;
+					$scope.modeloRubrica.idSemestre = $scope.semestre[0].IdSem;
 					$scope.resultadosAprendizaje = data.resultadosAprendizaje.resultadosAprendizaje;
 					$scope.docentes = data.docentes;
 					$scope.cursos = data.cursos;
@@ -28,29 +39,64 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				});
 		};
 
-		$scope.Interfaz =	{
+		
+
+		$scope.Formulario = {
+			EstaCuestionario : false,
+			AgregarDocente : function(docente){
+				if(docente.estaSeleccionado)
+				{
+					$scope.modeloRubrica.docentes.push(docente.CodPer);
+				}
+				else{
+					$scope.modeloRubrica.docentes.splice($scope.modeloRubrica.docentes.indexOf(docente),1);
+				}	
+			},
+			callBackCboCurso : function(cursoSeleccionado){
+				$scope.modeloRubrica.idCurso = cursoSeleccionado.idcurso;
+				console.log(cursoSeleccionado);
+			},
+
 			AgregarCriterioSeleccionado : function(criterio){
 				if(criterio.estaSeleccionado)
 				{
-					$scope.rubrica.criteriosEvaluacion.push(criterio);
+					$scope.modeloRubrica.criteriosEvaluacion.push(criterio);
 				}
 				else{
-					$scope.rubrica.criteriosEvaluacion.splice($scope.rubrica.criteriosEvaluacion.indexOf(criterio),1);
+					$scope.modeloRubrica.criteriosEvaluacion.splice($scope.modeloRubrica.criteriosEvaluacion.indexOf(criterio),1);
 				}
 			},
 
 			MostrarCuestionario : function(){
-				$scope.Interfaz.EstaCuestionario = true;
+				$scope.Formulario.EstaCuestionario = true;
+				console.log($scope.modeloRubrica);
+
 			},
 
 			OcultarCuestionario : function(){
-				$scope.Interfaz.EstaCuestionario = false;
+				$scope.Formulario.EstaCuestionario = false;
 			},
-
-			EstaCuestionario : false
+			cargarComponentes : function(){
+				$.fn.datepicker.dates['es'] = {
+	                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+	                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+	                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+	                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+	                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+	        		};
+			},
+			Guardar : function(){
+				console.log($scope.modeloRubrica);
+				Rubrica.agregarModeloRubrica($scope.modeloRubrica)
+					.success(function(data){
+						console.log(data);
+					});
+			}
 		}
 
-		obtenerInformacionNuevaRubrica();
+		//METODOS
+		$scope.obtenerInformacionNuevaRubrica();
+		$scope.Formulario.cargarComponentes();
 	});
 
 rubricaApp.controller('listarEstadoRubricaCtrl',
