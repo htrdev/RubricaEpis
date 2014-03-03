@@ -9,6 +9,24 @@
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- Volcando estructura de base de datos para rubricaepis
+CREATE DATABASE IF NOT EXISTS `rubricaepis` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `rubricaepis`;
+
+
+-- Volcando estructura para tabla rubricaepis.asignacioncriterioevaluacion
+CREATE TABLE IF NOT EXISTS `asignacioncriterioevaluacion` (
+  `idAsignacionCriterioEvaluacion` int(11) NOT NULL AUTO_INCREMENT,
+  `ModeloRubrica_idModeloRubrica` int(11) NOT NULL,
+  `CriterioEvaluacion_idCriterioEvaluacion` int(11) NOT NULL,
+  PRIMARY KEY (`idAsignacionCriterioEvaluacion`),
+  KEY `fk_AsginacionCriterioEvaluacion_ModeloRubrica1_idx` (`ModeloRubrica_idModeloRubrica`),
+  KEY `fk_AsginacionCriterioEvaluacion_CriterioEvaluacion1_idx` (`CriterioEvaluacion_idCriterioEvaluacion`),
+  CONSTRAINT `fk_AsginacionCriterioEvaluacion_CriterioEvaluacion1` FOREIGN KEY (`CriterioEvaluacion_idCriterioEvaluacion`) REFERENCES `criterioevaluacion` (`idCriterioEvaluacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_AsginacionCriterioEvaluacion_ModeloRubrica1` FOREIGN KEY (`ModeloRubrica_idModeloRubrica`) REFERENCES `modelorubrica` (`idModeloRubrica`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
+
 -- Volcando datos para la tabla rubricaepis.asignacioncriterioevaluacion: ~88 rows (aproximadamente)
 /*!40000 ALTER TABLE `asignacioncriterioevaluacion` DISABLE KEYS */;
 INSERT INTO `asignacioncriterioevaluacion` (`idAsignacionCriterioEvaluacion`, `ModeloRubrica_idModeloRubrica`, `CriterioEvaluacion_idCriterioEvaluacion`) VALUES
@@ -102,6 +120,15 @@ INSERT INTO `asignacioncriterioevaluacion` (`idAsignacionCriterioEvaluacion`, `M
 	(96, 5, 5);
 /*!40000 ALTER TABLE `asignacioncriterioevaluacion` ENABLE KEYS */;
 
+
+-- Volcando estructura para tabla rubricaepis.asignacionpersonacalificada
+CREATE TABLE IF NOT EXISTS `asignacionpersonacalificada` (
+  `ResultadoRubrica_idResultadoRubrica` int(11) NOT NULL,
+  `idPersonaCalificada` int(11) DEFAULT NULL,
+  KEY `fk_AsignacionPersonaCalificada_ResultadoRubrica1_idx` (`ResultadoRubrica_idResultadoRubrica`),
+  CONSTRAINT `fk_AsignacionPersonaCalificada_ResultadoRubrica1` FOREIGN KEY (`ResultadoRubrica_idResultadoRubrica`) REFERENCES `resultadorubrica` (`idResultadoRubrica`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Volcando datos para la tabla rubricaepis.asignacionpersonacalificada: ~6 rows (aproximadamente)
 /*!40000 ALTER TABLE `asignacionpersonacalificada` DISABLE KEYS */;
 INSERT INTO `asignacionpersonacalificada` (`ResultadoRubrica_idResultadoRubrica`, `idPersonaCalificada`) VALUES
@@ -112,6 +139,18 @@ INSERT INTO `asignacionpersonacalificada` (`ResultadoRubrica_idResultadoRubrica`
 	(3, 5),
 	(14, 10);
 /*!40000 ALTER TABLE `asignacionpersonacalificada` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla rubricaepis.calificacioncriterioevaluacion
+CREATE TABLE IF NOT EXISTS `calificacioncriterioevaluacion` (
+  `Rubrica_idResultadoRubrica` int(11) NOT NULL,
+  `calificacionResultadoRubrica` decimal(8,2) DEFAULT '0.00',
+  `AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion` int(11) NOT NULL,
+  KEY `fk_ResultadoRubrica_Rubrica1_idx` (`Rubrica_idResultadoRubrica`),
+  KEY `fk_ResultadoCriterioEvaluacion_AsginacionCriterioEvaluacion_idx` (`AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion`),
+  CONSTRAINT `fk_ResultadoCriterioEvaluacion_AsginacionCriterioEvaluacion1` FOREIGN KEY (`AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion`) REFERENCES `asignacioncriterioevaluacion` (`idAsignacionCriterioEvaluacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ResultadoRubrica_Rubrica1` FOREIGN KEY (`Rubrica_idResultadoRubrica`) REFERENCES `resultadorubrica` (`idResultadoRubrica`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.calificacioncriterioevaluacion: ~12 rows (aproximadamente)
 /*!40000 ALTER TABLE `calificacioncriterioevaluacion` DISABLE KEYS */;
@@ -129,6 +168,17 @@ INSERT INTO `calificacioncriterioevaluacion` (`Rubrica_idResultadoRubrica`, `cal
 	(6, 70.00, 95),
 	(6, 80.00, 96);
 /*!40000 ALTER TABLE `calificacioncriterioevaluacion` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla rubricaepis.criterioevaluacion
+CREATE TABLE IF NOT EXISTS `criterioevaluacion` (
+  `idCriterioEvaluacion` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcionCriterioEvaluacion` text,
+  `ResultadoAprendizaje_idResultadoAprendizaje` int(11) NOT NULL,
+  PRIMARY KEY (`idCriterioEvaluacion`),
+  KEY `fk_CriterioEvaluacion_ResultadoAprendizaje1_idx` (`ResultadoAprendizaje_idResultadoAprendizaje`),
+  CONSTRAINT `fk_CriterioEvaluacion_ResultadoAprendizaje1` FOREIGN KEY (`ResultadoAprendizaje_idResultadoAprendizaje`) REFERENCES `resultadoaprendizaje` (`idResultadoAprendizaje`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.criterioevaluacion: ~24 rows (aproximadamente)
 /*!40000 ALTER TABLE `criterioevaluacion` DISABLE KEYS */;
@@ -158,6 +208,21 @@ INSERT INTO `criterioevaluacion` (`idCriterioEvaluacion`, `descripcionCriterioEv
 	(36, 'XDD', 23),
 	(37, '234234', 24);
 /*!40000 ALTER TABLE `criterioevaluacion` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla rubricaepis.modelorubrica
+CREATE TABLE IF NOT EXISTS `modelorubrica` (
+  `idModeloRubrica` int(11) NOT NULL AUTO_INCREMENT,
+  `fechaCreacionRubrica` date NOT NULL,
+  `fechaInicioRubrica` date DEFAULT NULL,
+  `fechaFinalRubrica` date DEFAULT NULL,
+  `calificacionRubrica` varchar(45) DEFAULT NULL,
+  `Docente_Persona_idPersona` int(11) NOT NULL,
+  `Curso_idCurso` int(11) NOT NULL,
+  `Semestre_idSemestre` int(11) NOT NULL,
+  `tipoModeloRubrica` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idModeloRubrica`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.modelorubrica: ~38 rows (aproximadamente)
 /*!40000 ALTER TABLE `modelorubrica` DISABLE KEYS */;
@@ -202,6 +267,17 @@ INSERT INTO `modelorubrica` (`idModeloRubrica`, `fechaCreacionRubrica`, `fechaIn
 	(55, '0000-00-00', '0000-00-00', '0000-00-00', 'Alumnos', 1, 2, 1, NULL);
 /*!40000 ALTER TABLE `modelorubrica` ENABLE KEYS */;
 
+
+-- Volcando estructura para tabla rubricaepis.resultadoaprendizaje
+CREATE TABLE IF NOT EXISTS `resultadoaprendizaje` (
+  `idResultadoAprendizaje` int(11) NOT NULL AUTO_INCREMENT,
+  `definicionResultadoAprendizaje` text,
+  `tituloResultadoAprendizaje` text,
+  `codigoResultadoAprendizaje` varchar(10) DEFAULT NULL,
+  `tipoResultadoAprendizaje` varchar(50) DEFAULT 'Docente',
+  PRIMARY KEY (`idResultadoAprendizaje`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
 -- Volcando datos para la tabla rubricaepis.resultadoaprendizaje: ~22 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadoaprendizaje` DISABLE KEYS */;
 INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResultadoAprendizaje`, `tituloResultadoAprendizaje`, `codigoResultadoAprendizaje`, `tipoResultadoAprendizaje`) VALUES
@@ -229,6 +305,15 @@ INSERT INTO `resultadoaprendizaje` (`idResultadoAprendizaje`, `definicionResulta
 	(24, '534534534', '534543543', '4543543', 'Docente');
 /*!40000 ALTER TABLE `resultadoaprendizaje` ENABLE KEYS */;
 
+
+-- Volcando estructura para tabla rubricaepis.resultadoaprendizajedocente
+CREATE TABLE IF NOT EXISTS `resultadoaprendizajedocente` (
+  `ResultadoAprendizaje_idResultadoAprendizaje` int(11) NOT NULL,
+  `Docente_Persona_idPersona` int(11) NOT NULL,
+  PRIMARY KEY (`ResultadoAprendizaje_idResultadoAprendizaje`),
+  CONSTRAINT `fk_ResultadoAprendizajeDocente_ResultadoAprendizaje1` FOREIGN KEY (`ResultadoAprendizaje_idResultadoAprendizaje`) REFERENCES `resultadoaprendizaje` (`idResultadoAprendizaje`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Volcando datos para la tabla rubricaepis.resultadoaprendizajedocente: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadoaprendizajedocente` DISABLE KEYS */;
 INSERT INTO `resultadoaprendizajedocente` (`ResultadoAprendizaje_idResultadoAprendizaje`, `Docente_Persona_idPersona`) VALUES
@@ -238,6 +323,20 @@ INSERT INTO `resultadoaprendizajedocente` (`ResultadoAprendizaje_idResultadoApre
 	(15, 2),
 	(16, 1);
 /*!40000 ALTER TABLE `resultadoaprendizajedocente` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla rubricaepis.resultadorubrica
+CREATE TABLE IF NOT EXISTS `resultadorubrica` (
+  `idResultadoRubrica` int(11) NOT NULL AUTO_INCREMENT,
+  `fechaCompletadoRubrica` date DEFAULT NULL,
+  `idDocenteCalificador` int(11) DEFAULT NULL,
+  `ModeloRubrica_idModelRubrica` int(11) DEFAULT NULL,
+  `estadoRubrica` varchar(15) DEFAULT NULL,
+  `totalRubrica` decimal(8,2) DEFAULT '0.00',
+  PRIMARY KEY (`idResultadoRubrica`),
+  KEY `ModeloRubrica_idModelRubrica` (`ModeloRubrica_idModelRubrica`),
+  CONSTRAINT `ModeloRubrica_idModelRubrica` FOREIGN KEY (`ModeloRubrica_idModelRubrica`) REFERENCES `modelorubrica` (`idModeloRubrica`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.resultadorubrica: ~14 rows (aproximadamente)
 /*!40000 ALTER TABLE `resultadorubrica` DISABLE KEYS */;
@@ -257,6 +356,15 @@ INSERT INTO `resultadorubrica` (`idResultadoRubrica`, `fechaCompletadoRubrica`, 
 	(13, '0000-00-00', 2, 37, 'Pendiente', 0.00),
 	(14, '2014-03-01', 1, 33, 'Completado', 0.00);
 /*!40000 ALTER TABLE `resultadorubrica` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla rubricaepis.usuario
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `idUsuario` int(11) NOT NULL,
+  `passwordUsuario` varchar(45) DEFAULT NULL,
+  `tipoUsuario` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla rubricaepis.usuario: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
