@@ -34,6 +34,7 @@ abstract class Conexion extends Singleton{
 	} 
 }
 
+
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
@@ -76,9 +77,9 @@ class ConexionSQLServer extends Conexion{
 class ConexionMySQL extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = '192.168.1.88';
-		$this->usuario	= 'htrdev';
-		$this->password = '12345';
+		$this->servidor = 'localhost';
+		$this->usuario	= 'root';
+		$this->password = '123456';
 		$this->baseDeDatos = "rubricaepis";
 		$this->obtenerConexion();
 	}
