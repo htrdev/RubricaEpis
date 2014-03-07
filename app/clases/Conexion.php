@@ -46,7 +46,7 @@ class ConexionSQLServer extends Conexion{
 
 	public function obtenerConexion(){
 		 $this->conexion = mssql_connect($this->servidor,$this->usuario,$this->password) or die(mssql_get_last_message());
-        mssql_select_db($this->baseDeDatos,$this->conexion);
+       	 mssql_select_db($this->baseDeDatos,$this->conexion);
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
@@ -76,7 +76,7 @@ class ConexionSQLServer extends Conexion{
 class ConexionMySQL extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = '192.168.1.88';
+		$this->servidor = 'localhost';
 		$this->usuario	= 'htrdev';
 		$this->password = '12345';
 		$this->baseDeDatos = "rubricaepis";

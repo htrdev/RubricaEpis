@@ -11,7 +11,8 @@ rubricaApp.config(['$routeProvider','$locationProvider',
         controller: 'nuevoRubricaCtrl',
       }).
       when('/rubricas',{
-        templateUrl: urlServidor+'vistas/rubrica/index.html',
+        // templateUrl: urlServidor+'vistas/rubrica/index.html',
+        templateUrl:urlServidor+'vistas/rubrica/completar.html',
         controller: 'misRubricasCtrl',
       }).
       when('/rubricas/asignadas/:idRubricaAsignada',{
