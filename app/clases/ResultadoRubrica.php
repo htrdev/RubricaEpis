@@ -117,4 +117,78 @@ class ResultadoRubrica extends Singleton{
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
 	}
+
+	public function resultadoRubricaPorID($idResultadoRubrica){
+		$resultadoRubrica;
+		$queryIdModeloRubrica = "SELECT R.ModeloRubrica_idModelRubrica FROM resultadorubrica AS R
+								 WHERE R.idResultadoRubrica = '".$idResultadoRubrica."'";
+		$resultadoIdModeloRubrica = $this->conexionMysql->realizarConsulta($queryIdModeloRubrica,true);
+		$queryModeloRubrica = "SELECT M.Semestre_idSemestre,M.Curso_idCurso ,M.Docente_Persona_idPersona  FROM modelorubrica AS M 
+							   WHERE M.idModeloRubrica = '".$resultadoIdModeloRubrica[0]['ModeloRubrica_idModelRubrica']."'";
+		$resultadoModeloRubrica = $this->conexionMysql->realizarConsulta($queryModeloRubrica,true);
+		//semestre
+		$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S
+						  WHERE S.IdSem = '".$resultadoModeloRubrica[0]['Semestre_idSemestre']."'";
+		$resultadoSemestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
+		//curso
+		$queryCurso = "SELECT C.DesCurso ,C.CicloCurso  FROM curso AS C
+					WHERE C.idcurso = '".$resultadoModeloRubrica[0]['Curso_idCurso']."'";
+		$resultadoCurso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
+		//docenteCreador de la Rubrica 
+		$queryDocenteCreadorRubrica = "SELECT P.ApepPer ,P.ApemPer ,P.NomPer  FROM .PERSONA AS P 
+									   WHERE P.CodPer = '".$resultadoModeloRubrica[0]['Docente_Persona_idPersona']."'";
+		$resultadoDocenteCreadorRubrica = $this->conexionSqlServer->realizarConsulta($queryDocenteCreadorRubrica,true);
+		//alumnos Calificados
+		$queryAlumnosCalificados = "SELECT A.idPersonaCalificada  FROM asignacionpersonacalificada AS A
+									WHERE A.ResultadoRubrica_idResultadoRubrica  = '".$idResultadoRubrica."'";
+		$resultadoAlumnosCalificados = $this->conexionMysql->realizarConsulta($queryAlumnosCalificados,true);
+		$alumnosCalificados=array();
+		$contadorAlumnos=0;
+		foreach ($resultadoAlumnosCalificados as $alumno) {
+				//echo "alumno Calificado : ".$alumno['idPersonaCalificada']."\n";
+				$queryAlumnoCalificado = "SELECT P.ApepPer ,P.ApemPer ,P.NomPer  FROM .PERSONA AS P 
+									   WHERE P.CodPer = '".$alumno['idPersonaCalificada']."'";
+				$resultadoAlumnoCalificado= $this->conexionSqlServer->realizarConsulta($queryAlumnoCalificado,true);
+				
+				$alumnosCalificados[$contadorAlumnos]= 
+			  		array("nombreCompletoAlumno"=>$resultadoAlumnoCalificado[0]["ApepPer"]." ".$resultadoAlumnoCalificado[0]["ApemPer"].", ".$resultadoAlumnoCalificado[0]["NomPer"],
+					); 	
+				$contadorAlumnos++;
+		}
+		//criterios Evaluacion
+		$queryIdCriteriosEvaluacion = "SELECT A.CriterioEvaluacion_idCriterioEvaluacion  FROM asignacioncriterioevaluacion AS A 
+									WHERE A.ModeloRubrica_idModeloRubrica = '".$resultadoIdModeloRubrica[0]['ModeloRubrica_idModelRubrica']."'";
+		$resultadoIdCriterios = $this->conexionMysql->realizarConsulta($queryIdCriteriosEvaluacion,true);
+		$criteriosEvaluacion=array();
+		$contadorCriterios=0;
+		foreach ($resultadoIdCriterios as $criterio) {
+				//echo "alumno Calificado
+				$queryCriterio = "SELECT C.descripcionCriterioEvaluacion,C.ResultadoAprendizaje_idResultadoAprendizaje FROM criterioevaluacion AS C
+								  WHERE C.idCriterioEvaluacion = '".$criterio['CriterioEvaluacion_idCriterioEvaluacion']."'";
+				$resultadoCriterio= $this->conexionMysql->realizarConsulta($queryCriterio,true);
+				//resultadoaprendizaje
+				$queryRA = "SELECT R.codigoResultadoAprendizaje,R.tituloResultadoAprendizaje FROM resultadoaprendizaje AS R
+								  WHERE R.idResultadoAprendizaje =  '".$resultadoCriterio[0]['ResultadoAprendizaje_idResultadoAprendizaje']."'";
+				$resultadoRA= $this->conexionMysql->realizarConsulta($queryRA,true);
+				//			
+				$criteriosEvaluacion[$contadorCriterios]= 
+			  		array("idCriterioEvaluacion"=>$criterio['CriterioEvaluacion_idCriterioEvaluacion'],
+			  			  "descripcionCriterioEvaluacion"=>$resultadoCriterio[0]["descripcionCriterioEvaluacion"],
+			  			  "resultadoAprendizaje"=>$resultadoRA[0]["codigoResultadoAprendizaje"]." ".$resultadoRA[0]["tituloResultadoAprendizaje"]
+					); 	
+				$contadorCriterios++;
+		}
+		$resultadoRubrica = 
+				array("idResultadoRubrica"=>$idResultadoRubrica,
+					"semestre"=>$resultadoSemestre[0]['Semestre'],
+					"curso"=>$resultadoCurso[0]['DesCurso'],
+					"docenteCreadorRubrica"=>$resultadoDocenteCreadorRubrica[0]["ApepPer"]." ".$resultadoDocenteCreadorRubrica[0]["ApemPer"].", ".$resultadoDocenteCreadorRubrica[0]["NomPer"],
+					"ciclo"=>$resultadoCurso[0]['CicloCurso'],
+					"alumnosCalificados"=>$alumnosCalificados,
+					"criteriosEvaluacion"=>$criteriosEvaluacion					
+					); 
+		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubrica);
+		return $resultadoJson;
+
+	}
 }

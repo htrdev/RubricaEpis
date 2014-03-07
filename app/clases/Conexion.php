@@ -34,6 +34,7 @@ abstract class Conexion extends Singleton{
 	} 
 }
 
+
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
