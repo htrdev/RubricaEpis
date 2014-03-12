@@ -24,7 +24,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizaje | filter: txtBusqueda">
+							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizajeDocente | filter: txtBusqueda">
 								<td>{{resultadoAprendizaje.tituloResultadoAprendizaje}}</td>
 								<td>{{resultadoAprendizaje.definicionResultadoAprendizaje}}</td>
 								<td class="td-actions" style="min-width:80px">
@@ -85,7 +85,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizajeDocente | filter: txtBusqueda">
+							<tr ng-repeat="resultadoAprendizaje in resultadosAprendizaje | filter: txtBusqueda">
 								<td>{{resultadoAprendizaje.tituloResultadoAprendizaje}}</td>
 								<td>{{resultadoAprendizaje.definicionResultadoAprendizaje}}</td>
 								<td class="td-actions">

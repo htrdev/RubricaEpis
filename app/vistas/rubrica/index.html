@@ -30,9 +30,9 @@
 							<tr ng-repeat="rubricaCreada in misRubricas | filter: txtBusqueda">
 								<td>{{rubricaCreada.semestre}}</td>
 								<td>{{rubricaCreada.curso}}</td>
-								<td>{{rubricaCreada.calificaA}}</td>
-								<td>{{rubricaCreada.fechaInicio}}</td>
-								<td>{{rubricaCreada.fechaFinal}}</td>
+								<td>{{rubricaCreada.calificacionRubrica}}</td>
+								<td>{{rubricaCreada.fechaInicioRubrica}}</td>
+								<td>{{rubricaCreada.fechaFinalRubrica}}</td>
 								
 								<td class="td-actions">
 									<div class="hidden-phone visible-desktop action-buttons">
@@ -87,9 +87,9 @@
 						<tr ng-repeat="rubricaAsignada in rubricasAsignadas | filter: txtBusqueda">
 							<td>{{rubricaAsignada.semestre}}</td>
 							<td>{{rubricaAsignada.curso}}</td>
-							<td>{{rubricaAsignada.calificaA}}</td>
+							<td>{{rubricaAsignada.calificacionRubrica}}</td>
 							<td>{{rubricaAsignada.autor}}</td>
-							<td>{{rubricaAsignada.fechaFinal}}</td>
+							<td>{{rubricaAsignada.fechaFinalRubrica}}</td>
 							
 							<td class="td-actions">
 								<div class="hidden-phone visible-desktop action-buttons">

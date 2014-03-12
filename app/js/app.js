@@ -11,9 +11,13 @@ rubricaApp.config(['$routeProvider','$locationProvider',
         controller: 'nuevoRubricaCtrl',
       }).
       when('/rubricas',{
-        // templateUrl: urlServidor+'vistas/rubrica/index.html',
-        templateUrl:urlServidor+'vistas/rubrica/completar.html',
+        templateUrl: urlServidor+'vistas/rubrica/index.html',
+        //templateUrl:urlServidor+'vistas/rubrica/completar.html',
         controller: 'misRubricasCtrl',
+      }).
+      when('/rubricas/completar/:idResultadoRubrica',{
+        templateUrl: urlServidor+'vistas/rubrica/completar.html',
+        controller: 'completarRubricaCtrl'
       }).
       when('/rubricas/asignadas/:idRubricaAsignada',{
         templateUrl: urlServidor+'vistas/rubrica/verRubricasAsignadas.html',

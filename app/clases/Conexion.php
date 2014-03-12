@@ -38,7 +38,7 @@ abstract class Conexion extends Singleton{
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = '192.168.1.38';
+		$this->servidor = '192.168.1.36';
 		$this->usuario	= 'sa';
 		$this->password = '123cuatro';
 		$this->baseDeDatos = "matrixupt";

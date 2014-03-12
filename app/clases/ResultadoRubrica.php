@@ -73,6 +73,20 @@ class ResultadoRubrica extends Singleton{
 		return $resultadoJson;
 	}
 
+	public function listarResultadoRubricaPorDocente($idDocente){
+		$query = 
+		"SELECT  M.idModeloRubrica 
+				,M.Semestre_idSemestre 
+				,M.Curso_idCurso 
+				,M.calificacionRubrica 
+				,R.idDocenteCalificador 
+				,M.fechaFinalRubrica  
+		FROM resultadorubrica as R
+			INNER JOIN modelorubrica AS M 
+				ON M.idModeloRubrica = R.ModeloRubrica_idModelRubrica 
+				  WHERE R.idDocenteCalificador = '".$idDocente."'";
+		return $this->conexionMysql->realizarConsulta($query,true);
+	}
 
 	public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica){
 

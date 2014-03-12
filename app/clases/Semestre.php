@@ -18,6 +18,12 @@ class Semestre extends Singleton{
 		return $resultado;
 	}
 
+	public function listarSemestrePorId($idSemestre){
+		$querySemestre = "SELECT Semestre  FROM SEMESTRE  WHERE IdSem = '".$idSemestre."'";
+		$semestre = $this->conexion->realizarConsulta($querySemestre,true);
+		return $semestre[0];
+	}
+
 	public function listarSemestreActivo(){
 		$resultado = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
 		return $resultado;

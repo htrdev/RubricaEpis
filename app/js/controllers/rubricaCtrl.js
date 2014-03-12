@@ -212,3 +212,29 @@ rubricaApp.controller('verRubricasCreadasCtrl',
 		$scope.obtenerResultadoRubricaPorRubricaCreada();
 	});
 
+rubricaApp.controller('completarRubricaCtrl',
+	function completarRubricaCtrl($scope,Rubrica,$routeParams){
+		$scope.resultadoRubrica = {};
+
+		$scope.obtenerResultadoRubricaPorId = function(){
+			Rubrica.obtenerResultadoRubricaPorId($routeParams.idResultadoRubrica)
+			.success(function(data){
+				$scope.resultadoRubrica = data;
+				console.log(_.groupBy($scope.resultadoRubrica.criteriosEvaluacion,'resultadoAprendizaje'));
+				$scope.resultadoRubrica.criteriosEvaluacion = _.groupBy($scope.resultadoRubrica.criteriosEvaluacion,'resultadoAprendizaje');
+			});
+		};
+
+		$scope.calcularTotal = function(resultadoAprendizaje){
+			var total=0;
+			var nota=0;
+			resultadoAprendizaje.forEach(function(criterio){
+				total += 1*criterio.calificacion;
+				console.log(criterio);
+			});
+			resultadoAprendizaje.total = total/resultadoAprendizaje.length;
+			console.log(resultadoAprendizaje.total);
+		};
+
+		$scope.obtenerResultadoRubricaPorId();
+});

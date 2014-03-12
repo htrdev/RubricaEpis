@@ -44,6 +44,14 @@ rubricaApp.factory('Rubrica',function($http){
 				 );
 	};
 
+	dataFactory.obtenerResultadoRubricaPorId = function(pidResultadoRubrica){
+		return $http.post(
+				urlBase+'ResultadoRubrica.php',
+				{metodo: 'resultadoRubricaPorID'
+				,idResultadoRubrica:pidResultadoRubrica}
+			);
+	};
+
 	return dataFactory;
 	
 });

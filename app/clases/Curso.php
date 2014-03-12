@@ -21,5 +21,15 @@ class Curso extends Singleton{
 		$resultado = $this->conexion->realizarConsulta($query,true);
 		return $resultado;
 	}
+
+	public function listarCursoPorId($idCurso){
+		$queryCurso = 
+		"SELECT  
+			DesCurso  
+		FROM curso 
+		WHERE idcurso = '".$idCurso."'";
+		$curso = $this->conexion->realizarConsulta($queryCurso,true);
+		return $curso[0];
+	}
 }
 

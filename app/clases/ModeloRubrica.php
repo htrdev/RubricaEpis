@@ -5,8 +5,9 @@ require_once('Conexion.php');
 require_once('AsignacionCriterioEvaluacion.php');
 require_once('Semestre.php');
 require_once('ResultadoAprendizaje.php');
-require_once('Docente.php');
 require_once('Curso.php');
+require_once('Persona.php');
+require_once('ResultadoRubrica.php');
 
 class ModeloRubrica extends Singleton{
 
@@ -14,7 +15,6 @@ class ModeloRubrica extends Singleton{
 	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','root','123456');
 		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql','localhost','root','123456');
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
 	}
@@ -106,64 +106,44 @@ class ModeloRubrica extends Singleton{
 		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}
 
+	public function listarModeloRubricaPorPersona($CodPer){
+		$query = 
+		"SELECT idModeloRubrica
+				,Semestre_idSemestre 
+				,Curso_idCurso 
+				,calificacionRubrica 
+				,fechaInicioRubrica 
+				,fechaFinalRubrica  
+		FROM modelorubrica
+		WHERE Docente_Persona_idPersona = '".$CodPer."'";
+		return $this->conexionMysql->realizarConsulta($query,true);
+	}
+
 	public function listarRubricasPorPersona(){
-
-
 		$CodPer=$this->conexionMysql->obtenerVariableSesion("CodPer");
-		$query = "SELECT idModeloRubrica,Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,fechaInicioRubrica ,fechaFinalRubrica  FROM modelorubrica AS M 
-				  WHERE Docente_Persona_idPersona = '".$CodPer."'";
-		$resultados = $this->conexionMysql->realizarConsulta($query,true);
-
-		$misRubricas=array();
-		foreach ($resultados as $resultado) {
-	
-			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
-			$semestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
-
-			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
-			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
-			$misRubricas[] = 
-				array(
-					"idModeloRubrica"=>$resultado["idModeloRubrica"],
-					"semestre"=>$semestre[0]["Semestre"],
-					"curso"=>$curso[0]["DesCurso"],
-					"calificaA"=>$resultado["calificacionRubrica"],
-					"fechaInicio"=>$resultado["fechaInicioRubrica"],
-					"fechaFinal"=>$resultado["fechaFinalRubrica"]
-					); 
+		$resultadoMisRubricas = $this->listarModeloRubricaPorPersona($CodPer);
+		foreach ($resultadoMisRubricas as &$miRubrica) {
+			$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($miRubrica["Semestre_idSemestre"]);
+			$curso = Curso::obtenerObjeto()->listarCursoPorId($miRubrica["Curso_idCurso"]);
+			$miRubrica["semestre"] = $semestre["Semestre"];
+			$miRubrica["curso"] = $curso["DesCurso"];
+			unset($miRubrica["Semestre_idSemestre"]);
+			unset($miRubrica["Curso_idCurso"]);
 		}
-
-	
-		$query = "SELECT  idModeloRubrica , Semestre_idSemestre ,Curso_idCurso ,calificacionRubrica ,idDocenteCalificador ,fechaFinalRubrica  FROM resultadorubrica AS R 
-				  INNER JOIN modelorubrica AS M ON idModeloRubrica = R.ModeloRubrica_idModelRubrica 
-				  WHERE R.idDocenteCalificador = '".$CodPer."'";
-
-		$resultados = $this->conexionMysql->realizarConsulta($query,true);
-		$misRubricasAsignadas=array();
-		foreach ($resultados as $resultado) {
-		
-			$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S WHERE S.IdSem = '".$resultado["Semestre_idSemestre"]."'";
-			$semestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
-		
-			$queryCurso = "SELECT  c.DesCurso  from .curso as c where c.idcurso = '".$resultado["Curso_idCurso"]."'";
-			$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
-		
-			$queryDocente = "select p.ApepPer, p.ApemPer ,p.NomPer  from PERSONA as p where p.CodPer =  '".$resultado["idDocenteCalificador"]."'";
-			$docente = $this->conexionSqlServer->realizarConsulta($queryDocente,true);
-
-			$misRubricasAsignadas[] = 
-				array("idModeloRubrica"=>$resultado["idModeloRubrica"],
-					"semestre"=>$semestre[0]["Semestre"],
-					"curso"=>$curso[0]["DesCurso"],
-					"calificaA"=>$resultado["calificacionRubrica"],
-					"autor"=>$docente[0]["ApepPer"]." ". $docente[0]["ApemPer"].", ".$docente[0]["NomPer"],
-					"fechaFinal"=>$resultado["fechaFinalRubrica"]
-					); 
+		$resultadoRubricasAsignadas=ResultadoRubrica::obtenerObjeto()->listarResultadoRubricaPorDocente($CodPer);
+		foreach ($resultadoRubricasAsignadas as &$rubricaAsignada) {
+			$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($rubricaAsignada["Semestre_idSemestre"]);
+			$curso = Curso::obtenerObjeto()->listarCursoPorId($rubricaAsignada["Curso_idCurso"]);
+			$docente = Persona::obtenerObjeto()->listarPersonaPorId($CodPer);
+			$rubricaAsignada["semestre"] = $semestre["Semestre"];
+			$rubricaAsignada["curso"] = $curso["DesCurso"];
+			$rubricaAsignada["autor"] = Persona::obtenerObjeto()->obtenerNombreCompletoPersona($docente);
+			unset($rubricaAsignada["Semestre_idSemestre"]);
+			unset($rubricaAsignada["Curso_idCurso"]);
+			unset($rubricaAsignada["idDocenteCalificador"]);
 		}
-
-		$misRubricas_rubricasAsignadas=array();
-		$misRubricas_rubricasAsignadas=array("misRubricas"=>$misRubricas,"rubricasAsignadas"=>$misRubricasAsignadas);
-		return $misRubricas_rubricasAsignadas;
+		$resultado=array("misRubricas"=>$resultadoMisRubricas,"rubricasAsignadas"=>$resultadoRubricasAsignadas);
+		return $resultado;
 	}
 
 	public function obtenerInformacionNuevaRubrica(){
