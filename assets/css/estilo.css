@@ -21,14 +21,13 @@
 
 .check-box input{
 	margin-left: 0 !important;
-	float:none !important;
-	margin-right: 4px;
+	float: left;
 	vertical-align: top;
 }
 .check-box p{
 	text-align: justify;
-	display: inline-block;
-	width: 93%;
+	padding-left: 25px;
+	margin-bottom: 0;
 }
 .check-box:last-child{
 	border-bottom: none;

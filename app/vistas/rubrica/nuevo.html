@@ -159,8 +159,8 @@
 									</li>
 								</ul>
 							</div> -->
-							<ul id="tasks" class="item-list" ui-sortable ng-model="Formulario.resultadosAprendizajeSeleccionados">
-								<li ng-repeat="resultadoAprendizaje in Formulario.resultadosAprendizajeSeleccionados">
+							<ul id="tasks" class="item-list" ui-sortable ng-model="modeloRubrica.resultadosAprendizaje">
+								<li ng-repeat="resultadoAprendizaje in modeloRubrica.resultadosAprendizaje">
 									<div class="widget-box">
 										<div class="widget-header header-color-dark" style="cursor:move;">
 											<h4 class="color-gris">{{resultadoAprendizaje.nombreResultadoAprendizaje}}</h4>
@@ -175,8 +175,10 @@
 												<div class="row-fluid">
 													<ul id="tasks" class="item-list" ui-sortable ng-model="resultadoAprendizaje.criteriosEvaluacion">
 														<li class="item-blue clearfix" ng-repeat="criterio in resultadoAprendizaje.criteriosEvaluacion" style="cursor:move;">
-																<input type="checkbox" style="opacity:1;position:static"/>
-																{{criterio.descripcionCriterioEvaluacion}}
+															<label class="checkbox check-box" style="border-bottom:none !important">
+																<input type="checkbox" style="opacity:1"/>
+																<p>{{criterio.descripcionCriterioEvaluacion}}</p>
+															</label>
 														</li>
 													</ul>
 												</div>

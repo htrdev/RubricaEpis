@@ -23,7 +23,7 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			fechaFinal : "",
 			docentes :[],
 			calificacionRubrica : "",
-			criteriosEvaluacion : [],
+			resultadosAprendizaje : [],
 			tipoModeloRubrica : "",
 		};
 
@@ -62,23 +62,22 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				if(criterio.estaSeleccionado)
 				{
 					$scope.Formulario.AgregarResultadoAprendizajeALista(resultadoAprendizaje,criterio);
-					$scope.modeloRubrica.criteriosEvaluacion.push(criterio);
-
+					console.log($scope.modeloRubrica.resultadosAprendizaje);
 				}
 				else{
 					$scope.Formulario.QuitarResultadoAprendizajeLista(resultadoAprendizaje,criterio);
-					$scope.modeloRubrica.criteriosEvaluacion.splice($scope.modeloRubrica.criteriosEvaluacion.indexOf(criterio),1);
+					console.log($scope.modeloRubrica.resultadosAprendizaje);
 				}
 			},
 
 			QuitarResultadoAprendizajeLista : function(resultadoAprendizaje,criterio){
 				var nombreRa = resultadoAprendizaje.codigoResultadoAprendizaje+' '+resultadoAprendizaje.tituloResultadoAprendizaje;
 				var resultado = $scope.Formulario.RevisarExistenciaResultadoAprendizajeEnLista(nombreRa);
-				if($scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.length === 1){
-					$scope.Formulario.resultadosAprendizajeSeleccionados.splice($scope.Formulario.resultadosAprendizajeSeleccionados[resultado], 1);
+				if($scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.length === 1){
+					$scope.modeloRubrica.resultadosAprendizaje.splice($scope.modeloRubrica.resultadosAprendizaje[resultado], 1);
 				}
 				else{
-					$scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.splice($scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.indexOf(criterio),1);
+					$scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.splice($scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.indexOf(criterio),1);
 				}
 			},
 
@@ -88,17 +87,17 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				if(resultado===false){
 					var ra = { nombreResultadoAprendizaje : nombreRa,criteriosEvaluacion : [] };
 					ra.criteriosEvaluacion.push(criterio);
-					$scope.Formulario.resultadosAprendizajeSeleccionados.push(ra);
+					$scope.modeloRubrica.resultadosAprendizaje.push(ra);
 				}
 				else{
-					$scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.push(criterio);
+					$scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.push(criterio);
 				}
 				
 			},
 
 			RevisarExistenciaResultadoAprendizajeEnLista : function(nombreRa){
 				var resultado = false;
-				$scope.Formulario.resultadosAprendizajeSeleccionados.forEach(function(ra,index,array){
+				$scope.modeloRubrica.resultadosAprendizaje.forEach(function(ra,index,array){
 					if(ra.nombreResultadoAprendizaje == nombreRa){
 						resultado = index;
 					}
