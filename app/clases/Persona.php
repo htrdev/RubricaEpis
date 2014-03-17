@@ -26,4 +26,18 @@ class Persona extends Singleton{
 		$persona = $this->conexion->realizarConsulta($queryPersona,true);
 		return $persona[0];
 	}
+
+	public function listarDocentesActivos(){
+		$query = 
+		"SELECT DISTINCT 
+			ApepPer
+			,ApemPer
+			,NomPer 
+		FROM PERSONA
+			INNER JOIN carga
+				ON carga.CodPer = PERSONA.CodPer AND PERSONA.CodEstamento = 1
+			INNER JOIN Semestre
+				ON Semestre.idsem = carga.idsem	AND Semestre.Activo = 1";
+		return $this->conexion->realizarConsulta($query,true);
+	}
 }

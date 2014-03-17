@@ -30,8 +30,13 @@ class CriterioEvaluacion extends Singleton{
 		return $funciono;		
 	}
 
-	public function listarCriterioEvaluacionPorResultadoAprendizaje(){
-
+	public function listarCriterioEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+		$query = 
+		"SELECT idCriterioEvaluacion
+				,descripcionCriterioEvaluacion
+		FROM CriterioEvaluacion
+			WHERE ResultadoAprendizaje_idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
+		return $this->conexion->realizarConsulta($query,true);
 	}
 
 

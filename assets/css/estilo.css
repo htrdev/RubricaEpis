@@ -13,3 +13,27 @@
 .color-gris{
 	color : #CBCBCB;
 }
+
+.check-box{
+	padding: 10px;
+	border-bottom: 1px solid #EAEAEA !important; 
+}
+
+.check-box input{
+	margin-left: 0 !important;
+	float:none !important;
+	margin-right: 4px;
+	vertical-align: top;
+}
+.check-box p{
+	text-align: justify;
+	display: inline-block;
+	width: 93%;
+}
+.check-box:last-child{
+	border-bottom: none;
+}
+.container-scroll{
+	overflow-y:auto;height:300px
+}
+

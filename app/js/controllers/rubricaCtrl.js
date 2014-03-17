@@ -43,6 +43,7 @@ rubricaApp.controller('nuevoRubricaCtrl',
 
 		$scope.Formulario = {
 			EstaCuestionario : false,
+			resultadosAprendizajeSeleccionados : [],
 			AgregarDocente : function(docente){
 				if(docente.estaSeleccionado)
 				{
@@ -57,14 +58,52 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				console.log(cursoSeleccionado);
 			},
 
-			AgregarCriterioSeleccionado : function(criterio){
+			AgregarCriterioSeleccionado : function(resultadoAprendizaje,criterio){
 				if(criterio.estaSeleccionado)
 				{
+					$scope.Formulario.AgregarResultadoAprendizajeALista(resultadoAprendizaje,criterio);
 					$scope.modeloRubrica.criteriosEvaluacion.push(criterio);
+
 				}
 				else{
+					$scope.Formulario.QuitarResultadoAprendizajeLista(resultadoAprendizaje,criterio);
 					$scope.modeloRubrica.criteriosEvaluacion.splice($scope.modeloRubrica.criteriosEvaluacion.indexOf(criterio),1);
 				}
+			},
+
+			QuitarResultadoAprendizajeLista : function(resultadoAprendizaje,criterio){
+				var nombreRa = resultadoAprendizaje.codigoResultadoAprendizaje+' '+resultadoAprendizaje.tituloResultadoAprendizaje;
+				var resultado = $scope.Formulario.RevisarExistenciaResultadoAprendizajeEnLista(nombreRa);
+				if($scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.length === 1){
+					$scope.Formulario.resultadosAprendizajeSeleccionados.splice($scope.Formulario.resultadosAprendizajeSeleccionados[resultado], 1);
+				}
+				else{
+					$scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.splice($scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.indexOf(criterio),1);
+				}
+			},
+
+			AgregarResultadoAprendizajeALista : function(resultadoAprendizaje,criterio){
+				var nombreRa = resultadoAprendizaje.codigoResultadoAprendizaje+' '+resultadoAprendizaje.tituloResultadoAprendizaje;
+				var resultado = $scope.Formulario.RevisarExistenciaResultadoAprendizajeEnLista(nombreRa);
+				if(resultado===false){
+					var ra = { nombreResultadoAprendizaje : nombreRa,criteriosEvaluacion : [] };
+					ra.criteriosEvaluacion.push(criterio);
+					$scope.Formulario.resultadosAprendizajeSeleccionados.push(ra);
+				}
+				else{
+					$scope.Formulario.resultadosAprendizajeSeleccionados[resultado].criteriosEvaluacion.push(criterio);
+				}
+				
+			},
+
+			RevisarExistenciaResultadoAprendizajeEnLista : function(nombreRa){
+				var resultado = false;
+				$scope.Formulario.resultadosAprendizajeSeleccionados.forEach(function(ra,index,array){
+					if(ra.nombreResultadoAprendizaje == nombreRa){
+						resultado = index;
+					}
+				});
+				return resultado;
 			},
 
 			MostrarCuestionario : function(){

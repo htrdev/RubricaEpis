@@ -176,12 +176,20 @@ class ResultadoAprendizaje extends Singleton{
 		return $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorEscuela,true);
 	}
 
+	public function listarResultadoAprendizajeEscuelaConCriteriosEvaluacion(){
+		$resultadosAprendizajeEscuela = $this->listarResultadoAprendizajeEscuela();
+		foreach($resultadosAprendizajeEscuela as &$resultadoAprendizajeEscuela){
+			$resultadoAprendizajeEscuela["criteriosEvaluacion"] = CriterioEvaluacion::obtenerObjeto()->listarCriterioEvaluacionPorResultadoAprendizaje($resultadoAprendizajeEscuela["idResultadoAprendizaje"]);
+		}
+		return $resultadosAprendizajeEscuela;
+	}
+
 	public function listarResultadoAprendizaje(){
 		$CodPer = $this->conexion->obtenerVariableSesion("CodPer");
 		$resultadosAprendizajeEscuelaresultadosAprendizajeEscuela =  
 		array(
-			 "resultadosAprendizaje"=>$this->listarResultadoAprendizajeEscuela(),
-			 "resultadosAprendizajeDocente"=>ResultadoAprendizajeDocente::obtenerObjeto()->listarResultadoAprendizajeDocente($CodPer)
+			 "resultadosAprendizaje"=>$this->listarResultadoAprendizajeEscuelaConCriteriosEvaluacion(),
+			 "resultadosAprendizajeDocente"=>ResultadoAprendizajeDocente::obtenerObjeto()->listarResultadoAprendizajeDocenteConCriteriosEvaluacion($CodPer)
 			 );
 		return $resultadosAprendizajeEscuelaresultadosAprendizajeEscuela;
 	}
@@ -213,5 +221,13 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 						WHERE Docente_Persona_idPersona = '".$CodPer."'
 				)";
 		return $this->conexion->realizarConsulta($queryListarResultadoAprendizajeDocente,true);
+	}
+
+	public function listarResultadoAprendizajeDocenteConCriteriosEvaluacion($CodPer){
+		$resultadosAprendizajeDocente = $this->listarResultadoAprendizajeDocente($CodPer);
+		foreach($resultadosAprendizajeDocente as &$resultadoAprendizajeDocente){
+			$resultadoAprendizajeDocente["criteriosEvaluacion"] = CriterioEvaluacion::obtenerObjeto()->listarCriterioEvaluacionPorResultadoAprendizaje($resultadoAprendizajeDocente["idResultadoAprendizaje"]);
+		}
+		return $resultadosAprendizajeDocente;
 	}
 }

@@ -150,7 +150,7 @@ class ModeloRubrica extends Singleton{
 		$cursosPorDocente = Curso::obtenerObjeto()->listarCursosDocente();
 		$semestreActivo = Semestre::obtenerObjeto()->listarSemestreActivo();
 		$resultadosAprendizaje = ResultadoAprendizaje::obtenerObjeto()->listarResultadoAprendizaje();
-		$docentesActivos = Docente::obtenerObjeto()->listarDocenteActivo();
+		$docentesActivos = Persona::obtenerObjeto()->listarDocentesActivos();
 		return $this->conexionMysql->convertirJson(array("semestre"=>$semestreActivo
 								,"cursos"=>$cursosPorDocente
 								,"resultadosAprendizaje"=>$resultadosAprendizaje

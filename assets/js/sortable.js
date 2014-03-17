@@ -27,8 +27,11 @@ angular.module('ui.sortable', [])
                         revert:true,
                         forceHelperSize:true,
                         placeholder: 'draggable-placeholder',
-                        forcePlaceholderSize:true,
-                        tolerance:'pointer'};
+                        forcePlaceholderSize:false,
+                        tolerance:'pointer',
+                        stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                          $(ui.item).css('z-index', 'auto');
+                        }};
 
             var callbacks = {
                 receive: null,
@@ -55,6 +58,7 @@ angular.module('ui.sortable', [])
               callbacks.start = function(e, ui) {
                 // Save position of dragged item
                 ui.item.sortable = { index: ui.item.index() };
+                ui.placeholder.height(ui.item.height());
               };
 
               callbacks.update = function(e, ui) {
