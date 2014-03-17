@@ -3,7 +3,7 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
-
+require_once('AsignacionPersonaCalificada.php');
 class ResultadoRubrica extends Singleton{
 
 	private $conexionMysql;
@@ -14,13 +14,46 @@ class ResultadoRubrica extends Singleton{
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
-	public function agregarResultadoRubrica($CriterioEvaluacion){
-		$query = "INSERT into resultadoRubrica (idResultadoRubrica, fechaCompletadoRubrica, estadoRubrica, totalRubrica ) 
-		values ('".$CriterioEvaluacion["idResultadoRubrica"]."', '".$CriterioEvaluacion["fechaCompletadoRubrica"]."', '".$CriterioEvaluacion["estadoRubrica"]."', '".$CriterioEvaluacion["totalRubrica"]."')";
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
+	public function agregarResultadoRubrica($idModeloRubrica,$idDocente){
+		$query = 
+				"INSERT INTO resultadoRubrica(
+					fechaCompletadoRubrica
+					,idDocenteCalificador
+					,ModeloRubrica_idModelRubrica
+					,estadoRubrica
+					,totalRubrica)
+				VALUES
+					('0000-00-00'
+					,".$idDocente."
+					,".$idModeloRubrica."
+					,'Pendiente'
+					,'0')";
+		$idResultadoRubrica = $this->conexionMysql->returnId()->realizarConsulta($query,false);
+		if($idResultadoRubrica!=false){
+			return $idResultadoRubrica;
+		}
+		return $idResultadoRubrica;
 	}
+
+	public function agregarResultadoRubricaYAsignacionPersonaCalificada($idModeloRubrica,$modeloRubrica){
+		foreach($modeloRubrica["docentes"] as $idDocente){
+			foreach ($modeloRubrica["alumnos"] as $alumno) {
+				$idResultadoRubrica = $this->agregarResultadoRubrica($idModeloRubrica,$idDocente);	
+				if($idResultadoRubrica!=false){
+					$funcionoAsignacionPersonaCalificada = AsignacionPersonaCalificada::obtenerObjeto()->agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumno);
+					if($funcionoAsignacionPersonaCalificada==false){
+						return false;
+					}
+				}		
+				else{
+					echo $idResultadoRubrica;
+					return false;
+				}
+			}
+			
+		}
+		return true;
+  	}
 
 	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica){
 	

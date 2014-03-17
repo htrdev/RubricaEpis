@@ -22,9 +22,10 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			fechaInicio : "",
 			fechaFinal : "",
 			docentes :[],
-			calificacionRubrica : "",
+			alumnos : [],
+			calificacionRubrica : "Alumnos",
 			resultadosAprendizaje : [],
-			tipoModeloRubrica : "",
+			tipoModeloRubrica : "Curso",
 		};
 
 		$scope.obtenerInformacionNuevaRubrica = function(){
@@ -38,6 +39,18 @@ rubricaApp.controller('nuevoRubricaCtrl',
 					$scope.loader.estadoLoader = false;
 				});
 		};
+
+		$scope.obtenerAlumnosPorCurso = function(){
+			Rubrica.obtenerAlumnosPorCurso($scope.modeloRubrica.idCurso)
+				.success(function(data){
+					$scope.alumnos = data;
+					$scope.modeloRubrica.alumnos = [];
+					$scope.alumnos.forEach(function(alumno){
+						$scope.modeloRubrica.alumnos.push([alumno.CodPer]);
+					});
+					console.log($scope.modeloRubrica);
+				});
+		}
 
 		
 
@@ -56,6 +69,7 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			callBackCboCurso : function(cursoSeleccionado){
 				$scope.modeloRubrica.idCurso = cursoSeleccionado.idcurso;
 				console.log(cursoSeleccionado);
+				$scope.obtenerAlumnosPorCurso();
 			},
 
 			AgregarCriterioSeleccionado : function(resultadoAprendizaje,criterio){

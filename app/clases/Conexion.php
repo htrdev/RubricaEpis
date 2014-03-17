@@ -23,6 +23,7 @@ abstract class Conexion extends Singleton{
 	protected $usuario;
 	protected $password;
 	protected $baseDeDatos;
+	protected $returnId;
 
 	public abstract function obtenerConexion();
 	protected abstract function convertirArray($resultado);
@@ -32,6 +33,11 @@ abstract class Conexion extends Singleton{
 		session_start();
 		return $_SESSION[$variable];
 	} 
+
+	public function returnId(){
+		$this->returnId = true;
+		return $this;
+	}
 }
 
 
@@ -94,12 +100,21 @@ class ConexionMySQL extends Conexion{
 
 	public function realizarConsulta($sql,$convertirArray){
 		$resultado =  mysql_query($sql,$this->conexion);
-		if($convertirArray){
-			return $this->convertirArray($resultado);
-		}
-		else
-		{
+		if(!$resultado){
 			return $resultado;
+		}
+		else{
+			if($convertirArray){
+				$resultadoArray = $this->convertirArray($resultado);
+				return $resultadoArray;
+			}
+			else{
+				if($this->returnId){
+					$this->returnId = false;
+					return mysql_insert_id();
+				}
+				return $resultado;
+			}
 		}
 	}
 

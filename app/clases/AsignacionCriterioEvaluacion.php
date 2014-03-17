@@ -3,13 +3,13 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
+require_once('Singleton.php');
 
-class AsignacionCriterioEvaluacion{
+class AsignacionCriterioEvaluacion extends Singleton{
 
 	private $conexion;
 
 	public function __construct(){
-
 		$this->conexion = ConexionFactory::obtenerConexion('mysql');
 	}
 	
@@ -18,8 +18,8 @@ class AsignacionCriterioEvaluacion{
 		values";
 		$numeroElementos = count($CriterioEvaluacion);
 		$i = 0;
-		foreach($CriterioEvaluacion as $AsignarCriterioEvaluacion){
-			$query.= "('".$idModeloRubrica."','".$AsignarCriterioEvaluacion["idCriterioEvaluacion"]."')";
+		foreach($CriterioEvaluacion as $idCriterioEvaluacion){
+			$query.= "('".$idModeloRubrica."','".$idCriterioEvaluacion."')";
 			if(++$i == $numeroElementos){
 				$query.=";";
 			}

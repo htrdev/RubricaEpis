@@ -52,6 +52,14 @@ rubricaApp.factory('Rubrica',function($http){
 			);
 	};
 
+	dataFactory.obtenerAlumnosPorCurso = function(pidCurso){
+		return $http.post(
+				urlBase+'Rubrica.php',
+				{metodo: 'obtenerAlumnosPorCurso'
+				,idCurso:pidCurso}
+			);
+	};
+
 	return dataFactory;
 	
 });

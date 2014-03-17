@@ -27,77 +27,54 @@ class ModeloRubrica extends Singleton{
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
-	public function agregarModeloRubrica($agregarModeloRubrica){
-		$queryAgregarModeloRubrica = false;
-		$funcionoQueryAgregarCriteriosEvaluacion = false;
-		$queryAgregarDocentes = false;
+	public function agregarModeloRubrica($modeloRubrica){
 		$CodPer = $this->conexionMysql->obtenerVariableSesion("CodPer");
-
-		$this->conexionMysql->iniciarTransaccion();
-
 		$queryInsertarModeloRubrica="insert into modelorubrica
 		(Curso_idCurso, Semestre_idSemestre, fechaInicioRubrica,fechaFinalRubrica,
 		 Docente_Persona_idPersona,calificacionRubrica)
-		values ('".$agregarModeloRubrica["idCurso"]."'
-				,'".$agregarModeloRubrica["idSemestre"]."'
-				,'".$agregarModeloRubrica["fechaInicio"]."'
-				,'".$agregarModeloRubrica["fechaFinal"]."'
+		values ('".$modeloRubrica["idCurso"]."'
+				,'".$modeloRubrica["idSemestre"]."'
+				,'".$modeloRubrica["fechaInicio"]."'
+				,'".$modeloRubrica["fechaFinal"]."'
 				,'".$CodPer."'
-				,'".$agregarModeloRubrica["calificacionRubrica"]."')";
+				,'".$modeloRubrica["calificacionRubrica"]."')";
+		return $this->conexionMysql->returnId()->realizarConsulta($queryInsertarModeloRubrica,false);
+	}
 
-			
-		$queryAgregarModeloRubrica= $this->conexionMysql->realizarConsulta($queryInsertarModeloRubrica,false);
-		
-		$idModeloRubrica = $this->listarUltimoPrimaryKey('idModeloRubrica','modelorubrica');
-		
-		$funcionoQueryAgregarCriteriosEvaluacion=
-		$this->agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica["criteriosEvaluacion"]);
-	
-/*
-	e
-		
-		$this->agregarModelosDocentes($idModeloRubrica,$agregarModeloRubrica["docentesAsignados"]); */
-
+	public function agregarModeloRubricaYAsignarCriterios($modeloRubrica){
+		$funcionoModeloRubrica = false;
+		$funcionoCriteriosEvaluacion = false;
+		$funcionoResultadoRubrica = false;
+		$this->conexionMysql->iniciarTransaccion();
+		$idModeloRubrica = $this->agregarModeloRubrica($modeloRubrica);
+		if($idModeloRubrica!=false){
+			$funcionoModeloRubrica = true;
+			$funcionoResultadoRubrica = ResultadoRubrica::obtenerObjeto()->agregarResultadoRubricaYAsignacionPersonaCalificada($idModeloRubrica,$modeloRubrica);
+		}
+		$criteriosEvaluacion = $this->obtenerArrayCriteriosEvaluacion($modeloRubrica["resultadosAprendizaje"]);
+		$funcionoCriteriosEvaluacion = $this->agregarCriteriosEvaluacion($idModeloRubrica,$criteriosEvaluacion);
 		$funcionoTransaccion = 
 			$this->conexionMysql->finalizarTransaccion(
-				array($funcionoQueryAgregarCriteriosEvaluacion					
-					,$queryAgregarModeloRubrica)
+				array($funcionoModeloRubrica					
+					,$funcionoCriteriosEvaluacion
+					,$funcionoResultadoRubrica)
 				);
 		return $funcionoTransaccion;
-		}
-
-
-/*	public function agregarModelosDocentes($idModeloRubrica,$docentes){
-		
-		$query = "INSERT INTO resultadorubrica (fechaCompletadoRubrica,idDocenteCalificador,ModeloRubrica_idModelRubrica,estadoRubrica,totalRubrica)
-		values";
-
-		$numeroElementos = count($docentes);
-		$fechaCompletadoRubrica="";
-		$estadoRubrica=0;
-		$totalRubrica=0.00;
-		$i = 0;
-		foreach($docentes as $asignarDocentes){
-			
-			$query.= "('".$fechaCompletadoRubrica."','".$asignarDocentes["idDocentesAsignados"]."','".$idModeloRubrica."','".$estadoRubrica."','".$totalRubrica."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
-		}
-		$funciono = $this->conexionMysql->realizarConsulta($query,false);
-		//return $funciono;
-				
 	}
-	
-*/
 
+	public function obtenerArrayCriteriosEvaluacion($resultadosAprendizaje){
+		$criteriosEvaluacion = array();
+		foreach ($resultadosAprendizaje as $resultadoAprendizaje) {
+			foreach($resultadoAprendizaje["criteriosEvaluacion"] as $criterioEvaluacion){
+				$criteriosEvaluacion[] = $criterioEvaluacion["idCriterioEvaluacion"];
+			}
+		}
+		return $criteriosEvaluacion;
+	}
 
 	public function agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica){
 		$funcionoQueryAgregarCriteriosEvaluacion = true;
-		$objCriterioEvaluacion = new AsignacionCriterioEvaluacion();
+		$objCriterioEvaluacion = AsignacionCriterioEvaluacion::obtenerObjeto();
 		if(!empty($agregarModeloRubrica)){
 			$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarAsignacionCriterioEvaluacion(
 				$idModeloRubrica 

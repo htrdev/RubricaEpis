@@ -3,6 +3,7 @@
 header('Content-type: application/json');
 
 require_once('../clases/ModeloRubrica.php');
+require_once('../clases/Persona.php');
 
 $json = json_decode(file_get_contents("php://input"),true);
 
@@ -16,7 +17,11 @@ switch($metodo){
 	case 'obtenerRubricasPorPersona' : echo $objRubrica->obtenerRubricasPorPersona();break;
 	case 'agregarModeloRubrica' : 
 		$modeloRubrica = $json['modelorubrica'];
-		$objRubrica->agregarModeloRubrica($modeloRubrica);break;
+		//echo var_dump($modeloRubrica);
+		echo $objRubrica->agregarModeloRubricaYAsignarCriterios($modeloRubrica);break;
+	case 'obtenerAlumnosPorCurso' : 
+		$idCurso = $json['idCurso'];
+		echo Persona::obtenerObjeto()->obtenerAlumnosPorCurso($idCurso);
 }
 
 //Metodos

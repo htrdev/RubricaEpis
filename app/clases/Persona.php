@@ -27,12 +27,34 @@ class Persona extends Singleton{
 		return $persona[0];
 	}
 
+	public function listarAlumnosRegularesPorCurso($idCurso){
+		$query = 
+		"SELECT  
+			ApepPer
+			,ApemPer
+			,NomPer
+			,PERSONA.CodPer 
+		FROM PERSONA
+			INNER JOIN carga
+				ON carga.CodPer = PERSONA.CodPer AND PERSONA.CodEstamento = 10
+			INNER JOIN Semestre
+				ON Semestre.idsem = carga.idsem	AND Semestre.Activo = 1
+			INNER JOIN Curso
+				ON carga.idcurso = Curso.idcurso AND carga.idcurso = '".$idCurso."'";
+		return $this->conexion->realizarConsulta($query,true);
+	}
+
+	public function obtenerAlumnosPorCurso($idCurso){
+		return $this->conexion->convertirJson($this->listarAlumnosRegularesPorCurso($idCurso));
+	}
+
 	public function listarDocentesActivos(){
 		$query = 
 		"SELECT DISTINCT 
 			ApepPer
 			,ApemPer
-			,NomPer 
+			,NomPer
+			,PERSONA.CodPer 
 		FROM PERSONA
 			INNER JOIN carga
 				ON carga.CodPer = PERSONA.CodPer AND PERSONA.CodEstamento = 1
