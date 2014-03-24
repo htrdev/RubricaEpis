@@ -58,7 +58,7 @@ angular.module('ui.bootstrap.pagination', [])
 
     if ( $scope.page > value ) {
       $scope.selectPage(value);
-    }else {
+    } else {
       ngModelCtrl.$render();
     }
   });
@@ -87,7 +87,7 @@ angular.module('ui.bootstrap.pagination', [])
     },
     require: ['pagination', '?ngModel'],
     controller: 'PaginationController',
-    template: '<ul class="pagination"><li ng-if="boundaryLinks" ng-class="{disabled: noPrevious()}"><a href ng-click="selectPage(1)">{{getText("first")}}</a></li><li ng-if="directionLinks" ng-class="{disabled: noPrevious()}"><a href ng-click="selectPage(page - 1)">{{getText("previous")}}</a></li><li ng-repeat="page in pages track by $index" ng-class="{active: page.active}"><a href ng-click="selectPage(page.number)">{{page.text}}</a></li><li ng-if="directionLinks" ng-class="{disabled: noNext()}"><a href ng-click="selectPage(page + 1)">{{getText("next")}}</a></li><li ng-if="boundaryLinks" ng-class="{disabled: noNext()}"><a href ng-click="selectPage(totalPages)">{{getText("last")}}</a></li></ul>',
+    templateUrl: 'template/pagination/pagination.html',
     replace: true,
     link: function(scope, element, attrs, ctrls) {
       var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
@@ -198,7 +198,7 @@ angular.module('ui.bootstrap.pagination', [])
     },
     require: ['pager', '?ngModel'],
     controller: 'PaginationController',
-    templateUrl: '<ul class="pager"><li ng-class="{disabled: noPrevious(), previous: align}"><a href ng-click="selectPage(page - 1)">{{getText("previous")}}</a></li><li ng-class="{disabled: noNext(), next: align}"><a href ng-click="selectPage(page + 1)">{{getText("next")}}</a></li></ul>',
+    templateUrl: 'template/pagination/pager.html',
     replace: true,
     link: function(scope, element, attrs, ctrls) {
       var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];

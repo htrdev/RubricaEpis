@@ -8,9 +8,9 @@ $json = json_decode(file_get_contents("php://input"),true);
 $metodo = $json['metodo'];
 $idModeloRubrica = $json["idModeloRubrica"];
 
-$objModeloRubrica = ModeloRubrica::obtenerObjeto();
+// $objModeloRubrica = ModeloRubrica::obtenerObjeto();
 
-switch($metodo){
-	case 'listarCalificacionesPromedioPorModeloRubrica' : echo $objModeloRubrica->listarCalificacionesPromedioPorModeloRubrica($idModeloRubrica);break;
+// switch($metodo){
+// 	case 'listarCalificacionesPromedioPorModeloRubrica' : echo $objModeloRubrica->listarCalificacionesPromedioPorModeloRubrica($idModeloRubrica);break;
 	
-}
+// }

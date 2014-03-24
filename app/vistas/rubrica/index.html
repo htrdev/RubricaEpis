@@ -8,7 +8,7 @@
 		<div class="row-fluid" id="RubricasCreadas" ng-show="EstaRubricasCreadas">
 			<div class="span12">
 				<div class="row-fluid">
-					<input type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="txtBusqueda">
+					<input type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="busquedaMisRubricas" ng-change="Formulario.paginacionMisRubricas.callBackBuscar(busquedaMisRubricas)">
 					<button class="btn btn-info" style="margin-left:1em;vertical-align:top" ng-click="Interfaz.redireccionarNuevo()">Nuevo  <i class="icon-plus"></i></button>
 					<button style="float:right;vertical-align:top" class="btn btn-success btn-next" ng-click="Interfaz.MostrarRubricasAsignadas()">Rubricas Asignadas
 						<i class="icon-arrow-right icon-on-right"></i>
@@ -27,7 +27,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="rubricaCreada in misRubricas | filter: txtBusqueda">
+							<tr ng-repeat="rubricaCreada in Formulario.paginacionMisRubricas.datosParaMostrar">
 								<td>{{rubricaCreada.semestre}}</td>
 								<td>{{rubricaCreada.curso}}</td>
 								<td>{{rubricaCreada.calificacionRubrica}}</td>
@@ -61,13 +61,16 @@
 							</tr>
 						</tbody>
 				</table>
-				<grid-vacio array="misRubricas">Usted no tiene Rubricas!</grid-vacio>
+				<div ng-if="Formulario.paginacionMisRubricas.nroRegistrosPorPagina < Formulario.paginacionMisRubricas.totalRegistros" class="pagination text-center">
+					<pagination total-items="Formulario.paginacionMisRubricas.totalRegistros" page="Formulario.paginacionMisRubricas.paginaActual" items-per-page="Formulario.paginacionMisRubricas.nroRegistrosPorPagina" on-select-page="Formulario.paginacionMisRubricas.cambioPagina(page)" class="pagination-sm" boundary-links="true"></pagination>
+				</div>
+				<grid-vacio array="Formulario.paginacionMisRubricas.datosParaMostrar">Usted no tiene Rubricas!</grid-vacio>
 			</div>	
 		</div>
 		<div class="row-fluid" id="RubricasAsignadas" ng-hide="EstaRubricasCreadas">
 			<div class="span12">
 				<div class="row-fluid">
-					<input type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="txtBusqueda">
+					<input type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="busquedaRubricasAsignadas" ng-change="Formulario.paginacionRubricasAsignadas.callBackBuscar(busquedaRubricasAsignadas)">
 					<button style="float:right;vertical-align:top" class="btn btn-prev" ng-click="Interfaz.OcultarRubricasAsignadas()"><i class="icon-arrow-left "></i>Rubricas Creadas
 					</button>
 				</div>
@@ -84,7 +87,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="rubricaAsignada in rubricasAsignadas | filter: txtBusqueda">
+						<tr ng-repeat="rubricaAsignada in Formulario.paginacionRubricasAsignadas.datosParaMostrar">
 							<td>{{rubricaAsignada.semestre}}</td>
 							<td>{{rubricaAsignada.curso}}</td>
 							<td>{{rubricaAsignada.calificacionRubrica}}</td>
@@ -120,11 +123,12 @@
 						</tr>
 					</tbody>
 				</table>
-				<grid-vacio array="rubricasAsignadas">Usted no tiene Rubricas Asignadas!</grid-vacio>
+				<div ng-if="Formulario.paginacionRubricasAsignadas.nroRegistrosPorPagina < Formulario.paginacionRubricasAsignadas.totalRegistros" class="pagination text-center">
+					<pagination total-items="Formulario.paginacionRubricasAsignadas.totalRegistros" page="Formulario.paginacionRubricasAsignadas.paginaActual" items-per-page="Formulario.paginacionRubricasAsignadas.nroRegistrosPorPagina" on-select-page="Formulario.paginacionRubricasAsignadas.cambioPagina(page)" class="pagination-sm" boundary-links="true"></pagination>
+				</div>
+				<grid-vacio array="Formulario.paginacionRubricasAsignadas.datosParaMostrar">Usted no tiene Rubricas Asignadas!</grid-vacio>
 			</div>	
 		</div>
 	</div>
-	<div ng-if="loader.estadoLoader" class="animation">
 	<pantalla-loading loader="loader">Cargando Rubricas ... </pantalla-loading>
-	</div>
 </div>

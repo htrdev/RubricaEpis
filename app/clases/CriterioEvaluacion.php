@@ -39,6 +39,16 @@ class CriterioEvaluacion extends Singleton{
 		return $this->conexion->realizarConsulta($query,true);
 	}
 
+	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){
+		$query =
+		"SELECT c.descripcionCriterioEvaluacion,CONCAT(r.codigoResultadoAPrendizaje,' ',r.tituloResultadoAprendizaje) AS tituloResultadoAprendizaje
+		FROM criterioEvaluacion AS c
+		INNER JOIN resultadoaprendizaje AS r
+			ON c.ResultadoAprendizaje_idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
+		$resultado = $this->conexion->realizarConsulta($query,true);
+		return $resultado[0];
+	}
+
 
 	public function listarCriterioEvaluacionPorModeloRubrica(){
 		

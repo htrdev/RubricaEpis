@@ -1,24 +1,42 @@
 <?php
 
-header('Content-type: application/json');
-
 require_once('Conexion.php');
 
-class CalificacionCriterioEvaluacion{
+class CalificacionCriterioEvaluacion extends Singleton{
 
 	private $conexion;
 
-	public function __construct(){
+	protected function __construct(){
 		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
-
 	}
 
-	public function agregarCalificacionCriterioEvaluacion($CriterioEvaluacion){
-		$query = "INSERT into calificacionCriterioEvaluacion (Rubrica_idResultadoRubrica, calificacionResultadoRubrica, AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion) 
-		values ('".$CriterioEvaluacion["Rubrica_idResultadoRubrica"]."', '".$CriterioEvaluacion["calificacionResultadoRubrica"]."', '".$CriterioEvaluacion["AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion"]."')";
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;	
+	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
+		$query = 
+		"INSERT INTO calificacionCriterioEvaluacion(
+			Rubrica_idResultadoRubrica
+			,calificacionResultadoRubrica
+			,AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion) 
+		VALUES";
+		$j = 0;
+		$numeroElementosTotales = count($resultadosAprendizaje);
+		foreach($resultadosAprendizaje as $resultadoAprendizaje){
+			$i = 0;
+			$numeroElementos = count($resultadoAprendizaje);
+			foreach ($resultadoAprendizaje as $criterioEvaluacion) {
+				$query.= "('".$idResultadoRubrica."','".$criterioEvaluacion["calificacion"]."','".$criterioEvaluacion["idAsignacionCriterioEvaluacion"]."')";
+				if(++$i != $numeroElementos){
+					$query .= ",";
+				}
+			}
+			if(++$j == $numeroElementosTotales){
+				$query.=";";
+			}
+			else{
+				$query.=",";
+			}
+		}
+		$funciono = $this->conexion->realizarConsulta($query,false);
+		return $funciono;	
 	}
 
 }

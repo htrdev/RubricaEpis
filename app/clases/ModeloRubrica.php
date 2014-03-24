@@ -1,6 +1,7 @@
 <?php
 
 header('Content-type: application/json');
+
 require_once('Conexion.php');
 require_once('AsignacionCriterioEvaluacion.php');
 require_once('Semestre.php');
@@ -38,6 +39,7 @@ class ModeloRubrica extends Singleton{
 				,'".$modeloRubrica["fechaFinal"]."'
 				,'".$CodPer."'
 				,'".$modeloRubrica["calificacionRubrica"]."')";
+		echo $queryInsertarModeloRubrica;
 		return $this->conexionMysql->returnId()->realizarConsulta($queryInsertarModeloRubrica,false);
 	}
 
@@ -136,6 +138,19 @@ class ModeloRubrica extends Singleton{
 
 	public function obtenerRubricasPorPersona(){
 		return $this->conexionMysql->convertirJson($this->listarRubricasPorPersona());
+	}
+
+	public function listarModeloRubricaPorResultadoRubrica($idResultadoRubrica){
+		$query = 
+		"SELECT M.idModeloRubrica
+				,M.Semestre_idSemestre
+				,M.Curso_idCurso
+				,M.Docente_Persona_idPersona
+			FROM modelorubrica AS M
+			INNER JOIN resultadorubrica as R
+				ON R.ModeloRubrica_idModelRubrica = M.idModeloRubrica AND R.idResultadoRubrica = '".$idResultadoRubrica."'";
+		$resultado = $this->conexionMysql->realizarConsulta($query,true);
+		return $resultado[0];
 	}
 
 

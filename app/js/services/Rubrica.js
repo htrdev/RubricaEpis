@@ -1,13 +1,12 @@
 'use strict';
 
-rubricaApp.factory('Rubrica',function($http){
+rubricaApp.factory('Rubrica',function($http,rutasApp){
 
-	var urlBase = 'http://rubricaepis:8080/app/modulos/';
 	var dataFactory = {};
 
 	dataFactory.agregarModeloRubrica = function(pmodelorubrica){
 		return $http.post(
-				    urlBase+'Rubrica.php', 
+				    rutasApp.rutaApi+'Rubrica.php', 
 				    {metodo: 'agregarModeloRubrica'
 				    ,modelorubrica: pmodelorubrica}
 				 );
@@ -16,21 +15,21 @@ rubricaApp.factory('Rubrica',function($http){
 
 	dataFactory.obtenerInformacionNuevaRubrica = function(){
 		return $http.post(
-				    urlBase+'Rubrica.php', 
+				    rutasApp.rutaApi+'Rubrica.php', 
 				    {metodo: 'obtenerInformacionNuevaRubrica'}
 				 );
 	};
 
 	dataFactory.obtenerRubricasPorPersona = function(){
 		return $http.post(
-				    urlBase+'Rubrica.php', 
+				    rutasApp.rutaApi+'Rubrica.php', 
 				    {metodo: 'obtenerRubricasPorPersona'}
 				 );
 	};
 
 	dataFactory.obtenerResultadoRubricaPorRubricaAsignada = function(pidModeloRubrica){
 		return $http.post(
-				    urlBase+'ResultadoRubrica.php', 
+				    rutasApp.rutaApi+'ResultadoRubrica.php', 
 				    {metodo: 'listarResultadoRubricaPorcionRubricaAsignada'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
@@ -38,7 +37,7 @@ rubricaApp.factory('Rubrica',function($http){
 
 	dataFactory.obtenerResultadoRubricaPorRubricaCreada = function(pidModeloRubrica){
 		return $http.post(
-				    urlBase+'ResultadoRubrica.php', 
+				    rutasApp.rutaApi+'ResultadoRubrica.php', 
 				    {metodo: 'listarResultadoRubricaPorIDModeloRubrica'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
@@ -46,19 +45,29 @@ rubricaApp.factory('Rubrica',function($http){
 
 	dataFactory.obtenerResultadoRubricaPorId = function(pidResultadoRubrica){
 		return $http.post(
-				urlBase+'ResultadoRubrica.php',
-				{metodo: 'resultadoRubricaPorID'
+				rutasApp.rutaApi+'ResultadoRubrica.php',
+				{metodo: 'obtenerResultadoRubricaPorID'
 				,idResultadoRubrica:pidResultadoRubrica}
 			);
 	};
 
 	dataFactory.obtenerAlumnosPorCurso = function(pidCurso){
 		return $http.post(
-				urlBase+'Rubrica.php',
+				rutasApp.rutaApi+'Rubrica.php',
 				{metodo: 'obtenerAlumnosPorCurso'
 				,idCurso:pidCurso}
 			);
 	};
+
+	dataFactory.completarResultadoRubrica = function(pResultadoRubrica){
+		return $http.post(
+				rutasApp.rutaApi+'ResultadoRubrica.php',
+				{metodo: 'completarResultadoRubrica'
+				,resultadoRubrica:pResultadoRubrica}
+			);
+	};
+
+	
 
 	return dataFactory;
 	

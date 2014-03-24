@@ -1,48 +1,71 @@
 'use strict';
 
-var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.sortable','ngAnimate']);
-var urlServidor = "http://rubricaepis:8080/app/";
+var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.bootstrap','ngAnimate','ui.sortable','htrdev']);
 
-rubricaApp.config(['$routeProvider','$locationProvider',
-  function($routeProvider) {
+rubricaApp.constant('rutasApp',{
+  rutaVistas : 'http://rubricaepis:8080/app/vistas/',
+  rutaApi : 'http://rubricaepis:8080/app/modulos/'
+});
+
+// URL:
+//  =========================
+//  para visualizar el sitio debes escribir en la url la siguiente dirección
+  
+// http://epis.upt.edu.pe/rubrica/
+
+// BD:
+// ========================
+// Servidor: epis.upt.edu.pe
+// BD: rubricaepis
+// Usuario: urubrica
+// Password: rubrica%789.
+
+// FTP:
+//  ========================
+// Servidor: epis.upt.edu.pe
+// Usuario: urubrica
+// Password: Rubric741%
+// Index of /rubrica
+// epis.upt.edu.pe
+
+rubricaApp.config(function($routeProvider,rutasApp){
     $routeProvider.
       when('/rubricas/nuevo', {
-        templateUrl: urlServidor+'vistas/rubrica/nuevo.html',
+        templateUrl: rutasApp.rutaVistas +'rubrica/nuevo.html',
         controller: 'nuevoRubricaCtrl',
       }).
       when('/rubricas',{
-        templateUrl: urlServidor+'vistas/rubrica/index.html',
-        //templateUrl:urlServidor+'vistas/rubrica/completar.html',
+        templateUrl: rutasApp.rutaVistas +'rubrica/index.html',
         controller: 'misRubricasCtrl',
       }).
       when('/rubricas/completar/:idResultadoRubrica',{
-        templateUrl: urlServidor+'vistas/rubrica/completar.html',
+        templateUrl: rutasApp.rutaVistas +'rubrica/completar.html',
         controller: 'completarRubricaCtrl'
       }).
       when('/rubricas/asignadas/:idRubricaAsignada',{
-        templateUrl: urlServidor+'vistas/rubrica/verRubricasAsignadas.html',
+        templateUrl: rutasApp.rutaVistas +'rubrica/verRubricasAsignadas.html',
         controller: 'verRubricasAsignadasCtrl',
       }).
       when('/rubricas/misrubricas/:idRubricaCreada',{
-        templateUrl: urlServidor+'vistas/rubrica/verRubricasCreadas.html',
+        templateUrl: rutasApp.rutaVistas +'rubrica/verRubricasCreadas.html',
         controller: 'verRubricasCreadasCtrl',
       }).
       when('/resultadoAprendizaje/nuevo',{
-        templateUrl: urlServidor+'vistas/resultadoAprendizaje/nuevo.html',
+        templateUrl: rutasApp.rutaVistas +'resultadoAprendizaje/nuevo.html',
         controller:'nuevoResultadoAprendizajeCtrl'
       }).
       when('/resultadoAprendizaje',{
-        templateUrl: urlServidor+'vistas/resultadoAprendizaje/index.html',
+        templateUrl: rutasApp.rutaVistas +'resultadoAprendizaje/index.html',
         controller : 'misResultadosAprendizajeCtrl',
       }).
       when('/',{
-        templateUrl: urlServidor+'vistas/bienvenida.html',
+        templateUrl: rutasApp.rutaVistas +'bienvenida.html',
       }).
       otherwise({
         redirectTo: '/login',
-        templateUrl: urlServidor+'vistas/usuario/login.html',
+        templateUrl: rutasApp.rutaVistas +'usuario/login.html',
       });
-  }]);
+  });
 
 rubricaApp.config(function ($httpProvider) {
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';

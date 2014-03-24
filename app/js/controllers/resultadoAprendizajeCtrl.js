@@ -73,17 +73,53 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 
 
 rubricaApp.controller('misResultadosAprendizajeCtrl',
-	function misResultadosAprendizajeCtrl($scope,$location,ResultadoAprendizaje)
+	function misResultadosAprendizajeCtrl($scope,$location,ResultadoAprendizaje,$filter,Paginacion)
 	{
-		$scope.loader = true;
+		$scope.loader = {
+			estadoLoader : true,
+		};
+		$scope.txtBusqueda = "";
 		$scope.resultadosAprendizaje = [];
 		$scope.resultadosAprendizajeDocente = [];
+		$scope.Formulario = {
+			paginacionResultadosAprendizajeDocente : {
+				totalRegistros : 1,
+				paginaActual : 1,
+				nroRegistrosPorPagina : 10,
+				datosConFiltro : [],
+				datos : [],
+				datosParaMostrar : [],
+				callBackBuscar : function(busqueda){
+					Paginacion.callBackBuscar(busqueda,$scope.Formulario.paginacionResultadosAprendizajeDocente);
+				},
+				cambioPagina : function(page){
+					Paginacion.cambioPagina(page,$scope.Formulario.paginacionResultadosAprendizajeDocente);
+				}
+			},
+			paginacionResultadosAprendizaje : {
+				totalRegistros : 1,
+				paginaActual : 1,
+				nroRegistrosPorPagina : 10,
+				datosConFiltro : [],
+				datos : [],
+				datosParaMostrar : [],
+				callBackBuscar : function(busqueda){
+					Paginacion.callBackBuscar(busqueda,$scope.Formulario.paginacionResultadosAprendizaje);
+				},
+				cambioPagina : function(page){
+					Paginacion.cambioPagina(page,$scope.Formulario.paginacionResultadosAprendizaje);
+				}
+			}
+		}
 
-		var obtenerResultadosAprendizaje = function(){
+		$scope.obtenerResultadosAprendizaje = function(){
 			ResultadoAprendizaje.obtenerResultadosAprendizaje()
 				.success(function(data){
-					$scope.resultadosAprendizaje = data.resultadosAprendizaje;
-					$scope.resultadosAprendizajeDocente = data.resultadosAprendizajeDocente;
+					$scope.Formulario.paginacionResultadosAprendizaje.datos = data.resultadosAprendizaje;
+					$scope.Formulario.paginacionResultadosAprendizajeDocente.datos = data.resultadosAprendizajeDocente;
+					$scope.Formulario.paginacionResultadosAprendizajeDocente.callBackBuscar("");
+					$scope.Formulario.paginacionResultadosAprendizaje.callBackBuscar("");
+					console.log($scope.Formulario.paginacionResultadosAprendizajeDocente);
 					$scope.loader = false;
 				});
 		}
@@ -105,7 +141,8 @@ rubricaApp.controller('misResultadosAprendizajeCtrl',
 
 		//METODOS
 
-		obtenerResultadosAprendizaje();
+		$scope.obtenerResultadosAprendizaje();
+		
 	});
 
 

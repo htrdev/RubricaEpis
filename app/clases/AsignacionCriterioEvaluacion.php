@@ -30,4 +30,13 @@ class AsignacionCriterioEvaluacion extends Singleton{
 		$funciono = $this->conexion->realizarConsulta($query,false);
 		return $funciono;		
 	}
+
+	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
+		$query = 
+		"SELECT A.CriterioEvaluacion_idCriterioEvaluacion AS idCriterioEvaluacion
+				,A.idAsignacionCriterioEvaluacion
+			FROM asignacioncriterioevaluacion AS A 
+				WHERE A.ModeloRubrica_idModeloRubrica = '".$idModeloRubrica."'";
+		return $this->conexion->realizarConsulta($query,true);
+	}
 }

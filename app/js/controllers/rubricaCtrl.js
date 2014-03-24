@@ -52,9 +52,8 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				});
 		}
 
-		
-
 		$scope.Formulario = {
+
 			EstaCuestionario : false,
 			resultadosAprendizajeSeleccionados : [],
 			AgregarDocente : function(docente){
@@ -184,7 +183,7 @@ rubricaApp.controller('listarEstadoRubricaCtrl',
 	});
 
 rubricaApp.controller('misRubricasCtrl',
-	function misRubricasCtrl($scope,$location,Rubrica)
+	function misRubricasCtrl($scope,$location,Rubrica,Paginacion)
 	{
 		$scope.currentPage = 1;
 		$scope.asd = 50;
@@ -197,14 +196,47 @@ rubricaApp.controller('misRubricasCtrl',
 		var obtenerRubricasPorPersona = function(){
 			Rubrica.obtenerRubricasPorPersona()
 				.success(function(data){
-					$scope.misRubricas = data.misRubricas;
-					$scope.rubricasAsignadas = data.rubricasAsignadas;
+					$scope.Formulario.paginacionMisRubricas.datos = data.misRubricas;
+					$scope.Formulario.paginacionRubricasAsignadas.datos = data.rubricasAsignadas;
+					$scope.Formulario.paginacionRubricasAsignadas.callBackBuscar("");
+					$scope.Formulario.paginacionMisRubricas.callBackBuscar("");
 					$scope.loader.estadoLoader = false;
 				});
 
 		};
 
 		$scope.EstaRubricasCreadas = true;
+
+		$scope.Formulario = {
+			paginacionMisRubricas : {
+				totalRegistros : 1,
+				paginaActual : 1,
+				nroRegistrosPorPagina : 10,
+				datosConFiltro : [],
+				datos : [],
+				datosParaMostrar : [],
+				callBackBuscar : function(busqueda){
+					Paginacion.callBackBuscar(busqueda,$scope.Formulario.paginacionMisRubricas);
+				},
+				cambioPagina : function(page){
+					Paginacion.cambioPagina(page,$scope.Formulario.paginacionMisRubricas);
+				}
+			},
+			paginacionRubricasAsignadas : {
+				totalRegistros : 1,
+				paginaActual : 1,
+				nroRegistrosPorPagina : 10,
+				datosConFiltro : [],
+				datos : [],
+				datosParaMostrar : [],
+				callBackBuscar : function(busqueda){
+					Paginacion.callBackBuscar(busqueda,$scope.Formulario.paginacionRubricasAsignadas);
+				},
+				cambioPagina : function(page){
+					Paginacion.cambioPagina(page,$scope.Formulario.paginacionRubricasAsignadas);
+				}
+			}
+		}
 
 		$scope.Interfaz =	{
 			OcultarRubricasAsignadas : function(){
@@ -267,26 +299,74 @@ rubricaApp.controller('verRubricasCreadasCtrl',
 rubricaApp.controller('completarRubricaCtrl',
 	function completarRubricaCtrl($scope,Rubrica,$routeParams){
 		$scope.resultadoRubrica = {};
+		$scope.resultadoRubricaCompleto = {};
 
 		$scope.obtenerResultadoRubricaPorId = function(){
 			Rubrica.obtenerResultadoRubricaPorId($routeParams.idResultadoRubrica)
 			.success(function(data){
 				$scope.resultadoRubrica = data;
-				console.log(_.groupBy($scope.resultadoRubrica.criteriosEvaluacion,'resultadoAprendizaje'));
-				$scope.resultadoRubrica.criteriosEvaluacion = _.groupBy($scope.resultadoRubrica.criteriosEvaluacion,'resultadoAprendizaje');
+				$scope.resultadoRubrica.resultadosAprendizaje = $scope.agrupar($scope.resultadoRubrica.criteriosEvaluacion,"resultadoAprendizaje");
 			});
 		};
+
+		$scope.completarCuestionario = function(){
+			$scope.resultadoRubricaCompleto.idResultadoRubrica = $routeParams.idResultadoRubrica;
+			$scope.resultadoRubricaCompleto.resultadosAprendizaje = $scope.resultadoRubrica.resultadosAprendizaje;
+			console.log($scope.resultadoRubricaCompleto);
+			Rubrica.completarResultadoRubrica($scope.resultadoRubricaCompleto)
+			.success(function(data){
+				console.log(data);
+			});
+		};
+
+		$scope.agrupar = function(array,campo){
+			var grupos = [];
+			var index = null;
+			for(var i=0;i<array.length;i++){
+				var item = array[i];
+				index = null;
+				for(var j=0;j<grupos.length;j++){
+					var a = grupos[j][0][campo];
+					var b = item[campo];
+					if(grupos[j][0][campo]==item[campo]){
+						index = j;
+						break;
+					}
+				}
+				if(index==null){
+					var grupoAux = [];
+					grupoAux.push(item);
+					grupos.push(grupoAux);
+				}else{
+					grupos[index].push(item);
+				}
+				console.log(grupos);
+			}
+			return grupos;
+		};
+
 
 		$scope.calcularTotal = function(resultadoAprendizaje){
 			var total=0;
 			var nota=0;
 			resultadoAprendizaje.forEach(function(criterio){
-				total += 1*criterio.calificacion;
-				console.log(criterio);
+				if(!criterio.hasOwnProperty('calificacion')){
+					return;
+				}
+				if(!isNaN(criterio.calificacion)){
+					total += 1*criterio.calificacion;
+				}
 			});
+			debugger;
 			resultadoAprendizaje.total = total/resultadoAprendizaje.length;
-			console.log(resultadoAprendizaje.total);
+			resultadoAprendizaje.nota = $scope.calcularNota(resultadoAprendizaje.total);
+			console.log($scope.resultadoRubrica);
+		};
+
+		$scope.calcularNota = function(total){
+			return (total*20)/100;
 		};
 
 		$scope.obtenerResultadoRubricaPorId();
+
 });

@@ -4,6 +4,14 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 require_once('AsignacionPersonaCalificada.php');
+require_once('ModeloRubrica.php');
+require_once('Persona.php');
+require_once('AsignacionCriterioEvaluacion.php');
+require_once('Curso.php');
+require_once('CriterioEvaluacion.php');
+require_once('Semestre.php');
+require_once('CalificacionCriterioEvaluacion.php');
+
 class ResultadoRubrica extends Singleton{
 
 	private $conexionMysql;
@@ -165,77 +173,66 @@ class ResultadoRubrica extends Singleton{
 		return $resultadoJson;
 	}
 
-	public function resultadoRubricaPorID($idResultadoRubrica){
-		$resultadoRubrica;
-		$queryIdModeloRubrica = "SELECT R.ModeloRubrica_idModelRubrica FROM resultadorubrica AS R
-								 WHERE R.idResultadoRubrica = '".$idResultadoRubrica."'";
-		$resultadoIdModeloRubrica = $this->conexionMysql->realizarConsulta($queryIdModeloRubrica,true);
-		$queryModeloRubrica = "SELECT M.Semestre_idSemestre,M.Curso_idCurso ,M.Docente_Persona_idPersona  FROM modelorubrica AS M 
-							   WHERE M.idModeloRubrica = '".$resultadoIdModeloRubrica[0]['ModeloRubrica_idModelRubrica']."'";
-		$resultadoModeloRubrica = $this->conexionMysql->realizarConsulta($queryModeloRubrica,true);
-		//semestre
-		$querySemestre = "SELECT S.Semestre  FROM SEMESTRE AS S
-						  WHERE S.IdSem = '".$resultadoModeloRubrica[0]['Semestre_idSemestre']."'";
-		$resultadoSemestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
-		//curso
-		$queryCurso = "SELECT C.DesCurso ,C.CicloCurso  FROM curso AS C
-					WHERE C.idcurso = '".$resultadoModeloRubrica[0]['Curso_idCurso']."'";
-		$resultadoCurso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
-		//docenteCreador de la Rubrica 
-		$queryDocenteCreadorRubrica = "SELECT P.ApepPer ,P.ApemPer ,P.NomPer  FROM .PERSONA AS P 
-									   WHERE P.CodPer = '".$resultadoModeloRubrica[0]['Docente_Persona_idPersona']."'";
-		$resultadoDocenteCreadorRubrica = $this->conexionSqlServer->realizarConsulta($queryDocenteCreadorRubrica,true);
-		//alumnos Calificados
-		$queryAlumnosCalificados = "SELECT A.idPersonaCalificada  FROM asignacionpersonacalificada AS A
-									WHERE A.ResultadoRubrica_idResultadoRubrica  = '".$idResultadoRubrica."'";
-		$resultadoAlumnosCalificados = $this->conexionMysql->realizarConsulta($queryAlumnosCalificados,true);
-		$alumnosCalificados=array();
-		$contadorAlumnos=0;
-		foreach ($resultadoAlumnosCalificados as $alumno) {
-				//echo "alumno Calificado : ".$alumno['idPersonaCalificada']."\n";
-				$queryAlumnoCalificado = "SELECT P.ApepPer ,P.ApemPer ,P.NomPer  FROM .PERSONA AS P 
-									   WHERE P.CodPer = '".$alumno['idPersonaCalificada']."'";
-				$resultadoAlumnoCalificado= $this->conexionSqlServer->realizarConsulta($queryAlumnoCalificado,true);
-				
-				$alumnosCalificados[$contadorAlumnos]= 
-			  		array("nombreCompletoAlumno"=>$resultadoAlumnoCalificado[0]["ApepPer"]." ".$resultadoAlumnoCalificado[0]["ApemPer"].", ".$resultadoAlumnoCalificado[0]["NomPer"],
-					); 	
-				$contadorAlumnos++;
+	public function obtenerResultadoRubricaPorID($idResultadoRubrica){
+		$modeloRubrica = ModeloRubrica::obtenerObjeto()->listarModeloRubricaPorResultadoRubrica($idResultadoRubrica);
+		$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($modeloRubrica['Semestre_idSemestre']);
+		$curso = Curso::obtenerObjeto()->listarCursoPorId($modeloRubrica['Curso_idCurso']);
+		$docente = Persona::obtenerObjeto()->listarPersonaPorId($modeloRubrica['Docente_Persona_idPersona']);
+		$alumnosCalificados = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica);
+		foreach ($alumnosCalificados as &$alumnoCalificado) {
+				$alumno = Persona::obtenerObjeto()->listarPersonaPorId($alumnoCalificado["idPersonaCalificada"]);
+				$alumnoCalificado["nombreCompletoAlumno"] = Persona::obtenerObjeto()->obtenerNombreCompletoPersona($alumno);
+				unset($alumnoCalificado["idPersonaCalificada"]);
 		}
-		//criterios Evaluacion
-		$queryIdCriteriosEvaluacion = "SELECT A.CriterioEvaluacion_idCriterioEvaluacion  FROM asignacioncriterioevaluacion AS A 
-									WHERE A.ModeloRubrica_idModeloRubrica = '".$resultadoIdModeloRubrica[0]['ModeloRubrica_idModelRubrica']."'";
-		$resultadoIdCriterios = $this->conexionMysql->realizarConsulta($queryIdCriteriosEvaluacion,true);
-		$criteriosEvaluacion=array();
-		$contadorCriterios=0;
-		foreach ($resultadoIdCriterios as $criterio) {
-				//echo "alumno Calificado
-				$queryCriterio = "SELECT C.descripcionCriterioEvaluacion,C.ResultadoAprendizaje_idResultadoAprendizaje FROM criterioevaluacion AS C
-								  WHERE C.idCriterioEvaluacion = '".$criterio['CriterioEvaluacion_idCriterioEvaluacion']."'";
-				$resultadoCriterio= $this->conexionMysql->realizarConsulta($queryCriterio,true);
-				//resultadoaprendizaje
-				$queryRA = "SELECT R.codigoResultadoAprendizaje,R.tituloResultadoAprendizaje FROM resultadoaprendizaje AS R
-								  WHERE R.idResultadoAprendizaje =  '".$resultadoCriterio[0]['ResultadoAprendizaje_idResultadoAprendizaje']."'";
-				$resultadoRA= $this->conexionMysql->realizarConsulta($queryRA,true);
-				//			
-				$criteriosEvaluacion[$contadorCriterios]= 
-			  		array("idCriterioEvaluacion"=>$criterio['CriterioEvaluacion_idCriterioEvaluacion'],
-			  			  "descripcionCriterioEvaluacion"=>$resultadoCriterio[0]["descripcionCriterioEvaluacion"],
-			  			  "resultadoAprendizaje"=>$resultadoRA[0]["codigoResultadoAprendizaje"]." ".$resultadoRA[0]["tituloResultadoAprendizaje"]
-					); 	
-				$contadorCriterios++;
+		$criteriosEvaluacion=AsignacionCriterioEvaluacion::obtenerObjeto()->listarAsignacionCriterioEvaluacionPorModeloRubrica($modeloRubrica["idModeloRubrica"]);
+		foreach ($criteriosEvaluacion as &$criterioEvaluacion) {
+				$ce = CriterioEvaluacion::obtenerObjeto()->listarCriterioEvaluacionPorId($criterioEvaluacion['idCriterioEvaluacion']);
+				$criterioEvaluacion["descripcionCriterioEvaluacion"]=$ce["descripcionCriterioEvaluacion"];
+				$criterioEvaluacion["resultadoAprendizaje"] = $ce["tituloResultadoAprendizaje"];
+				unset($criterioEvaluacion['idCriterioEvaluacion']);
 		}
 		$resultadoRubrica = 
 				array("idResultadoRubrica"=>$idResultadoRubrica,
-					"semestre"=>$resultadoSemestre[0]['Semestre'],
-					"curso"=>$resultadoCurso[0]['DesCurso'],
-					"docenteCreadorRubrica"=>$resultadoDocenteCreadorRubrica[0]["ApepPer"]." ".$resultadoDocenteCreadorRubrica[0]["ApemPer"].", ".$resultadoDocenteCreadorRubrica[0]["NomPer"],
-					"ciclo"=>$resultadoCurso[0]['CicloCurso'],
+					"semestre"=>$semestre['Semestre'],
+					"curso"=>$curso['DesCurso'],
+					"docenteCreadorRubrica"=>Persona::obtenerObjeto()->obtenerNombreCompletoPersona($docente),
+					"ciclo"=>$curso['CicloCurso'],
 					"alumnosCalificados"=>$alumnosCalificados,
 					"criteriosEvaluacion"=>$criteriosEvaluacion					
 					); 
 		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubrica);
 		return $resultadoJson;
+	}
 
+	public function completarResultadoRubrica($resultadoRubrica){
+		$resultadoRubrica["total"] = $this->obtenerTotalResultadoRubrica($resultadoRubrica["resultadosAprendizaje"]);
+		$this->conexionMysql->iniciarTransaccion();
+		$resultados = array();
+		$resultados[] = $this->modificarResultadoRubrica($resultadoRubrica);
+		$resultados[] = CalificacionCriterioEvaluacion::obtenerObjeto()->agregarCalificacionCriterioEvaluacion($resultadoRubrica["idResultadoRubrica"],$resultadoRubrica["resultadosAprendizaje"]);
+		return $this->conexionMysql->finalizarTransaccion($resultados);
+	}
+
+	public function modificarResultadoRubrica($resultadoRubrica){
+		$query = 
+		"UPDATE resultadorubrica
+			SET
+			totalRubrica = '".$resultadoRubrica["total"]."'
+			,estadoRubrica = 'Completado'
+			,fechaCompletadoRubrica = '".date('Y/m/d')."'
+			WHERE idResultadoRubrica = '".$resultadoRubrica["idResultadoRubrica"]."'";
+		return $this->conexionMysql->realizarConsulta($query,false);
+	} 
+
+	public function obtenerTotalResultadoRubrica($resultadosAprendizaje){
+		$total = 0;
+		foreach ($resultadosAprendizaje as $resultadoAprendizaje) {
+			$totalResultadoAprendizaje = 0;
+			foreach($resultadoAprendizaje as $criterioEvaluacion){
+				$totalResultadoAprendizaje += (int)($criterioEvaluacion["calificacion"]);
+			}
+			$total += $totalResultadoAprendizaje/count($resultadoAprendizaje);
+		}
+		return $total/count($resultadosAprendizaje);
 	}
 }

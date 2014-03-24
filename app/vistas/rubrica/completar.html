@@ -74,7 +74,7 @@
 			</table>
 		</div>
 		<div id="cuestionario" class="row-fluid">
-			<div class="widget-box" ng-repeat="resultadoAprendizaje in resultadoRubrica.criteriosEvaluacion">
+			<div class="widget-box" ng-repeat="resultadoAprendizaje in resultadoRubrica.resultadosAprendizaje">
 				<div class="widget-header header-color-dark">
 					<h4 class="color-gris">{{resultadoAprendizaje[0].resultadoAprendizaje}}</h4>
 					<span class="widget-toolbar">
@@ -108,7 +108,7 @@
 								<tbody>
 									<tr ng-repeat="criterioEval in resultadoAprendizaje">
 										<td>{{criterioEval.descripcionCriterioEvaluacion}}</td>
-										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="No opina"></td>
+										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="No opina" ng-init="criterioEval.calificacion = 'No opina'"></td>
 										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="20"></td>
 										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="40"></td>
 										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="60"></td>
@@ -123,6 +123,9 @@
 				</div>
 			</div>
 		</div>
+		<grupo-botones>
+			<btn-guardar ng-click="completarCuestionario()">Guardar </btn-guardar>
+		</grupo-botones>
 	</div>
 </div>
 <script>

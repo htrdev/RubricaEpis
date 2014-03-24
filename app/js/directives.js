@@ -82,7 +82,7 @@ interfaz.pantallaLoading = function(){
               loader : '='
             },
 
-            template : "<div class='row-fluid animate' ng-if='loader.estadoLoader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
+            template : "<div class='row-fluid' ng-if='loader.estadoLoader' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
           };
   
 };
@@ -126,12 +126,12 @@ interfaz.fecha = function(){
     restrict: 'A',
     link : function(scope,element,attrs){
       element.datepicker({
+        format : 'yyyy-mm-dd',
         language: "es"
       });
     }
   }
 }
-
 
 rubricaApp.directive("linkBorrarItem",interfaz.linkBorrarItem);
 rubricaApp.directive("btnGuardar",interfaz.btnGuardar);
@@ -142,6 +142,7 @@ rubricaApp.directive("btnSiguiente",interfaz.btnSiguiente);
 rubricaApp.directive("grupoBotones",interfaz.grupoBotones);
 rubricaApp.directive("pantallaLoadingShow",interfaz.pantallaLoadingShow);
 rubricaApp.directive("pantallaGuardarExitoso",interfaz.pantallaGuardarExitoso);
+// rubricaApp.directive("htrdevPagination",interfaz.htrdevPagination);
 rubricaApp.directive("fecha",interfaz.fecha);
 
 rubricaApp.directive("cmbChosen", function(){

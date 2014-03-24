@@ -25,7 +25,8 @@ class Curso extends Singleton{
 	public function listarCursoPorId($idCurso){
 		$queryCurso = 
 		"SELECT  
-			DesCurso  
+			DesCurso
+			,CicloCurso 
 		FROM curso 
 		WHERE idcurso = '".$idCurso."'";
 		$curso = $this->conexion->realizarConsulta($queryCurso,true);

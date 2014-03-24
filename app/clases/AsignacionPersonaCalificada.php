@@ -30,8 +30,15 @@ class AsignacionPersonaCalificada extends Singleton{
 				$query.=",";
 			}
 		}
-		echo $query;
 		$funciono = $this->conexion->realizarConsulta($query,false);
 		return $funciono;		
+	}
+
+	public function listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
+		$query =
+		"SELECT A.idPersonaCalificada  
+			FROM asignacionpersonacalificada AS A
+				WHERE A.ResultadoRubrica_idResultadoRubrica  = '".$idResultadoRubrica."'";
+		return $this->conexion->realizarConsulta($query,true);
 	}
 }
