@@ -3,9 +3,9 @@
 	<div>
 		<h3 class="header lighter blue" style="margin-top:0">Rubricas
 		<small><i class="icon-double-angle-right"></i> Completar</small>
-		<small><i class="icon-double-angle-right"></i> Completar</small>
+		<small><i class="icon-double-angle-right"></i> {{idResultadoRubrica}}</small>
 	</div>
-	<div class="row-fluid" id="DatosGenerales">
+	<div id="DatosGenerales" ng-if="!loader.estadoLoader" ng-show="loader.estadoFormulario" class="animation">
 		<div class="row-fluid well well-large" style="box-sizing:border-box">
 			<div class="row-fluid span8">
 				<div class="row-fluid">
@@ -45,7 +45,6 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 		<div class="row-fluid text-center">
 			<p>De acuerdo con las siguientes afirmaciones evalue el grado en que los alumnos han alcanzado los criterios de desempeño del curso. Valore de acuerdo a la siguiente tabla.</p>
@@ -127,6 +126,9 @@
 			<btn-guardar ng-click="completarCuestionario()">Guardar </btn-guardar>
 		</grupo-botones>
 	</div>
+	<pantalla-loading loader="loader">Cargando informacion de la Rubrica ...</pantalla-loading>
+	<pantalla-guardar-loading loader="loader">{{loader.mensajeGuardar}}</pantalla-guardar-loading>
+	<pantalla-guardar-exitoso loader="loader" ng-click="callBackGuardar()">{{loader.mensajeGuardado}}</pantalla-guardar-exitoso>
 </div>
 <script>
 $(function(){

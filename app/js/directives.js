@@ -87,6 +87,19 @@ interfaz.pantallaLoading = function(){
   
 };
 
+interfaz.pantallaGuardarLoading = function(){
+    return {
+            restrict : "E",
+            transclude : true,
+            scope : {
+              loader : '='
+            },
+
+            template : "<div class='row-fluid' ng-if='loader.estadoGuardando' style='text-align:center;padding-top:1em;font-style:italic'><h4><span ng-transclude></span><br><br><img src='assets/css/images/loader.gif' style='width:6em;height:.5em'></h4></div>"
+          };
+  
+};
+
 interfaz.pantallaGuardarExitoso = function(){
   return {
           restrict : "E",
@@ -142,7 +155,7 @@ rubricaApp.directive("btnSiguiente",interfaz.btnSiguiente);
 rubricaApp.directive("grupoBotones",interfaz.grupoBotones);
 rubricaApp.directive("pantallaLoadingShow",interfaz.pantallaLoadingShow);
 rubricaApp.directive("pantallaGuardarExitoso",interfaz.pantallaGuardarExitoso);
-// rubricaApp.directive("htrdevPagination",interfaz.htrdevPagination);
+rubricaApp.directive("pantallaGuardarLoading",interfaz.pantallaGuardarLoading);
 rubricaApp.directive("fecha",interfaz.fecha);
 
 rubricaApp.directive("cmbChosen", function(){

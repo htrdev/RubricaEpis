@@ -6,7 +6,6 @@ htrdev.factory('Paginacion',function($filter){
 	factory.callBackBuscar = function(busqueda,paginacion){
 		paginacion.datosConFiltro = $filter('filter')(paginacion.datos,busqueda);
 	    paginacion.totalRegistros = paginacion.datosConFiltro.length;
-	    console.log(paginacion.datosConFiltro);
 	    paginacion.paginaActual = 1;
 	    factory.cambioPagina(paginacion.paginaActual,paginacion);
 	};
@@ -16,7 +15,6 @@ htrdev.factory('Paginacion',function($filter){
 		var indiceFinal = paginacion.nroRegistrosPorPagina*page;
 		paginacion.datosParaMostrar = [];
 		if(paginacion.datosConFiltro.length===0){
-			console.log("maaay");
 		}else{
 			for(var i=inicio;i<indiceFinal;i++){
 				if(i==paginacion.totalRegistros-1){

@@ -10,7 +10,6 @@ rubricaApp.controller('nuevoResultadoAprendizajeCtrl',
 			criteriosEvaluacion : []
 		}; 
 
-
 		$scope.Interfaz = {
 			agregarResultadoAprendizaje : function(){
 				ResultadoAprendizaje.agregarResultadoAprendizaje($scope.resultadoAprendizaje)

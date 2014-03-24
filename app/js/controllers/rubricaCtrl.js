@@ -269,13 +269,16 @@ rubricaApp.controller('verRubricasAsignadasCtrl',
 	function verRubricasAsignadasCtrl($scope,Rubrica,$routeParams){
 		$scope.resultadoRubricaPorRubricaAsignada = [];
 		$scope.idRubricaAsignada = $routeParams.idRubricaAsignada;
+		$scope.loader = {
+			estadoLoader : true
+		};
 
 		$scope.obtenerResultadoRubricaPorRubricaAsignada = function(){
 			console.log($routeParams.idRubricaAsignada);
 				Rubrica.obtenerResultadoRubricaPorRubricaAsignada($routeParams.idRubricaAsignada)
 				.success(function(data){
 					$scope.resultadosRubricaPorRubricaAsignada = data;
-					console.log($scope.resultadosRubricaPorRubricaAsignada);
+					$scope.loader.estadoLoader = false;
 				});
 		};
 		$scope.obtenerResultadoRubricaPorRubricaAsignada();
@@ -285,37 +288,54 @@ rubricaApp.controller('verRubricasCreadasCtrl',
 	function verRubricasCreadasCtrl($scope,Rubrica,$routeParams){
 		$scope.resultadoRubricaPorRubricaCreada = [];
 		$scope.idRubricaCreada = $routeParams.idRubricaCreada;
-
+		$scope.loader = {
+			estadoLoader : true
+		};
 		$scope.obtenerResultadoRubricaPorRubricaCreada = function(){
 			console.log($routeParams.idRubricaAsignada);
 				Rubrica.obtenerResultadoRubricaPorRubricaCreada($routeParams.idRubricaCreada)
 				.success(function(data){
 					$scope.resultadoRubricaPorRubricaCreada = data;
+					$scope.loader.estadoLoader = false;
 				});
 		};
 		$scope.obtenerResultadoRubricaPorRubricaCreada();
 	});
 
 rubricaApp.controller('completarRubricaCtrl',
-	function completarRubricaCtrl($scope,Rubrica,$routeParams){
+	function completarRubricaCtrl($scope,Rubrica,$routeParams,$location,$window){
 		$scope.resultadoRubrica = {};
 		$scope.resultadoRubricaCompleto = {};
+		$scope.idResultadoRubrica = $routeParams.idResultadoRubrica;
+		$scope.loader = {
+			estadoLoader : true,
+			mensajeGuardar : "Guardando la Rubrica ...",
+			estadoGuardar : false,
+			mensajeGuardado : "Rubrica Guardada!",
+			estadoFormulario : true,
+			estadoGuardando : false
+		};
 
 		$scope.obtenerResultadoRubricaPorId = function(){
-			Rubrica.obtenerResultadoRubricaPorId($routeParams.idResultadoRubrica)
+			Rubrica.obtenerResultadoRubricaPorId($scope.idResultadoRubrica)
 			.success(function(data){
 				$scope.resultadoRubrica = data;
 				$scope.resultadoRubrica.resultadosAprendizaje = $scope.agrupar($scope.resultadoRubrica.criteriosEvaluacion,"resultadoAprendizaje");
+				$scope.loader.estadoLoader = false;
 			});
 		};
 
+
 		$scope.completarCuestionario = function(){
+			$scope.loader.estadoFormulario = false;
+			$scope.loader.estadoGuardando = true;
 			$scope.resultadoRubricaCompleto.idResultadoRubrica = $routeParams.idResultadoRubrica;
 			$scope.resultadoRubricaCompleto.resultadosAprendizaje = $scope.resultadoRubrica.resultadosAprendizaje;
 			console.log($scope.resultadoRubricaCompleto);
 			Rubrica.completarResultadoRubrica($scope.resultadoRubricaCompleto)
 			.success(function(data){
-				console.log(data);
+				$scope.loader.estadoGuardar = true;
+				$scope.loader.estadoGuardando = false;
 			});
 		};
 
@@ -345,6 +365,10 @@ rubricaApp.controller('completarRubricaCtrl',
 			return grupos;
 		};
 
+		$scope.callBackGuardar = function(){
+			console.log("cambiandoo");
+			$window.history.back();
+		};
 
 		$scope.calcularTotal = function(resultadoAprendizaje){
 			var total=0;

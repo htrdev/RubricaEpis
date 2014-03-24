@@ -35,4 +35,3 @@ rubricaApp.filter('fecha',function(){
 		return fecha;
 	};
 });
-
