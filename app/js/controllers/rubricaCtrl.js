@@ -31,8 +31,9 @@ rubricaApp.controller('nuevoRubricaCtrl',
 		$scope.obtenerInformacionNuevaRubrica = function(){
 			Rubrica.obtenerInformacionNuevaRubrica()
 				.success(function(data){
+					console.log(data);
 					$scope.semestre = data.semestre;
-					$scope.modeloRubrica.idSemestre = $scope.semestre[0].IdSem;
+					$scope.modeloRubrica.idSemestre = $scope.semestre[0].idSem;
 					$scope.resultadosAprendizaje = data.resultadosAprendizaje.resultadosAprendizaje;
 					$scope.docentes = data.docentes;
 					$scope.cursos = data.cursos;

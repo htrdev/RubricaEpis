@@ -139,7 +139,7 @@ interfaz.fecha = function(){
     restrict: 'A',
     link : function(scope,element,attrs){
       element.datepicker({
-        format : 'yyyy-mm-dd',
+        format : 'dd/mm/yyyy',
         language: "es"
       });
     }

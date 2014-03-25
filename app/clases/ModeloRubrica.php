@@ -36,8 +36,7 @@ class ModeloRubrica extends Singleton{
 				,'".$modeloRubrica["fechaInicio"]."'
 				,'".$modeloRubrica["fechaFinal"]."'
 				,'".$CodPer."'
-				,'".$modeloRubrica["personaCalificada"]."')";
-		echo $queryInsertarModeloRubrica;
+				,'".$modeloRubrica["calificacionRubrica"]."')";
 		return $this->conexionSqlServer->returnId()->realizarConsulta($queryInsertarModeloRubrica,false);
 	}
 

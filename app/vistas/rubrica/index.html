@@ -30,7 +30,7 @@
 							<tr ng-repeat="rubricaCreada in Formulario.paginacionMisRubricas.datosParaMostrar">
 								<td>{{rubricaCreada.semestre}}</td>
 								<td>{{rubricaCreada.curso}}</td>
-								<td>{{rubricaCreada.calificacionRubrica}}</td>
+								<td>{{rubricaCreada.personaCalificada}}</td>
 								<td>{{rubricaCreada.fechaInicioRubrica}}</td>
 								<td>{{rubricaCreada.fechaFinalRubrica}}</td>
 								
@@ -90,7 +90,7 @@
 						<tr ng-repeat="rubricaAsignada in Formulario.paginacionRubricasAsignadas.datosParaMostrar">
 							<td>{{rubricaAsignada.semestre}}</td>
 							<td>{{rubricaAsignada.curso}}</td>
-							<td>{{rubricaAsignada.calificacionRubrica}}</td>
+							<td>{{rubricaAsignada.personaCalificada}}</td>
 							<td>{{rubricaAsignada.autor}}</td>
 							<td>{{rubricaAsignada.fechaFinalRubrica}}</td>
 							

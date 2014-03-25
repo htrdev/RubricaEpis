@@ -9,7 +9,7 @@ class Curso extends Singleton{
 	private $conexion;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver','192.168.1.38','sa','123cuatro');
+		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarCursosDocente(){

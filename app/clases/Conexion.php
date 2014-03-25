@@ -44,9 +44,9 @@ abstract class Conexion extends Singleton{
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = 'localhost';
+		$this->servidor = '192.168.1.36';
 		$this->usuario	= 'sa';
-		$this->password = 'redman10';
+		$this->password = '123cuatro';
 		$this->baseDeDatos = "RubricaEpis";
 		$this->obtenerConexion();
 	}
@@ -57,7 +57,7 @@ class ConexionSQLServer extends Conexion{
 	}
 
 	public function iniciarTransaccion(){
-		mssql_query("BEGIN TRAN",$this->conexion);
+		mssql_query("BEGIN TRANSACTION",$this->conexion);
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
@@ -77,6 +77,7 @@ class ConexionSQLServer extends Conexion{
 			else{
 				if($this->returnId){
 					$this->returnId = false;
+					$resultado = $this->convertirArray($resultado);
 					return $resultado[0]["id"];
 				}
 				return $resultado;

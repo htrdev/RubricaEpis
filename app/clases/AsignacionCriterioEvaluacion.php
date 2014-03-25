@@ -7,36 +7,33 @@ require_once('Singleton.php');
 
 class AsignacionCriterioEvaluacion extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 	
 	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
-		$query = "INSERT into asignacionCriterioEvaluacion (ModeloRubrica_idModeloRubrica, CriterioEvaluacion_idCriterioEvaluacion)
-		values";
-		$numeroElementos = count($CriterioEvaluacion);
-		$i = 0;
+		$query = "";
 		foreach($CriterioEvaluacion as $idCriterioEvaluacion){
-			$query.= "('".$idModeloRubrica."','".$idCriterioEvaluacion."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
+			$query .= 
+			"INSERT INTO asignacionCriterioEvaluacion(
+				idModeloRubrica
+				,idCriterioEvaluacion)
+			VALUES(
+				'".$idModeloRubrica."'
+				,'".$idCriterioEvaluacion."');";
 		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;		
 	}
 
 	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
 		$query = 
-		"SELECT A.CriterioEvaluacion_idCriterioEvaluacion AS idCriterioEvaluacion
+		"SELECT A.idCriterioEvaluacion AS idCriterioEvaluacion
 				,A.idAsignacionCriterioEvaluacion
 			FROM asignacioncriterioevaluacion AS A 
-				WHERE A.ModeloRubrica_idModeloRubrica = '".$idModeloRubrica."'";
-		return $this->conexion->realizarConsulta($query,true);
+				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 }

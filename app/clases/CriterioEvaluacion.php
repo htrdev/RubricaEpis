@@ -6,14 +6,14 @@ require_once('Conexion.php');
 
 class CriterioEvaluacion extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
-		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje) 
+		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, idResultadoAprendizaje) 
 		values";
 		$numeroElementos = count($criterioEvaluacion);
 		$i = 0;
@@ -26,7 +26,7 @@ class CriterioEvaluacion extends Singleton{
 				$query.=",";
 			}
 		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;		
 	}
 
@@ -35,8 +35,8 @@ class CriterioEvaluacion extends Singleton{
 		"SELECT idCriterioEvaluacion
 				,descripcionCriterioEvaluacion
 		FROM CriterioEvaluacion
-			WHERE ResultadoAprendizaje_idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
-		return $this->conexion->realizarConsulta($query,true);
+			WHERE idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
 	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){
@@ -44,8 +44,8 @@ class CriterioEvaluacion extends Singleton{
 		"SELECT c.descripcionCriterioEvaluacion,CONCAT(r.codigoResultadoAPrendizaje,' ',r.tituloResultadoAprendizaje) AS tituloResultadoAprendizaje
 		FROM criterioEvaluacion AS c
 		INNER JOIN resultadoaprendizaje AS r
-			ON c.ResultadoAprendizaje_idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
-		$resultado = $this->conexion->realizarConsulta($query,true);
+			ON c.idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
+		$resultado = $this->conexionSqlServer->realizarConsulta($query,true);
 		return $resultado[0];
 	}
 

@@ -23,21 +23,14 @@ class ResultadoRubrica extends Singleton{
 	public function agregarResultadoRubrica($idModeloRubrica,$idDocente){
 		$query = 
 				"INSERT INTO resultadoRubrica(
-					fechaCompletadoRubrica
-					,idPersonaCalificadora
+					idPersonaCalificadora
 					,idModeloRubrica
-					,estadoRubrica
-					,totalRubrica)
+					)
 				VALUES
-					('0000-00-00'
-					,".$idDocente."
+					(".$idDocente."
 					,".$idModeloRubrica."
-					,'Pendiente'
-					,'0')";
+					)";
 		$idResultadoRubrica = $this->conexionSqlServer->returnId()->realizarConsulta($query,false);
-		if($idResultadoRubrica!=false){
-			return $idResultadoRubrica;
-		}
 		return $idResultadoRubrica;
 	}
 

@@ -4,18 +4,18 @@ require_once('Conexion.php');
 
 class CalificacionCriterioEvaluacion extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	protected function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
 		$query = 
 		"INSERT INTO calificacionCriterioEvaluacion(
-			Rubrica_idResultadoRubrica
+			idResultadoRubrica
 			,calificacionResultadoRubrica
-			,AsignacionCriterioEvaluacion_idAsignacionCriterioEvaluacion) 
+			,idAsignacionCriterioEvaluacion) 
 		VALUES";
 		$j = 0;
 		$numeroElementosTotales = count($resultadosAprendizaje);
@@ -35,7 +35,7 @@ class CalificacionCriterioEvaluacion extends Singleton{
 				$query.=",";
 			}
 		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;	
 	}
 

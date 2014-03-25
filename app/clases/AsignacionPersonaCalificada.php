@@ -7,16 +7,16 @@ require_once('Singleton.php');
 
 class AsignacionPersonaCalificada extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 	
 	public function agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumnos){
 		$query = 
 		"INSERT INTO asignacionpersonacalificada(
-			ResultadoRubrica_idResultadoRubrica, 
+			idResultadoRubrica, 
 			idPersonaCalificada)
 		values";
 		$numeroElementos = count($alumnos);
@@ -30,7 +30,7 @@ class AsignacionPersonaCalificada extends Singleton{
 				$query.=",";
 			}
 		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;		
 	}
 
@@ -38,7 +38,7 @@ class AsignacionPersonaCalificada extends Singleton{
 		$query =
 		"SELECT A.idPersonaCalificada  
 			FROM asignacionpersonacalificada AS A
-				WHERE A.ResultadoRubrica_idResultadoRubrica  = '".$idResultadoRubrica."'";
-		return $this->conexion->realizarConsulta($query,true);
+				WHERE A.idResultadoRubrica  = '".$idResultadoRubrica."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 }
