@@ -91,11 +91,8 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function obtenerConexion(){
-
         $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
-
         mysql_select_db($this->baseDeDatos,$this->conexion);
-   
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
@@ -128,6 +125,7 @@ class ConexionMySQL extends Conexion{
 	}
 
 	public function convertirJson($array){
+		header('Content-type: application/json');
 		return json_encode($array);
 	}
 

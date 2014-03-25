@@ -1,15 +1,9 @@
 <?php
-
-header('Content-type: application/json');
-
 require_once('../clases/ModeloRubrica.php');
 require_once('../clases/Persona.php');
 
 $json = json_decode(file_get_contents("php://input"),true);
-
 $metodo = $json['metodo'];
-
-
 $objRubrica = ModeloRubrica::obtenerObjeto();
 
 switch($metodo){
@@ -17,7 +11,6 @@ switch($metodo){
 	case 'obtenerRubricasPorPersona' : echo $objRubrica->obtenerRubricasPorPersona();break;
 	case 'agregarModeloRubrica' : 
 		$modeloRubrica = $json['modelorubrica'];
-		//echo var_dump($modeloRubrica);
 		echo $objRubrica->agregarModeloRubricaYAsignarCriterios($modeloRubrica);break;
 	case 'obtenerAlumnosPorCurso' : 
 		$idCurso = $json['idCurso'];

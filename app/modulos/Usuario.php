@@ -1,7 +1,5 @@
 <?php
 
-header('Content-type: application/json');
-
 require_once('../clases/Usuario.php');
 
 $json = json_decode(file_get_contents("php://input"),true);

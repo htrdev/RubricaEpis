@@ -1,7 +1,5 @@
 <?php
 
-header('Content-type: application/json');
-
 require_once('../clases/ResultadoRubrica.php');
 
 $json = json_decode(file_get_contents("php://input"),true);
