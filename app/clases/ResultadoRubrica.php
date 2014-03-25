@@ -14,11 +14,9 @@ require_once('CalificacionCriterioEvaluacion.php');
 
 class ResultadoRubrica extends Singleton{
 
-	private $conexionMysql;
 	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionMysql = ConexionFactory::obtenerConexion('mysql');
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
@@ -26,8 +24,8 @@ class ResultadoRubrica extends Singleton{
 		$query = 
 				"INSERT INTO resultadoRubrica(
 					fechaCompletadoRubrica
-					,idDocenteCalificador
-					,ModeloRubrica_idModelRubrica
+					,idPersonaCalificadora
+					,idModeloRubrica
 					,estadoRubrica
 					,totalRubrica)
 				VALUES
@@ -36,7 +34,7 @@ class ResultadoRubrica extends Singleton{
 					,".$idModeloRubrica."
 					,'Pendiente'
 					,'0')";
-		$idResultadoRubrica = $this->conexionMysql->returnId()->realizarConsulta($query,false);
+		$idResultadoRubrica = $this->conexionSqlServer->returnId()->realizarConsulta($query,false);
 		if($idResultadoRubrica!=false){
 			return $idResultadoRubrica;
 		}
@@ -65,10 +63,9 @@ class ResultadoRubrica extends Singleton{
 
 	public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica){
 	
-		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.idDocenteCalificador 
-				  FROM RESULTADORUBRICA AS R WHERE R.MODELORUBRICA_IDMODELRUBRICA = '".$idModeloRubrica."'";
-
-		$resultados = $this->conexionMysql->realizarConsulta($query,true);
+		$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.idPersonaCalificadora 
+				  FROM RESULTADORUBRICA AS R WHERE R.idModeloRubrica = '".$idModeloRubrica."'";
+		$resultados = $this->conexionSqlServer->realizarConsulta($query,true);
 
 		$respaldo=array();
 		$contadorResultado=0;
@@ -76,8 +73,8 @@ class ResultadoRubrica extends Singleton{
 		foreach ($resultados as $resultado) {
 		
 			$idPersonasEvaluadas= "SELECT a.idPersonaCalificada   from asignacionpersonacalificada as a 
-								where a.ResultadoRubrica_idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
-			$resultadosidPersonasEvaluadas = $this->conexionMysql->realizarConsulta($idPersonasEvaluadas,true);
+								where a.idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
+			$resultadosidPersonasEvaluadas = $this->conexionSqlServer->realizarConsulta($idPersonasEvaluadas,true);
 			
 			$personasEvaluadas=array();
 			$i=0;
@@ -95,7 +92,7 @@ class ResultadoRubrica extends Singleton{
 					}	
 			}
 
-			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["idDocenteCalificador"]."'";
+			$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["idPersonaCalificadora"]."'";
 			$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
 			
 			$respaldo[$contadorResultado] = 
@@ -110,41 +107,41 @@ class ResultadoRubrica extends Singleton{
 			$contadorResultado++;
 		}
 
-		$resultadoJson = $this->conexionMysql->convertirJson($respaldo);
+		$resultadoJson = $this->conexionSqlServer->convertirJson($respaldo);
 		return $resultadoJson;
 	}
 
 	public function listarResultadoRubricaPorDocente($idDocente){
 		$query = 
 		"SELECT  M.idModeloRubrica 
-				,M.Semestre_idSemestre 
-				,M.Curso_idCurso 
-				,M.calificacionRubrica 
-				,R.idDocenteCalificador 
+				,M.idSemestre 
+				,M.idCurso 
+				,M.personaCalificada 
+				,R.idPersonaCalificadora 
 				,M.fechaFinalRubrica  
 		FROM resultadorubrica as R
 			INNER JOIN modelorubrica AS M 
-				ON M.idModeloRubrica = R.ModeloRubrica_idModelRubrica 
-				  WHERE R.idDocenteCalificador = '".$idDocente."'";
-		return $this->conexionMysql->realizarConsulta($query,true);
+				ON M.idModeloRubrica = R.idModeloRubrica 
+				  WHERE R.idPersonaCalificadora = '".$idDocente."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
 	public function listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica){
 
 
-		$docenteCalificador=$this->conexionMysql->obtenerVariableSesion("CodPer");
+		$docenteCalificador=$this->conexionSqlServer->obtenerVariableSesion("CodPer");
 		$query = "SELECT R.idResultadoRubrica , R.fechaCompletadoRubrica , R.totalRubrica , R.estadoRubrica  FROM resultadorubrica AS R
-				  WHERE R.ModeloRubrica_idModelRubrica = '".$idModeloRubrica."'" ." AND R.idDocenteCalificador = '".$docenteCalificador."'";
+				  WHERE R.idModeloRubrica = '".$idModeloRubrica."'" ." AND R.idPersonaCalificadora = '".$docenteCalificador."'";
 
-		$resultados = $this->conexionMysql->realizarConsulta($query,true);
+		$resultados = $this->conexionSqlServer->realizarConsulta($query,true);
 		$resultadoRubricaAsigada=array();	
 		$contadorResultado=0;
 
 		foreach ($resultados as $resultado) {
 			
 			$query = "SELECT A.idPersonaCalificada FROM  asignacionpersonacalificada AS A
-				      WHERE A.ResultadoRubrica_idResultadoRubrica = '".$resultado["idResultadoRubrica"]."'";
-			$queryResultadosAlumnosEvaluados = $this->conexionMysql->realizarConsulta($query,true);
+				      WHERE A.idResultadoRubrica = '".$resultado["idResultadoRubrica"]."'";
+			$queryResultadosAlumnosEvaluados = $this->conexionSqlServer->realizarConsulta($query,true);
 			$resultadosAlumnosEvaluados=array();
 			$i=0;
 			foreach ($queryResultadosAlumnosEvaluados as $alumno) {
@@ -169,14 +166,14 @@ class ResultadoRubrica extends Singleton{
 			$contadorResultado++;
 
 		}
-		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubricaAsigada);
+		$resultadoJson = $this->conexionSqlServer->convertirJson($resultadoRubricaAsigada);
 		return $resultadoJson;
 	}
 
 	public function obtenerResultadoRubricaPorID($idResultadoRubrica){
 		$modeloRubrica = ModeloRubrica::obtenerObjeto()->listarModeloRubricaPorResultadoRubrica($idResultadoRubrica);
-		$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($modeloRubrica['Semestre_idSemestre']);
-		$curso = Curso::obtenerObjeto()->listarCursoPorId($modeloRubrica['Curso_idCurso']);
+		$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($modeloRubrica['idSemestre']);
+		$curso = Curso::obtenerObjeto()->listarCursoPorId($modeloRubrica['idCurso']);
 		$docente = Persona::obtenerObjeto()->listarPersonaPorId($modeloRubrica['Docente_Persona_idPersona']);
 		$alumnosCalificados = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica);
 		foreach ($alumnosCalificados as &$alumnoCalificado) {
@@ -200,17 +197,17 @@ class ResultadoRubrica extends Singleton{
 					"alumnosCalificados"=>$alumnosCalificados,
 					"criteriosEvaluacion"=>$criteriosEvaluacion					
 					); 
-		$resultadoJson = $this->conexionMysql->convertirJson($resultadoRubrica);
+		$resultadoJson = $this->conexionSqlServer->convertirJson($resultadoRubrica);
 		return $resultadoJson;
 	}
 
 	public function completarResultadoRubrica($resultadoRubrica){
 		$resultadoRubrica["total"] = $this->obtenerTotalResultadoRubrica($resultadoRubrica["resultadosAprendizaje"]);
-		$this->conexionMysql->iniciarTransaccion();
+		$this->conexionSqlServer->iniciarTransaccion();
 		$resultados = array();
 		$resultados[] = $this->modificarResultadoRubrica($resultadoRubrica);
 		$resultados[] = CalificacionCriterioEvaluacion::obtenerObjeto()->agregarCalificacionCriterioEvaluacion($resultadoRubrica["idResultadoRubrica"],$resultadoRubrica["resultadosAprendizaje"]);
-		return $this->conexionMysql->finalizarTransaccion($resultados);
+		return $this->conexionSqlServer->finalizarTransaccion($resultados);
 	}
 
 	public function modificarResultadoRubrica($resultadoRubrica){
@@ -221,7 +218,7 @@ class ResultadoRubrica extends Singleton{
 			,estadoRubrica = 'Completado'
 			,fechaCompletadoRubrica = '".date('Y/m/d')."'
 			WHERE idResultadoRubrica = '".$resultadoRubrica["idResultadoRubrica"]."'";
-		return $this->conexionMysql->realizarConsulta($query,false);
+		return $this->conexionSqlServer->realizarConsulta($query,false);
 	} 
 
 	public function obtenerTotalResultadoRubrica($resultadosAprendizaje){

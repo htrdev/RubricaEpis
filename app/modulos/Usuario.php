@@ -10,7 +10,7 @@ $Usuario = new Usuario();
 
 switch($metodo){
 	case 'verificarUsuario' : echo $Usuario->verificarUsuario();break;
-	case 'ingresarSistema' : echo $Usuario->ingresarSistema($usuario["email"],$usuario["password"]);break;
+	case 'ingresarSistema' : echo $Usuario->ingresarSistema($usuario["dni"],$usuario["password"]);break;
 	case 'salirSistema' : echo $Usuario->salirSistema();
 }
 

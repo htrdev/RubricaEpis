@@ -7,16 +7,16 @@ require_once('CriterioEvaluacion.php');
 
 class ResultadoAprendizaje extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	protected function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarCriterioAprendizaje($idResultadoAprendizaje){
-		$query = "SELECT  c.idCriterioEvaluacion,c.descripcionCriterioEvaluacion,c.ResultadoAprendizaje_idResultadoAprendizaje 
-					FROM criterioevaluacion as c WHERE c.ResultadoAprendizaje_idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
-		return $this->conexion->realizarConsulta($query,true);
+		$query = "SELECT  c.idCriterioEvaluacion,c.descripcionCriterioEvaluacion,c.idResultadoAprendizaje 
+					FROM criterioevaluacion as c WHERE c.idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
 	public function listarResultadoAprendizajePorID($resultadoAprendizaje){
@@ -27,13 +27,13 @@ class ResultadoAprendizaje extends Singleton{
 		where r.idResultadoAprendizaje='".$resultadoAprendizaje['idResultadoAprendizaje']."'";
 
 
-		$resultadoaprendizaporid = $this->conexion->realizarConsulta($query,true);
+		$resultadoaprendizaporid = $this->conexionSqlServer->realizarConsulta($query,true);
 		
 		
 		$query2 = "select idCriterioEvaluacion, descripcionCriterioEvaluacion  from resultadoaprendizaje as r 
-		inner join criterioevaluacion as c on c.ResultadoAprendizaje_idResultadoAprendizaje=r.idResultadoAprendizaje
+		inner join criterioevaluacion as c on c.idResultadoAprendizaje=r.idResultadoAprendizaje
 		where r.idResultadoAprendizaje ='".$resultadoaprendizaporid[0]["idResultadoAprendizaje"]."'";
-		$criteriosEvaluacion = $this->conexion->realizarConsulta($query2,true);
+		$criteriosEvaluacion = $this->conexionSqlServer->realizarConsulta($query2,true);
 
 		
 		$resultado=
@@ -43,7 +43,7 @@ class ResultadoAprendizaje extends Singleton{
 			'definicionResultadoAprendizaje ' => $resultadoaprendizaporid[0]["definicionResultadoAprendizaje"] ,
 			'criteriosEvaluacion' =>$criteriosEvaluacion);	
 
-		$resultadoJson = $this->conexion->convertirJson($resultado);
+		$resultadoJson = $this->conexionSqlServer->convertirJson($resultado);
 		return $resultadoJson;	
 	}
 
@@ -51,9 +51,9 @@ class ResultadoAprendizaje extends Singleton{
 
 	public function listarUltimoPrimaryKey($nombreCampoID,$tabla){
 		$query1="select LAST_INSERT_ID(".$nombreCampoID.") from ".$tabla;
-		$resultadoQuery = $this->conexion->realizarConsulta($query1,true);
+		$resultadoQuery = $this->conexionSqlServer->realizarConsulta($query1,true);
 		$query2.="select LAST_INSERT_ID()";
-		$resultadoQuery2 = $this->conexion->realizarConsulta($query2,true);
+		$resultadoQuery2 = $this->conexionSqlServer->realizarConsulta($query2,true);
 		return $resultadoQuery2[0]['LAST_INSERT_ID()'];
 	}
 
@@ -62,7 +62,7 @@ class ResultadoAprendizaje extends Singleton{
 		$funcionoQueryAgregarResultadoAprendizaje = false;
 		$funcionoQueryAgregarCriteriosEvaluacion = false;
 
-		$this->conexion->iniciarTransaccion();
+		$this->conexionSqlServer->iniciarTransaccion();
 
 		$queryAgregarResultadoAprendizaje="
 			INSERT INTO ResultadoAprendizaje(
@@ -75,7 +75,7 @@ class ResultadoAprendizaje extends Singleton{
 				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
 
 		$funcionoQueryAgregarResultadoAprendizaje = 
-			$this->conexion->realizarConsulta($queryAgregarResultadoAprendizaje,false);
+			$this->conexionSqlServer->realizarConsulta($queryAgregarResultadoAprendizaje,false);
 		
 		$idResultadoAprendizaje = 
 			$this->listarUltimoPrimaryKey('idResultadoAprendizaje','resultadoaprendizaje');
@@ -86,7 +86,7 @@ class ResultadoAprendizaje extends Singleton{
 			$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
 		
 		$funcionoTransaccion = 
-			$this->conexion->finalizarTransaccion(
+			$this->conexionSqlServer->finalizarTransaccion(
 				array($funcionoQueryAgregarCriteriosEvaluacion
 						,$funcionoQueryAgregarResultadoAprendizaje
 						,$funcionoQueryAgregarResultadoAprendizajeDocente)
@@ -97,12 +97,12 @@ class ResultadoAprendizaje extends Singleton{
 
 
 	public function agregarResultadoAprendizajeDocente($idResultadoAprendizaje){
-		$idDocente = $this->conexion->obtenerVariableSesion("CodPer");
-		$query = "INSERT INTO resultadoaprendizajedocente(ResultadoAprendizaje_idResultadoAprendizaje
-			,Docente_Persona_idPersona) 
+		$idDocente = $this->conexionSqlServer->obtenerVariableSesion("CodPer");
+		$query = "INSERT INTO resultadoaprendizajedocente(idResultadoAprendizaje
+			,idDocente) 
 			VALUES('".$idResultadoAprendizaje."'
 					,'".$idDocente."')";
-		return $this->conexion->realizarConsulta($query);
+		return $this->conexionSqlServer->realizarConsulta($query);
 	}
 
 	public function agregarCriteriosEvaluacion($resultadoAprendizaje,$idResultadoAprendizaje){
@@ -118,7 +118,7 @@ class ResultadoAprendizaje extends Singleton{
 
 	public function modificarResultadoAprendizaje($ResultadoAprendizaje){
 		
-		$this->conexion->iniciarTransaccion();
+		$this->conexionSqlServer->iniciarTransaccion();
 		$query = "update ResultadoAprendizaje set
 		definicionResultadoAprendizaje='".$ResultadoAprendizaje["definicionResultadoAprendizaje"]."',
 		tituloResultadoAprendizaje='".$ResultadoAprendizaje["tituloResultadoAprendizaje"]."', 
@@ -127,7 +127,7 @@ class ResultadoAprendizaje extends Singleton{
 		
 		where idResultadoAprendizaje='".$ResultadoAprendizaje["idResultadoAprendizaje"]."'";
 
-		$resultadoModificarResultadoAprendizaje = $this->conexion->realizarConsulta($query,false); 
+		$resultadoModificarResultadoAprendizaje = $this->conexionSqlServer->realizarConsulta($query,false); 
 
 		$resultado=array();
 		$resultado[]=$resultadoModificarResultadoAprendizaje;
@@ -139,13 +139,13 @@ class ResultadoAprendizaje extends Singleton{
 		descripcionCriterioEvaluacion='".$idCriterioEvaluacion["descripcionCriterioEvaluacion"]."'
 		where idCriterioEvaluacion='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
 
-		$funionoActualizarCriterioEvaluacion=$this->conexion->realizarConsulta($queryCriterio,false);
+		$funionoActualizarCriterioEvaluacion=$this->conexionSqlServer->realizarConsulta($queryCriterio,false);
 
 		$resultado[]=$funionoActualizarCriterioEvaluacion;
 
 		}
   
-		$this->conexion->finalizarTransaccion($resultado);
+		$this->conexionSqlServer->finalizarTransaccion($resultado);
 
 
 		}
@@ -156,12 +156,12 @@ class ResultadoAprendizaje extends Singleton{
 			where idCriterioEvaluacion ='".$idCriterioEvaluacion["idCriterioEvaluacion"]."'";
 
 
-		$funcionoEliminarCriteriosEvaluacion=$this->conexion->realizarConsulta($queryCriterio,false);
+		$funcionoEliminarCriteriosEvaluacion=$this->conexionSqlServer->realizarConsulta($queryCriterio,false);
 		$resultado[]=$funcionoEliminarCriteriosEvaluacion;
 
 		}
 	}
-		$this->conexion->finalizarTransaccion($resultado);
+		$this->conexionSqlServer->finalizarTransaccion($resultado);
 
 	}
 
@@ -173,7 +173,7 @@ class ResultadoAprendizaje extends Singleton{
 				,definicionResultadoAprendizaje   
 		FROM resultadoaprendizaje 
 		WHERE tipoResultadoAprendizaje = 'Escuela'";
-		return $this->conexion->realizarConsulta($queryListarResultadoAprendisajeCreadosPorEscuela,true);
+		return $this->conexionSqlServer->realizarConsulta($queryListarResultadoAprendisajeCreadosPorEscuela,true);
 	}
 
 	public function listarResultadoAprendizajeEscuelaConCriteriosEvaluacion(){
@@ -185,7 +185,7 @@ class ResultadoAprendizaje extends Singleton{
 	}
 
 	public function listarResultadoAprendizaje(){
-		$CodPer = $this->conexion->obtenerVariableSesion("CodPer");
+		$CodPer = $this->conexionSqlServer->obtenerVariableSesion("CodPer");
 		$resultadosAprendizajeEscuelaresultadosAprendizajeEscuela =  
 		array(
 			 "resultadosAprendizaje"=>$this->listarResultadoAprendizajeEscuelaConCriteriosEvaluacion(),
@@ -195,15 +195,15 @@ class ResultadoAprendizaje extends Singleton{
 	}
 
 	public function obtenerResultadosAprendizaje(){
-		return $this->conexion->convertirJson($this->listarResultadoAprendizaje());
+		return $this->conexionSqlServer->convertirJson($this->listarResultadoAprendizaje());
 	}
 }
 
 class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
-	private $conexion;
+	private $conexionSqlServer;
 
 	protected function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarResultadoAprendizajeDocente($CodPer){
@@ -216,11 +216,11 @@ class ResultadoAprendizajeDocente extends ResultadoAprendizaje{
 		FROM resultadoaprendizaje
 		WHERE idResultadoAprendizaje
 			IN (SELECT 
-					ResultadoAprendizaje_idResultadoAprendizaje 
+					idResultadoAprendizaje 
 						FROM resultadoaprendizajedocente
-						WHERE Docente_Persona_idPersona = '".$CodPer."'
+						WHERE idDocente = '".$CodPer."'
 				)";
-		return $this->conexion->realizarConsulta($queryListarResultadoAprendizajeDocente,true);
+		return $this->conexionSqlServer->realizarConsulta($queryListarResultadoAprendizajeDocente,true);
 	}
 
 	public function listarResultadoAprendizajeDocenteConCriteriosEvaluacion($CodPer){

@@ -1,17 +1,13 @@
 <?php
 
-header('Content-type: application/json');
-
 require_once('Conexion.php');
 
 class Usuario{
 
-	private $conexionsql;
-	private $conexionmysql;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexionsql = ConexionFactory::obtenerConexion('sqlserver');
-		$this->conexionmysql = ConexionFactory::obtenerConexion('mysql');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
 	public function listarUsuarios(){
@@ -20,38 +16,38 @@ class Usuario{
 		return $resultado;
 	}
 
-	private function buscarUsuarioPorEmail($emailUsuario){
-		$persona = $this->conexionsql->realizarConsulta(
-			"SELECT PERSONA.CodPer,PERSONA.NomPer,PERSONA.ApepPer,PERSONA.Email FROM PERSONA 
-				where PERSONA.Email ='".$emailUsuario."'",true);
-		$usuario = $this->conexionmysql->realizarConsulta(
-			"SELECT usuario.passwordUsuario,usuario.tipoUsuario FROM usuario 
-				where usuario.idUsuario ='".$persona[0]["CodPer"]."'"
-			,true);
-		$usuario[0]["CodPer"]=$persona[0]["CodPer"];
-		$usuario[0]["nombreCompleto"]=$persona[0]["NomPer"].' '.$persona[0]["ApepPer"];
-		$usuario[0]["Email"]=$persona[0]["Email"];
-		return $usuario;
+	private function buscarUsuarioPorDni($dniUsuario){
+		$query = 
+		"SELECT 
+				PERSONA.CodPer
+				,PERSONA.NomPer
+				,PERSONA.ApepPer
+				,PERSONA.Dni 
+			FROM PERSONA 
+				WHERE PERSONA.Dni ='".$dniUsuario."'";
+		$persona = $this->conexionSqlServer->realizarConsulta($query,true);
+		$persona[0]["nombreCompleto"]=$persona[0]["NomPer"].' '.$persona[0]["ApepPer"];
+		return $persona[0];
 	}
 
-	public function ingresarSistema($emailUsuario,$passwordUsuario){
-		$usuario = $this->buscarUsuarioPorEmail($emailUsuario);
-		$autenticado = $this->verificarDatosUsuario($emailUsuario,$passwordUsuario,$usuario);
+	public function ingresarSistema($dniUsuario,$passwordUsuario){
+		$usuario = $this->buscarUsuarioPorDni($dniUsuario);
+		$autenticado = $this->verificarDatosUsuario($dniUsuario,$passwordUsuario,$usuario);
 		if(!$autenticado){
-			$resultado = $this->conexionsql->convertirJson(array("usuario"=>"","estado"=>false));
+			$resultado = $this->conexionSqlServer->convertirJson(array("usuario"=>"","estado"=>false));
 		}
 		else{
 			session_start();
-			$_SESSION['CodPer'] = $usuario[0]['CodPer'];
+			$_SESSION['CodPer'] = $usuario['CodPer'];
 			$_SESSION['estado'] = true;
-			$_SESSION['usuario'] = $usuario[0]['nombreCompleto'];
-			$resultado = $this->conexionsql->convertirJson(array("usuario"=>$_SESSION['usuario'],"estado"=>$_SESSION['estado']));
+			$_SESSION['usuario'] = $usuario['nombreCompleto'];
+			$resultado = $this->conexionSqlServer->convertirJson(array("usuario"=>$_SESSION['usuario'],"estado"=>$_SESSION['estado']));
 		}
 		return $resultado;
 	}
 
-	private function verificarDatosUsuario($emailUsuario,$passwordUsuario,$usuario){
-		if($emailUsuario == $usuario[0]["Email"] && $passwordUsuario == $usuario[0]["passwordUsuario"])
+	private function verificarDatosUsuario($dniUsuario,$passwordUsuario,$usuario){
+		if($dniUsuario == $usuario["Dni"])
 		{
 			return true;
 		}
@@ -61,11 +57,11 @@ class Usuario{
 	public function verificarUsuario(){
 		session_start();
 		if(!isset($_SESSION['estado'])){
-			$resultado = $this->conexionsql->convertirJson(array("usuario"=>"","estado"=>false));
+			$resultado = $this->conexionSqlServer->convertirJson(array("usuario"=>"","estado"=>false));
 		}
 		else{
 
-			$resultado = $this->conexionsql->convertirJson(array("usuario"=>$_SESSION['usuario'],"estado"=>$_SESSION['estado']));
+			$resultado = $this->conexionSqlServer->convertirJson(array("usuario"=>$_SESSION['usuario'],"estado"=>$_SESSION['estado']));
 		}
 		return $resultado;
 	}

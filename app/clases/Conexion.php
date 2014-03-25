@@ -47,7 +47,7 @@ class ConexionSQLServer extends Conexion{
 		$this->servidor = 'localhost';
 		$this->usuario	= 'sa';
 		$this->password = 'redman10';
-		$this->baseDeDatos = "matrixupt";
+		$this->baseDeDatos = "RubricaEpis";
 		$this->obtenerConexion();
 	}
 
@@ -56,14 +56,50 @@ class ConexionSQLServer extends Conexion{
        	 mssql_select_db($this->baseDeDatos,$this->conexion);
 	}
 
+	public function iniciarTransaccion(){
+		mssql_query("BEGIN TRAN",$this->conexion);
+	}
+
 	public function realizarConsulta($sql,$convertirArray){
-		$resultado =  mssql_query($sql,$this->conexion);
-		if($convertirArray){
-			return $this->convertirArray($resultado);
+		if($this->returnId){
+			$sql .= ";SELECT @@IDENTITY as id";
 		}
-		else
-		{
-			return $resultado;
+		$resultado =  mssql_query($sql,$this->conexion);
+		if(!$resultado){
+			header("HTTP/1.1 500 Internal Server Error");
+			return "La peticion a la Base de Datos ha fallado :(";
+		}
+		else{
+			if($convertirArray){
+				$resultadoArray = $this->convertirArray($resultado);
+				return $resultadoArray;
+			}
+			else{
+				if($this->returnId){
+					$this->returnId = false;
+					return $resultado[0]["id"];
+				}
+				return $resultado;
+			}
+		}
+	}
+
+	public function finalizarTransaccion($confirmaciones){
+		$esCorrecto = true;
+		foreach($confirmaciones as $confirmacion){
+			if(!$confirmacion){
+				$esCorrecto = false;
+				break;
+			}
+		}
+		if($esCorrecto){
+			mssql_query("COMMIT",$this->conexion);
+			return true;
+		}
+		else{
+			mssql_query("ROLLBACK",$this->conexion);
+			header("HTTP/1.1 500 Internal Server Error");
+			return "La transaccion en la Base de Datos ha fallado :(";
 		}
 	}
 
@@ -99,7 +135,7 @@ class ConexionMySQL extends Conexion{
 		$resultado =  mysql_query($sql,$this->conexion);
 		if(!$resultado){
 			header("HTTP/1.1 500 Internal Server Error");
-			return $resultado;
+			return "La peticion a la Base de Datos ha fallado :(";
 		}
 		else{
 			if($convertirArray){
@@ -149,7 +185,7 @@ class ConexionMySQL extends Conexion{
 		else{
 			mysql_query("ROLLBACK",$this->conexion);
 			header("HTTP/1.1 500 Internal Server Error");
-			return false;
+			return "La transaccion en la Base de Datos ha fallado :(";
 		}
 	}
 }

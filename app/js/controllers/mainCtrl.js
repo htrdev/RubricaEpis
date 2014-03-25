@@ -12,7 +12,7 @@ rubricaApp.controller('mainCtrl',
 						estado : false
 					},
 			credenciales :{
-				email : "",
+				dni : "",
 				password : ""
 			},
 			cargarInformacionUsuario : function(usuario){
