@@ -22,7 +22,7 @@ interfaz.btnAtras = function() {
       scope : {
         action : "&"
       },
-      template : "<button class='btn btn-prev' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-left'></i></button>",
+      template : "<button style='float:right' class='btn btn-prev' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-left'></i></button>",
      };
 };
 
@@ -33,7 +33,7 @@ interfaz.btnSiguiente = function() {
       scope : {
         action : "&"
       },
-      template : "<button class='btn btn-primary btn-next' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-right'></i></button>",
+      template : "<button style='float:right' class='btn btn-info btn-next' ng-click='action()'><span ng-transclude style='margin-right:5px'> </span><i class='icon-arrow-right'></i></button>",
      };
 };
 
@@ -163,7 +163,10 @@ rubricaApp.directive("cmbChosen", function(){
      scope.$watch(attrs.elementos,function(){
         element.trigger('liszt:updated');
       });
-     element.chosen({width:'90%'});
+     scope.$watch(attrs.ngModel,function(){
+        element.trigger('liszt:updated');
+     })
+     element.chosen({width:'100%'});
   };
   return {
     restrict : 'A',

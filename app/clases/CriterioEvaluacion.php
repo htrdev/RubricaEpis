@@ -41,7 +41,7 @@ class CriterioEvaluacion extends Singleton{
 
 	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){
 		$query =
-		"SELECT c.descripcionCriterioEvaluacion,CONCAT(r.codigoResultadoAPrendizaje,' ',r.tituloResultadoAprendizaje) AS tituloResultadoAprendizaje
+		"SELECT c.descripcionCriterioEvaluacion,r.codigoResultadoAPrendizaje+' '+r.tituloResultadoAprendizaje AS tituloResultadoAprendizaje
 		FROM criterioEvaluacion AS c
 		INNER JOIN resultadoaprendizaje AS r
 			ON c.idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";

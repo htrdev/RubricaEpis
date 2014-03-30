@@ -44,7 +44,7 @@ abstract class Conexion extends Singleton{
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = '192.168.1.36';
+		$this->servidor = 'RubricaEpis';
 		$this->usuario	= 'sa';
 		$this->password = '123cuatro';
 		$this->baseDeDatos = "RubricaEpis";
@@ -62,11 +62,10 @@ class ConexionSQLServer extends Conexion{
 
 	public function realizarConsulta($sql,$convertirArray){
 		if($this->returnId){
-			$sql .= ";SELECT @@IDENTITY as id";
+			$sql .= ";SELECT @@IDENTITY as id;";
 		}
 		$resultado =  mssql_query($sql,$this->conexion);
 		if(!$resultado){
-			header("HTTP/1.1 500 Internal Server Error");
 			return "La peticion a la Base de Datos ha fallado :(";
 		}
 		else{

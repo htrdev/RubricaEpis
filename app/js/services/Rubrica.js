@@ -20,10 +20,11 @@ rubricaApp.factory('Rubrica',function($http,rutasApp){
 				 );
 	};
 
-	dataFactory.obtenerRubricasPorPersona = function(){
+	dataFactory.obtenerRubricasPorPersona = function(pSemestreSeleccionado){
 		return $http.post(
 				    rutasApp.rutaApi+'Rubrica.php', 
-				    {metodo: 'obtenerRubricasPorPersona'}
+				    {metodo: 'obtenerRubricasPorPersona'
+					,semestreSeleccionado : pSemestreSeleccionado}
 				 );
 	};
 

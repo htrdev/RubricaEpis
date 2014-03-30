@@ -13,9 +13,7 @@ class Semestre extends Singleton{
 	}
 
 	public function listarSemestre(){
-		$usuario = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE",true);
-		$resultado = $this->conexion->convertirJson($usuario);
-		return $resultado;
+		return $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE",true);
 	}
 
 	public function listarSemestrePorId($idSemestre){

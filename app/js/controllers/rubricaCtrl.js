@@ -162,7 +162,7 @@ rubricaApp.controller('listarEstadoRubricaCtrl',
 		];
 
 		
-		$scope.EstaRubricasCreadas = true;
+		$scope.EstaRubricasCreadas = false;
 
 		$scope.idRubrica = $routeParams.idRubrica;
 
@@ -186,6 +186,7 @@ rubricaApp.controller('listarEstadoRubricaCtrl',
 rubricaApp.controller('misRubricasCtrl',
 	function misRubricasCtrl($scope,$location,Rubrica,Paginacion)
 	{
+		$scope.semestreSeleccionado = null;
 		$scope.currentPage = 1;
 		$scope.asd = 50;
 		$scope.misRubricas = [];
@@ -194,11 +195,17 @@ rubricaApp.controller('misRubricasCtrl',
 			estadoLoader : true
 		};
 
-		var obtenerRubricasPorPersona = function(){
-			Rubrica.obtenerRubricasPorPersona()
+		$scope.obtenerRubricasPorPersona = function(semestre){
+			$scope.loader.estadoLoader=true;
+			Rubrica.obtenerRubricasPorPersona(semestre)
 				.success(function(data){
 					$scope.Formulario.paginacionMisRubricas.datos = data.misRubricas;
 					$scope.Formulario.paginacionRubricasAsignadas.datos = data.rubricasAsignadas;
+					if(!$scope.Formulario.semestres){
+						$scope.Formulario.semestres = data.semestres;
+						debugger;
+						$scope.Formulario.seleccionarSemestreActivo($scope.Formulario.semestres);
+					}
 					$scope.Formulario.paginacionRubricasAsignadas.callBackBuscar("");
 					$scope.Formulario.paginacionMisRubricas.callBackBuscar("");
 					$scope.loader.estadoLoader = false;
@@ -206,7 +213,9 @@ rubricaApp.controller('misRubricasCtrl',
 
 		};
 
-		$scope.EstaRubricasCreadas = true;
+
+
+		$scope.EstaRubricasCreadas = false;
 
 		$scope.Formulario = {
 			paginacionMisRubricas : {
@@ -236,7 +245,21 @@ rubricaApp.controller('misRubricasCtrl',
 				cambioPagina : function(page){
 					Paginacion.cambioPagina(page,$scope.Formulario.paginacionRubricasAsignadas);
 				}
+			},
+			seleccionarSemestreActivo : function(semestres){
+				var cantidadSemestres = semestres.length;
+				for(var i=0;i<cantidadSemestres;i++){
+					if(semestres[i].Activo=="1"){
+						$scope.semestreSeleccionado = semestres[i];
+						break;
+					}
+				}
+			},
+			callBackCboSemestre : function(semestre){
+				$scope.semestreSeleccionado = semestre;
+				$scope.obtenerRubricasPorPersona(semestre);
 			}
+
 		}
 
 		$scope.Interfaz =	{
@@ -247,23 +270,13 @@ rubricaApp.controller('misRubricasCtrl',
 			MostrarRubricasAsignadas : function(){
 				$scope.EstaRubricasCreadas = false;
 			},
-			alert1 : function(){
-				alert("Aqui deberia mandarme al formulario similar al Crear Rubrica pero listo para editar esta Rubrica");
-			},
-			alert2 : function(){
-				alert("Aqui me mostrara otro grid donde me mostrara todas las veces que he llenado esta rubrica pero en diferentes alumnos")
-			},
-			alert3 : function(){
-				alert("Aqui me mostrara el formulario para llenar esta Rubrica hacia determinado alumno");
-			},
-
 			redireccionarNuevo : function(){
 				$location.path('/rubricas/nuevo');
 			}
 		}
 
 		//EJECUCION DE METODOS
-		obtenerRubricasPorPersona();
+		$scope.obtenerRubricasPorPersona();
 	});
 
 rubricaApp.controller('verRubricasAsignadasCtrl',

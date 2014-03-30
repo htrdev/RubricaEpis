@@ -58,6 +58,7 @@ class ModeloRubrica extends Singleton{
 					,$funcionoCriteriosEvaluacion
 					,$funcionoResultadoRubrica)
 				);
+		echo $idModeloRubrica;
 		return $funcionoTransaccion;
 	}
 
@@ -82,44 +83,44 @@ class ModeloRubrica extends Singleton{
 		return $funcionoQueryAgregarCriteriosEvaluacion;
 	}
 
-	public function listarModeloRubricaPorPersona($CodPer){
+	public function listarModeloRubricaPorPersona($CodPer,$idSemestre=null){
 		$query = 
-		"SELECT idModeloRubrica
-				,idSemestre 
-				,idCurso 
-				,personaCalificada 
-				,fechaInicioRubrica 
-				,fechaFinalRubrica  
-		FROM modelorubrica
-		WHERE idPersonaCreadorRubrica = '".$CodPer."'";
+		"SELECT M.idModeloRubrica
+				,S.Semestre AS semestre 
+				,C.CodCurso+' '+C.DesCurso AS curso
+				,M.personaCalificada 
+				,M.fechaInicioRubrica 
+				,M.fechaFinalRubrica  
+		FROM ModeloRubrica AS M
+		INNER JOIN Curso AS C
+			ON C.idcurso = M.idcurso
+		INNER JOIN Semestre AS S
+			ON S.idSem = M.idSemestre
+			WHERE M.idPersonaCreadorRubrica = '".$CodPer."'";
+		if(is_null($idSemestre)){
+			$query.= " AND S.Activo = '1'";
+		}else{
+			$query.= " AND M.idSemestre = '".$idSemestre."'";
+		}
+		// echo $query;
 		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
-	public function listarRubricasPorPersona(){
+	public function listarRubricasPorPersona($idSemestre=null){
 		$CodPer=$this->conexionSqlServer->obtenerVariableSesion("CodPer");
-		$resultadoMisRubricas = $this->listarModeloRubricaPorPersona($CodPer);
-		foreach ($resultadoMisRubricas as &$miRubrica) {
-			$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($miRubrica["idSemestre"]);
-			$curso = Curso::obtenerObjeto()->listarCursoPorId($miRubrica["idCurso"]);
-			$miRubrica["semestre"] = $semestre["Semestre"];
-			$miRubrica["curso"] = $curso["DesCurso"];
-			unset($miRubrica["idSemestre"]);
-			unset($miRubrica["idCurso"]);
-		}
-		$resultadoRubricasAsignadas=ResultadoRubrica::obtenerObjeto()->listarResultadoRubricaPorDocente($CodPer);
-		foreach ($resultadoRubricasAsignadas as &$rubricaAsignada) {
-			$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($rubricaAsignada["idSemestre"]);
-			$curso = Curso::obtenerObjeto()->listarCursoPorId($rubricaAsignada["idCurso"]);
-			$docente = Persona::obtenerObjeto()->listarPersonaPorId($CodPer);
-			$rubricaAsignada["semestre"] = $semestre["Semestre"];
-			$rubricaAsignada["curso"] = $curso["DesCurso"];
-			$rubricaAsignada["autor"] = Persona::obtenerObjeto()->obtenerNombreCompletoPersona($docente);
-			unset($rubricaAsignada["idSemestre"]);
-			unset($rubricaAsignada["idCurso"]);
-			unset($rubricaAsignada["idDocenteCalificador"]);
+		if(is_null($idSemestre)){
+			$resultadoMisRubricas = $this->listarModeloRubricaPorPersona($CodPer);
+			$resultadoRubricasAsignadas=ResultadoRubrica::obtenerObjeto()->listarResultadoRubricaPorDocente($CodPer);
+		}else{
+			$resultadoMisRubricas = $this->listarModeloRubricaPorPersona($CodPer,$idSemestre);
+			$resultadoRubricasAsignadas=ResultadoRubrica::obtenerObjeto()->listarResultadoRubricaPorDocente($CodPer,$idSemestre);
 		}
 		$resultado=array("misRubricas"=>$resultadoMisRubricas,"rubricasAsignadas"=>$resultadoRubricasAsignadas);
 		return $resultado;
+	}
+
+	public function listarRubricasPorPersonaPorSemestre($idSemestre){
+
 	}
 
 	public function obtenerInformacionNuevaRubrica(){
@@ -133,8 +134,14 @@ class ModeloRubrica extends Singleton{
 								,"docentes"=>$docentesActivos));
 	}
 
-	public function obtenerRubricasPorPersona(){
-		return $this->conexionSqlServer->convertirJson($this->listarRubricasPorPersona());
+	public function obtenerRubricasPorPersona($idSemestre=null){
+		if(is_null($idSemestre)){
+			$resultado = $this->listarRubricasPorPersona();
+			$resultado["semestres"] = Semestre::obtenerObjeto()->listarSemestre();
+		}else{
+			$resultado = $this->listarRubricasPorPersona($idSemestre);
+		}
+		return $this->conexionSqlServer->convertirJson($resultado);
 	}
 
 	public function listarModeloRubricaPorResultadoRubrica($idResultadoRubrica){

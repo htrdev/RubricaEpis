@@ -104,18 +104,28 @@ class ResultadoRubrica extends Singleton{
 		return $resultadoJson;
 	}
 
-	public function listarResultadoRubricaPorDocente($idDocente){
+	public function listarResultadoRubricaPorDocente($idDocente,$idSemestre=null){
 		$query = 
-		"SELECT  M.idModeloRubrica 
-				,M.idSemestre 
-				,M.idCurso 
+		"SELECT M.idModeloRubrica
+				,C.CodCurso+' '+C.DesCurso AS curso
 				,M.personaCalificada 
-				,R.idPersonaCalificadora 
+				,P.ApepPer+' '+P.ApemPer+', '+P.NomPer AS autor
 				,M.fechaFinalRubrica  
 		FROM resultadorubrica as R
-			INNER JOIN modelorubrica AS M 
-				ON M.idModeloRubrica = R.idModeloRubrica 
+		INNER JOIN modelorubrica AS M 
+			ON M.idModeloRubrica = R.idModeloRubrica 
+		INNER JOIN Curso AS C
+			ON C.idcurso = M.idcurso
+		INNER JOIN Semestre AS S
+			ON S.idSem = M.idSemestre
+		INNER JOIN PERSONA AS P
+			ON P.CodPer = M.idPersonaCreadorRubrica
 				  WHERE R.idPersonaCalificadora = '".$idDocente."'";
+		if(is_null($idSemestre)){
+			$query.= " AND S.Activo = '1'";
+		}else{
+			$query.= " AND M.idSemestre = '".$idSemestre."'";
+		}
 		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
@@ -167,7 +177,7 @@ class ResultadoRubrica extends Singleton{
 		$modeloRubrica = ModeloRubrica::obtenerObjeto()->listarModeloRubricaPorResultadoRubrica($idResultadoRubrica);
 		$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($modeloRubrica['idSemestre']);
 		$curso = Curso::obtenerObjeto()->listarCursoPorId($modeloRubrica['idCurso']);
-		$docente = Persona::obtenerObjeto()->listarPersonaPorId($modeloRubrica['Docente_Persona_idPersona']);
+		$docente = Persona::obtenerObjeto()->listarPersonaPorId($modeloRubrica['idPersonaCreadorRubrica']);
 		$alumnosCalificados = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica);
 		foreach ($alumnosCalificados as &$alumnoCalificado) {
 				$alumno = Persona::obtenerObjeto()->listarPersonaPorId($alumnoCalificado["idPersonaCalificada"]);
