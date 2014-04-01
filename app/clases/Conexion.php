@@ -5,7 +5,6 @@ require_once('Singleton.php');
 class ConexionFactory{
 
 	public static function obtenerConexion($tipoConexion){
-		$conexion = "h1";
 		switch($tipoConexion)
 		{
 			case 'sqlserver' : $conexion = ConexionSQLServer::obtenerObjeto();break;

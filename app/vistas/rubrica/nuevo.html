@@ -106,6 +106,31 @@
 				<btn-siguiente ng-click="Formulario.MostrarCuestionario()">Cuestionario </btn-siguiente>
 			</grupo-botones>
 		</div>
+		<!-- <div id="ListaAlumnos" ng-show="Formulario.EstaCuestionario" >
+			<div class="row-fluid">
+				<div class="span6">
+					<div ui-sortable="sortableOptions" class="app-container" ng-model="alumnos">
+						<div ng-repeat="alumno in alumnos | filter : txtAlumnos" class="alumno">
+							<label class="checkbox check-box">
+								<input type="checkbox" ng-model="alumno.estaSeleccionado" ng-change="Formulario.callBackCheckBoxAlumno(alumno)" ng-init="alumno.estaSeleccionado=true"/>
+								<p>{{alumno.NomPer}}</p>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div ui-sortable="sortableOptions" class="app-container" ng-model="grupoAlumnos">
+						<div ng-repeat="a in alumnoss | filter : txtAlumnos" class="a">
+							<label class="checkbox check-box">
+								<input type="checkbox" ng-model="a.estaSeleccionado" ng-change="Formulario.callBackCheckBoxAlumno(alumno)" ng-init="alumno.estaSeleccionado=true"/>
+								<p>{{a.NomPer}}</p>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div> -->
 		<div id="Cuestionario" ng-show="Formulario.EstaCuestionario" >
 			<div class="row-fluid">
 				<div class="span5">

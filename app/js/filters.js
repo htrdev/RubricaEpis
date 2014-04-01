@@ -35,3 +35,10 @@ rubricaApp.filter('fecha',function(){
 		return fecha;
 	};
 });
+
+rubricaApp.filter('nota',function(){
+	return function(puntaje){
+		var resultado = (puntaje*20)/100;
+		return puntaje+" / "+resultado.toFixed(2);
+	};
+})

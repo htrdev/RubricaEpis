@@ -22,7 +22,7 @@ interfaz.btnAtras = function() {
       scope : {
         action : "&"
       },
-      template : "<button style='float:right' class='btn btn-prev' ng-click='action()'><span ng-transclude> </span><i class='icon-arrow-left'></i></button>",
+      template : "<button style='float:right' class='btn btn-prev' ng-click='action()'></span><i class='icon-arrow-left'><span style='margin-left:5px' ng-transclude></i></button>",
      };
 };
 

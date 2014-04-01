@@ -88,6 +88,4 @@ rubricaApp.run(['$rootScope', '$location', 'Usuario', function ($rootScope, $loc
             $location.path('/login');
         }
     });
-
-
 }]);

@@ -12,7 +12,7 @@
 						<input class="span12" type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="busquedaMisRubricas" ng-change="Formulario.paginacionMisRubricas.callBackBuscar(busquedaMisRubricas)">
 					</div>
 					<div class="span4" style="padding-top:7px;margin-bottom:10px">
-						<div class="span4">
+						<div class="span3">
 							<label class="inline">Semestre </label>
 						</div>
 						<div class="span8">
@@ -80,20 +80,26 @@
 		<div class="row-fluid" id="RubricasAsignadas" ng-hide="EstaRubricasCreadas">
 			<div class="span12">
 				<div class="row-fluid">
-					<span class="span3">
-						<input type="text" style="margin-top:5px" placeholder="Buscar..." ng-model="busquedaRubricasAsignadas" ng-change="Formulario.paginacionRubricasAsignadas.callBackBuscar(busquedaRubricasAsignadas)">
-					</span>
-					<span class="span3" style="padding-top:7px">
-						<select class="chzn-select" id="callBackCboSemestre" data-placeholder="Seleccione el Curso.." cmb-chosen elementos="Formulario.semestres" ng-options="semestre.Semestre for semestre in Formulario.semestres" ng-model="semestreSeleccionado" ng-change="Formulario.callBackCboSemestre(semestreSeleccionado)">
-						<option value=""> -- Seleccione Semestre -- </option>
-					</select>						
-					</span>
+					<div class="span3">
+						<input type="text" class="span12" style="margin-top:5px" placeholder="Buscar..." ng-model="busquedaRubricasAsignadas" ng-change="Formulario.paginacionRubricasAsignadas.callBackBuscar(busquedaRubricasAsignadas)">
+					</div>
+					<div class="span4" style="padding-top:7px;margin-bottom:10px">
+						<div class="span3">
+							<label class="inline">Semestre </label>
+						</div>
+						<div class="span8">
+							<select class="chzn-select" id="cboResultados" cmb-chosen elementos="Formulario.semestres" ng-options="semestre.Semestre for semestre in Formulario.semestres" ng-model="semestreSeleccionado" ng-change="Formulario.callBackCboSemestre(semestreSeleccionado)">
+							<option value=""> -- Seleccione Semestre -- </option>
+							</select>
+						</div>
+					</div>
 					<btn-siguiente ng-click="Interfaz.OcultarRubricasAsignadas()">Mis Rubricas</btn-siguiente>
 				</div>
 				<br>
 				<table class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>		
+							<th>Estado</th>
 							<th>Curso</th>
 							<th>Califica A</th>
 							<th>Autor</th>
@@ -103,6 +109,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="rubricaAsignada in Formulario.paginacionRubricasAsignadas.datosParaMostrar">
+							<td><span ng-bind-html="rubricaAsignada.estadoRubrica | estado"></td>
 							<td>{{rubricaAsignada.curso}}</td>
 							<td>{{rubricaAsignada.personaCalificada}}</td>
 							<td>{{rubricaAsignada.autor}}</td>

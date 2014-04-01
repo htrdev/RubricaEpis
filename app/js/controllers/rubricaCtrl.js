@@ -16,6 +16,8 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			estadoLoader : true
 		};
 
+		$scope.grupoAlumnos = [];
+
 		$scope.modeloRubrica = {
 			idCurso : 0,
 			idSemestre : 0,
@@ -44,17 +46,18 @@ rubricaApp.controller('nuevoRubricaCtrl',
 		$scope.obtenerAlumnosPorCurso = function(){
 			Rubrica.obtenerAlumnosPorCurso($scope.modeloRubrica.idCurso)
 				.success(function(data){
-					$scope.alumnos = data;
-					$scope.modeloRubrica.alumnos = [];
-					$scope.alumnos.forEach(function(alumno){
-						$scope.modeloRubrica.alumnos.push([alumno.CodPer]);
+					data.forEach(function(alumno){
+						$scope.modeloRubrica.alumnos.push([alumno["CodPer"]]);
 					});
 					console.log($scope.modeloRubrica);
 				});
 		}
 
-		$scope.Formulario = {
+		$scope.sortableOptions = {
+		    connectWith: ".app-container"
+		  };
 
+		$scope.Formulario = {
 			EstaCuestionario : false,
 			resultadosAprendizajeSeleccionados : [],
 			AgregarDocente : function(docente){
@@ -68,7 +71,6 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			},
 			callBackCboCurso : function(cursoSeleccionado){
 				$scope.modeloRubrica.idCurso = cursoSeleccionado.idcurso;
-				console.log(cursoSeleccionado);
 				$scope.obtenerAlumnosPorCurso();
 			},
 
@@ -203,7 +205,6 @@ rubricaApp.controller('misRubricasCtrl',
 					$scope.Formulario.paginacionRubricasAsignadas.datos = data.rubricasAsignadas;
 					if(!$scope.Formulario.semestres){
 						$scope.Formulario.semestres = data.semestres;
-						debugger;
 						$scope.Formulario.seleccionarSemestreActivo($scope.Formulario.semestres);
 					}
 					$scope.Formulario.paginacionRubricasAsignadas.callBackBuscar("");
@@ -280,7 +281,7 @@ rubricaApp.controller('misRubricasCtrl',
 	});
 
 rubricaApp.controller('verRubricasAsignadasCtrl',
-	function verRubricasAsignadasCtrl($scope,Rubrica,$routeParams){
+	function verRubricasAsignadasCtrl($scope,Rubrica,$routeParams,$window){
 		$scope.resultadoRubricaPorRubricaAsignada = [];
 		$scope.idRubricaAsignada = $routeParams.idRubricaAsignada;
 		$scope.loader = {
@@ -295,11 +296,16 @@ rubricaApp.controller('verRubricasAsignadasCtrl',
 					$scope.loader.estadoLoader = false;
 				});
 		};
+
+		$scope.volver = function(){
+			$window.history.back();
+		};
+
 		$scope.obtenerResultadoRubricaPorRubricaAsignada();
 	});
 
 rubricaApp.controller('verRubricasCreadasCtrl',
-	function verRubricasCreadasCtrl($scope,Rubrica,$routeParams){
+	function verRubricasCreadasCtrl($scope,Rubrica,$routeParams,$window){
 		$scope.resultadoRubricaPorRubricaCreada = [];
 		$scope.idRubricaCreada = $routeParams.idRubricaCreada;
 		$scope.loader = {
@@ -313,6 +319,11 @@ rubricaApp.controller('verRubricasCreadasCtrl',
 					$scope.loader.estadoLoader = false;
 				});
 		};
+
+		$scope.volver = function(){
+			$window.history.back();
+		};
+
 		$scope.obtenerResultadoRubricaPorRubricaCreada();
 	});
 
@@ -345,7 +356,6 @@ rubricaApp.controller('completarRubricaCtrl',
 			$scope.loader.estadoGuardando = true;
 			$scope.resultadoRubricaCompleto.idResultadoRubrica = $routeParams.idResultadoRubrica;
 			$scope.resultadoRubricaCompleto.resultadosAprendizaje = $scope.resultadoRubrica.resultadosAprendizaje;
-			console.log($scope.resultadoRubricaCompleto);
 			Rubrica.completarResultadoRubrica($scope.resultadoRubricaCompleto)
 			.success(function(data){
 				$scope.loader.estadoGuardar = true;
@@ -380,7 +390,6 @@ rubricaApp.controller('completarRubricaCtrl',
 		};
 
 		$scope.callBackGuardar = function(){
-			console.log("cambiandoo");
 			$window.history.back();
 		};
 
@@ -395,14 +404,14 @@ rubricaApp.controller('completarRubricaCtrl',
 					total += 1*criterio.calificacion;
 				}
 			});
-			debugger;
-			resultadoAprendizaje.total = total/resultadoAprendizaje.length;
+			var resultado = total/resultadoAprendizaje.length;
+			resultadoAprendizaje.total = resultado.toFixed(2);
 			resultadoAprendizaje.nota = $scope.calcularNota(resultadoAprendizaje.total);
-			console.log($scope.resultadoRubrica);
 		};
 
 		$scope.calcularNota = function(total){
-			return (total*20)/100;
+			var resultado = (total*20)/100;
+			return resultado.toFixed(2);
 		};
 
 		$scope.obtenerResultadoRubricaPorId();

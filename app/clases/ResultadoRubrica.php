@@ -106,25 +106,40 @@ class ResultadoRubrica extends Singleton{
 
 	public function listarResultadoRubricaPorDocente($idDocente,$idSemestre=null){
 		$query = 
-		"SELECT M.idModeloRubrica
-				,C.CodCurso+' '+C.DesCurso AS curso
-				,M.personaCalificada 
-				,P.ApepPer+' '+P.ApemPer+', '+P.NomPer AS autor
-				,M.fechaFinalRubrica  
-		FROM resultadorubrica as R
-		INNER JOIN modelorubrica AS M 
-			ON M.idModeloRubrica = R.idModeloRubrica 
-		INNER JOIN Curso AS C
-			ON C.idcurso = M.idcurso
-		INNER JOIN Semestre AS S
-			ON S.idSem = M.idSemestre
+		"SELECT 
+			M.idModeloRubrica
+			,P.ApepPer+' '+P.ApemPer+', '+P.NomPer AS autor
+			,M.personaCalificada
+			,C.DesCurso as curso
+			,M.fechaFinalRubrica
+			,(CASE WHEN 
+				COUNT(CASE WHEN R.estadoRubrica='Completado' THEN 1 END)
+				=COUNT(R.idResultadoRubrica) 
+				THEN 'Completado' ELSE 'Pendiente' END) AS estadoRubrica
+		FROM ResultadoRubrica AS R
+		INNER JOIN ModeloRubrica AS M
+			ON M.idModeloRubrica = R.idModeloRubrica
 		INNER JOIN PERSONA AS P
 			ON P.CodPer = M.idPersonaCreadorRubrica
+		INNER JOIN Curso AS C
+			ON M.idcurso = C.idCurso
+		INNER JOIN Semestre AS S
+			on S.idsem = M.idSemestre
 				  WHERE R.idPersonaCalificadora = '".$idDocente."'";
 		if(is_null($idSemestre)){
-			$query.= " AND S.Activo = '1'";
+			$query.= " AND S.Activo = '1' 
+			GROUP BY M.idModeloRubrica
+					,P.ApepPer+' '+P.ApemPer+', '+P.NomPer
+					,M.personaCalificada
+					,C.DesCurso
+					,M.fechaFinalRubrica";
 		}else{
-			$query.= " AND M.idSemestre = '".$idSemestre."'";
+			$query.= " AND M.idSemestre = '".$idSemestre."' 
+			GROUP BY M.idModeloRubrica
+					,P.ApepPer+' '+P.ApemPer+', '+P.NomPer
+					,M.personaCalificada
+					,C.DesCurso
+					,M.fechaFinalRubrica";
 		}
 		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
