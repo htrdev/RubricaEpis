@@ -65,7 +65,8 @@ class ConexionSQLServer extends Conexion{
 		}
 		$resultado =  mssql_query($sql,$this->conexion);
 		if(!$resultado){
-			return "La peticion a la Base de Datos ha fallado :(";
+			echo "La peticion a la Base de Datos ha fallado :(";
+			return $resultado;
 		}
 		else{
 			if($convertirArray){
@@ -85,8 +86,9 @@ class ConexionSQLServer extends Conexion{
 
 	public function finalizarTransaccion($confirmaciones){
 		$esCorrecto = true;
-		foreach($confirmaciones as $confirmacion){
-			if(!$confirmacion){
+		$numeroConfirmaciones = count($confirmaciones);
+		for($i=0;$i<$numeroConfirmaciones;$i++){
+			if(!$confirmaciones[$i]){
 				$esCorrecto = false;
 				break;
 			}

@@ -23,3 +23,5 @@ switch($metodo){
 		$resultadoRubrica = $json['resultadoRubrica'];
 		echo $objResultadoRubrica->completarResultadoRubrica($resultadoRubrica);break;
 }
+
+?>

@@ -225,6 +225,7 @@ class ResultadoRubrica extends Singleton{
 		$resultados = array();
 		$resultados[] = $this->modificarResultadoRubrica($resultadoRubrica);
 		$resultados[] = CalificacionCriterioEvaluacion::obtenerObjeto()->agregarCalificacionCriterioEvaluacion($resultadoRubrica["idResultadoRubrica"],$resultadoRubrica["resultadosAprendizaje"]);
+		echo var_dump($resultados);
 		return $this->conexionSqlServer->finalizarTransaccion($resultados);
 	}
 

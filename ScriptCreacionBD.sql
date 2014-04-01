@@ -85,8 +85,8 @@ CREATE TABLE ModeloRubrica(
 	idModeloRubrica INT IDENTITY,
 	fechaCreacionRubrica DATETIME
 		CONSTRAINT fechaCreacionRubrica_Default DEFAULT GETDATE(),
-	fechaInicioRubrica DATETIME NOT NULL,
-	fechaFinalRubrica DATETIME NOT NULL,
+	fechaInicioRubrica VARCHAR(15) NOT NULL,
+	fechaFinalRubrica VARCHAR(15) NOT NULL,
 	personaCalificada VARCHAR(10) NOT NULL,
 	tipoModeloRubrica VARCHAR(50) NULL
 		CONSTRAINT tipoModeloRubrica_Default DEFAULT 'Curso',
