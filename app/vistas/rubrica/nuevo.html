@@ -5,7 +5,7 @@
 		<small ng-hide="Formulario.EstaCuestionario"><i class="icon-double-angle-right"></i> Datos Generales</small>
 		<small ng-show="Formulario.EstaCuestionario"><i class="icon-double-angle-right"></i> Cuestionario</small></h3>
 	</div>
-	<div id="contenedorPrincipal" ng-if="!loader.estadoLoader" class="animation" >
+	<div id="contenedorPrincipal" ng-if="!loader.estadoLoader" ng-show="loader.estadoFormulario" class="animation" >
 		<div id="DatosGenerales" ng-hide="Formulario.EstaCuestionario" >
 			<div class="row-fluid">
 				<div class="control-group span6">
@@ -215,6 +215,8 @@
 		</div>
 	</div>
 	<pantalla-loading loader="loader">Cargando Información ... </pantalla-loading>
+	<pantalla-guardar-loading loader="loader">{{loader.mensajeGuardar}}</pantalla-guardar-loading>
+	<pantalla-guardar-exitoso loader="loader" ng-click="Formulario.callBackGuardar()">{{loader.mensajeGuardado}}</pantalla-guardar-exitoso>
 </div>
 
 <script src="assets/js/jquery.slimscroll.min.js"></script>

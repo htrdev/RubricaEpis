@@ -1,7 +1,7 @@
 'use strict';
 
 rubricaApp.controller('nuevoRubricaCtrl',
-	function nuevoRubricaCtrl($scope,Rubrica)
+	function nuevoRubricaCtrl($scope,Rubrica,$window)
 	{
 		$scope.itemsSeleccionados = {
 			cursoSeleccionado : {
@@ -13,7 +13,12 @@ rubricaApp.controller('nuevoRubricaCtrl',
 		};
 		
 		$scope.loader = {
-			estadoLoader : true
+			estadoLoader : true,
+			mensajeGuardar : "Guardando la Rubrica ...",
+			estadoGuardar : false,
+			mensajeGuardado : "Rubrica Guardada!",
+			estadoFormulario : true,
+			estadoGuardando : false
 		};
 
 		$scope.grupoAlumnos = [];
@@ -140,11 +145,17 @@ rubricaApp.controller('nuevoRubricaCtrl',
 	        		};
 			},
 			Guardar : function(){
+				$scope.loader.estadoFormulario = false;
+				$scope.loader.estadoGuardando = true;
 				console.log($scope.modeloRubrica);
 				Rubrica.agregarModeloRubrica($scope.modeloRubrica)
 					.success(function(data){
-						console.log(data);
+						$scope.loader.estadoGuardar = true;
+						$scope.loader.estadoGuardando = false;
 					});
+			},
+			callBackGuardar : function(){
+				$window.history.back();
 			}
 		}
 
