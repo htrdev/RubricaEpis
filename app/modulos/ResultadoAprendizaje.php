@@ -1,6 +1,6 @@
 <?php
 
-header('Content-type: application/json');
+// error_reporting(E_ALL); ini_set('display_errors', '1');
 
 require_once('../clases/ResultadoAprendizaje.php');
 
@@ -8,10 +8,13 @@ $json = json_decode(file_get_contents("php://input"),true);
 $metodo = $json['metodo'];
 $resultadoAprendizaje = $json["resultadoAprendizaje"];
 
-$ResultadoAprendizaje = new ResultadoAprendizaje();
+$objResultadoAprendizaje = ResultadoAprendizaje::obtenerObjeto();
 
 switch($metodo){
-	case 'listarResultadoAprendizaje' : echo $ResultadoAprendizaje->listarResultadoAprendizaje();break;
-	case 'agregarResultadoAprendizaje' : $ResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);
+	case 'obtenerResultadosAprendizaje' : echo $objResultadoAprendizaje->obtenerResultadosAprendizaje();break;
+	case 'agregarResultadoAprendizaje' : echo $objResultadoAprendizaje->agregarResultadoAprendizaje($resultadoAprendizaje);break;
+	case 'modificarResultadoAprendizaje' : $objResultadoAprendizaje->modificarResultadoAprendizaje($resultadoAprendizaje);break;
+	case 'listarResultadoAprendizajePorID': echo $objResultadoAprendizaje->listarResultadoAprendizajePorID($resultadoAprendizaje);break;
 }
 
+?>

@@ -1,27 +1,26 @@
 'use strict';
 
-rubricaApp.factory('Usuario',function($http){
+rubricaApp.factory('Usuario',function($http,rutasApp){
 	var usuario = {usuario : "",estado : false};
-	var urlBase = 'http://rubricaepis:8080/app/modulos/';
 	var dataFactory = {};
 
 	dataFactory.verificarEstadoUsuario = function(){
 			return $http.post(
-				    urlBase+'Usuario.php', 
+				    rutasApp.rutaApi+'Usuario.php', 
 				    {metodo: 'verificarUsuario'}
 				 	);
 		};
 
 	dataFactory.ingresarSistema = function(pusuario){
 			return $http.post(
-				    urlBase+'Usuario.php', 
+				    rutasApp.rutaApi+'Usuario.php', 
 				    {metodo: 'ingresarSistema',usuario:pusuario}
 				 );
 		};
 
 	dataFactory.salirSistema = function(pusuario){
 			return $http.post(
-				    urlBase+'Usuario.php', 
+				    rutasApp.rutaApi+'Usuario.php', 
 				    {metodo: 'salirSistema'}
 				 );
 		};
@@ -30,8 +29,8 @@ rubricaApp.factory('Usuario',function($http){
 		usuario = pusuario;
 	};	
 
-	dataFactory.estaLogeado = function(){
-		return usuario.estado;
+	dataFactory.obtenerUsuario = function(){
+		return usuario;
 	}
 
 	return dataFactory;

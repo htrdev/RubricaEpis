@@ -8,12 +8,32 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<!--basic styles-->
+		<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
 		<style type="text/css">
-			[ng-cloak]{
-				display: none;
+			.animation.ng-enter{
+			  -webkit-transition:.5s ease-in all;
+			  transition:.5s ease-in all;
 			}
+/*, .animation.ng-leave */
+			.animation.ng-enter {
+			  opacity: 0;
+			}
+
+			.animation.ng-enter.ng-enter-active {
+			  opacity: 1;
+			}
+/*
+			.animation.ng-leave {
+			  opacity: 1;
+			}
+
+			.animation.ng-leave.ng-leave-active {
+			  opacity: 0;
+			}*/
+
 		</style>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
 		<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 		<!--[if IE 7]>
@@ -31,13 +51,15 @@
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/estilo.css">
 
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
 
 		<!--inline styles related to this page-->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	</head>
 
 	<body ng-controller="mainCtrl" ng-cloak="">
 		<div class="navbar">
@@ -49,7 +71,7 @@
 						</small>
 					</a><!--/.brand-->
 
-					<ul class="nav ace-nav pull-right" ng-cloak ng-if="usuario.estado">
+					<ul class="nav ace-nav pull-right" ng-cloak ng-if="usuario.usuario.estado">
 						<li class="purple">
 							<a data-toggle="dropdown" class="dropdown-toggle" >
 								<i class="icon-bell-alt icon-animated-bell"></i>
@@ -88,26 +110,25 @@
 								</li>
 							</ul>
 						</li>
-
 						
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="" class="dropdown-toggle">
 								<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
 								<span class="user-info" style="max-width:200px" >
 									<small>Bienvenido,</small>
-									{{usuario.usuario}}
+									{{usuario.usuario.usuario}}
 								</span>
 
 								<i class="icon-caret-down"></i>
 							</a>
 
 							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
-								<li>
+								<!-- <li>
 									<a href="#">
 										<i class="icon-cog"></i>
 										Settings
 									</a>
-								</li>
+								</li> -->
 
 								<li>
 									<a href="#">
@@ -119,7 +140,7 @@
 								<li class="divider"></li>
 
 								<li>
-									<a href="#">
+									<a href="" ng-click="usuario.salirSistema()">
 										<i class="icon-off"></i>
 										Salir
 									</a>
@@ -136,18 +157,18 @@
 				<span class="menu-text"></span>
 			</a>
 
-			<div class="sidebar" id="sidebar" ng-cloak ng-show="usuario.estado">
+			<div class="sidebar" id="sidebar" ng-cloak ng-show="usuario.usuario.estado">
 				
 				<ul class="nav nav-list">
 					<li>
-						<a href="#rubricas" class="dropdown-toggle">
+						<a href="#rubricas" >
 							<i class="icon-desktop"></i>
 							<span class="menu-text"> Rubrica </span>
 						</a>
 					</li>
 
 					<li>
-						<a href="#resultadoAprendizaje" class="dropdown-toggle">
+						<a href="#resultadoAprendizaje" >
 							<i class="icon-edit"></i>
 							<span class="menu-text">R. Aprendizaje</span>
 						</a>
@@ -161,12 +182,12 @@
 				</div>
 			</div>
 
-			<div class="main-content" style="position:relative">
-
-				<div ng-view class="page-content">
-					
-				</div><!--/.page-content-->
-
+			<div class="main-content">
+				<div>
+					<div ng-view class="page-content">
+						
+					</div><!--/.page-content-->
+				</div>
 			</div><!--/.main-content-->
 		</div><!--/.main-container-->
 
@@ -231,28 +252,25 @@
 		<script type="text/javascript" src="app/includes/angular/angular-sanitize.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-route.js"></script>
 		<script type="text/javascript" src="app/includes/angular/angular-animate.min.js"></script>
+		<script type="text/javascript" src="app/includes/ui-bootstrap.min.js"></script>
+		<script type="text/javascript" src="assets/js/sortable.js"></script>
+		<script type="text/javascript" src="app/js/htrdev.js"></script>
 		<script type="text/javascript" src="app/js/app.js"></script>
 		<script type="text/javascript" src="app/js/directives.js"></script>
+		<script type="text/javascript" src="app/js/filters.js"></script>
+
 
 		<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
-		<script type="text/javascript" src="assets/js/sortable.js"></script>
 
 		<!--Servicios-->
 
 		<script type="text/javascript" src="app/js/services/Usuario.js"></script>
-		<script type="text/javascript" src="app/js/services/Semestre.js"></script>
 		<script type="text/javascript" src="app/js/services/ResultadoAprendizaje.js"></script>
-		<script type="text/javascript" src="app/js/services/Docente.js"></script>
-		<script type="text/javascript" src="app/js/services/Curso.js"></script>
+		<script type="text/javascript" src="app/js/services/Rubrica.js"></script>
 
 		<!--Controladores-->
 		<script type="text/javascript" src="app/js/controllers/mainCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/rubrica/nuevoRubricaCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/rubrica/misRubricasCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/rubrica/listarEstadoRubricaCtrl.js"></script>
-			
-		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
-			<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/listarResultadoAprendizajeCtrl.js"></script>
-		<script type="text/javascript" src="app/js/controllers/ResultadoAprendizaje/nuevoResultadoAprendizajeCtrl.js"></script>
-
+		<script type="text/javascript" src="app/js/controllers/rubricaCtrl.js"></script>
+		<script type="text/javascript" src="app/js/controllers/resultadoAprendizajeCtrl.js"></script>
+		<script src="app/includes/underscore-min.js"></script>
 </html>

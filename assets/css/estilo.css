@@ -1,0 +1,38 @@
+.loader{
+	height:     100%;
+	width:      100%;
+
+}
+.loading {
+	background: url('images/loader.gif');
+}
+[ng-cloak]
+{
+	display: none;
+}
+.color-gris{
+	color : #CBCBCB;
+}
+
+.check-box{
+	padding: 10px;
+	border-bottom: 1px solid #EAEAEA !important; 
+}
+
+.check-box input{
+	margin-left: 0 !important;
+	float: left;
+	vertical-align: top;
+}
+.check-box p{
+	text-align: justify;
+	padding-left: 25px;
+	margin-bottom: 0;
+}
+.check-box:last-child{
+	border-bottom: none;
+}
+.container-scroll{
+	overflow-y:auto;height:300px
+}
+

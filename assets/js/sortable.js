@@ -23,7 +23,13 @@ angular.module('ui.sortable', [])
                   return first;
               }
 
-            var opts = {};
+            var opts = {opacity:0.6,
+                        revert:true,
+                        forceHelperSize:true,
+                        placeholder: 'draggable-placeholder',
+                        forcePlaceholderSize:false,
+                        tolerance:'pointer'
+                        };
 
             var callbacks = {
                 receive: null,
@@ -50,6 +56,7 @@ angular.module('ui.sortable', [])
               callbacks.start = function(e, ui) {
                 // Save position of dragged item
                 ui.item.sortable = { index: ui.item.index() };
+                ui.placeholder.height(ui.item.height());
               };
 
               callbacks.update = function(e, ui) {

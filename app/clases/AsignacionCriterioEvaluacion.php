@@ -3,29 +3,37 @@
 header('Content-type: application/json');
 
 require_once('Conexion.php');
+require_once('Singleton.php');
 
-class AsignacionCriterioEvaluacion{
+class AsignacionCriterioEvaluacion extends Singleton{
 
-	private $conexion;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
+	}
+	
+	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
+		$query = "";
+		foreach($CriterioEvaluacion as $idCriterioEvaluacion){
+			$query .= 
+			"INSERT INTO asignacionCriterioEvaluacion(
+				idModeloRubrica
+				,idCriterioEvaluacion)
+			VALUES(
+				'".$idModeloRubrica."'
+				,'".$idCriterioEvaluacion."');";
+		}
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
+		return $funciono;		
 	}
 
-		public function agregarAsignacionCriterioEvaluacion($CriterioEvaluacion){
-
-		$query = "INSERT into asignacionCriterioEvaluacion (ModeloRubrica_idModeloRubrica, CriterioEvaluacion_idCriterioEvaluacion) 
-		values ('".$CriterioEvaluacion["ModeloRubrica_idModeloRubrica"]."', '".$CriterioEvaluacion["CriterioEvaluacion_idCriterioEvaluacion"]."')";
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
-
-
+	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
+		$query = 
+		"SELECT A.idCriterioEvaluacion AS idCriterioEvaluacion
+				,A.idAsignacionCriterioEvaluacion
+			FROM asignacioncriterioevaluacion AS A 
+				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 }
-		/*agregar*/
-		$CriterioEvaluacion = array(
-		"ModeloRubrica_idModeloRubrica"=>"1",
-		"CriterioEvaluacion_idCriterioEvaluacion"=>"11");	
-		$objetoModeloRubrica = new AsignacionCriterioEvaluacion();
-		echo $objetoModeloRubrica->agregarAsignacionCriterioEvaluacion($CriterioEvaluacion);

@@ -4,46 +4,42 @@ header('Content-type: application/json');
 
 require_once('Conexion.php');
 
-class CriterioEvaluacion{
+class CriterioEvaluacion extends Singleton{
 
-
-	private $conexion;
+	private $conexionSqlServer;
 
 	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('mysql','localhost','htrdev','12345');
+		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
-	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
-		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, ResultadoAprendizaje_idResultadoAprendizaje) 
-		values";
-		$numeroElementos = count($criterioEvaluacion);
-		$i = 0;
+	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){		
+		$query="";
 		foreach($criterioEvaluacion as $criterio){
-			$query.= "('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
+			$query .= 
+			"INSERT into CriterioEvaluacion(descripcionCriterioEvaluacion, idResultadoAprendizaje) 
+			VALUES('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."');";
 		}
-		$funciono = $this->conexion->realizarConsulta($query,false);
+		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;		
 	}
 
-	public function modificarCriterioEvaluacion($CriterioEvaluacion){
-	
-
-		$query = "update criterioevaluacion set descripcionCriterioEvaluacion='".$CriterioEvaluacion["descripcionCriterioEvaluacion"]."',ResultadoAprendizaje_idResultadoAprendizaje='".$CriterioEvaluacion["ResultadoAprendizaje_idResultadoAprendizaje"]."'
-		 where idCriterioEvaluacion='".$CriterioEvaluacion["idCriterioEvaluacion"]."'";
-		$resultado = $this->conexion->realizarConsulta($query,false);
-		$resultadoJson = $this->conexion->convertirJson($resultado);
-		return $resultadoJson;
+	public function listarCriterioEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+		$query = 
+		"SELECT idCriterioEvaluacion
+				,descripcionCriterioEvaluacion
+		FROM CriterioEvaluacion
+			WHERE idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
+		return $this->conexionSqlServer->realizarConsulta($query,true);
 	}
 
-
-	public function listarCriterioEvaluacionPorResultadoAprendizaje(){
-
+	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){
+		$query =
+		"SELECT c.descripcionCriterioEvaluacion,r.codigoResultadoAPrendizaje+' '+r.tituloResultadoAprendizaje AS tituloResultadoAprendizaje
+		FROM criterioEvaluacion AS c
+		INNER JOIN resultadoaprendizaje AS r
+			ON c.idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
+		$resultado = $this->conexionSqlServer->realizarConsulta($query,true);
+		return $resultado[0];
 	}
 
 
@@ -52,3 +48,5 @@ class CriterioEvaluacion{
 	}
 
 }
+
+
