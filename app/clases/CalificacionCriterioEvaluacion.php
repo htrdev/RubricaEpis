@@ -11,28 +11,15 @@ class CalificacionCriterioEvaluacion extends Singleton{
 	}
 
 	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
-		$query = 
-		"INSERT INTO calificacionCriterioEvaluacion(
-			idResultadoRubrica
-			,calificacionResultadoRubrica
-			,idAsignacionCriterioEvaluacion) 
-		VALUES";
-		$j = 0;
-		$numeroElementosTotales = count($resultadosAprendizaje);
+		$query="";
 		foreach($resultadosAprendizaje as $resultadoAprendizaje){
-			$i = 0;
-			$numeroElementos = count($resultadoAprendizaje);
 			foreach ($resultadoAprendizaje as $criterioEvaluacion) {
-				$query.= "('".$idResultadoRubrica."','".$criterioEvaluacion["calificacion"]."','".$criterioEvaluacion["idAsignacionCriterioEvaluacion"]."')";
-				if(++$i != $numeroElementos){
-					$query .= ",";
-				}
-			}
-			if(++$j == $numeroElementosTotales){
-				$query.=";";
-			}
-			else{
-				$query.=",";
+				$query .= 
+				"INSERT INTO CalificacionCriterioEvaluacion(
+					idResultadoRubrica
+					,CalificacionCriterioEvaluacion
+					,idAsignacionCriterioEvaluacion) 
+				VALUES('".$idResultadoRubrica."','".$criterioEvaluacion["calificacion"]."','".$criterioEvaluacion["idAsignacionCriterioEvaluacion"]."');";
 			}
 		}
 		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);

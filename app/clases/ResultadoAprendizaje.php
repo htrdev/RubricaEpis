@@ -68,27 +68,25 @@ class ResultadoAprendizaje extends Singleton{
 			INSERT INTO ResultadoAprendizaje(
 				definicionResultadoAprendizaje
 				,tituloResultadoAprendizaje
-				,codigoResultadoAprendizaje)
+				,tipoResultadoAprendizaje)
 			VALUES(
 				'".$resultadoAprendizaje["definicionResultadoAprendizaje"]."'
 				,'".$resultadoAprendizaje["tituloResultadoAprendizaje"]."'
-				,'".$resultadoAprendizaje["codigoResultadoAprendizaje"]."')";
+				,'Docente')";
 
-		$funcionoQueryAgregarResultadoAprendizaje = 
-			$this->conexionSqlServer->realizarConsulta($queryAgregarResultadoAprendizaje,false);
-		
 		$idResultadoAprendizaje = 
-			$this->listarUltimoPrimaryKey('idResultadoAprendizaje','resultadoaprendizaje');
-
-		$funcionoQueryAgregarResultadoAprendizajeDocente = $this->agregarResultadoAprendizajeDocente($idResultadoAprendizaje);
-
-		$funcionoQueryAgregarCriteriosEvaluacion = 
-			$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
+			$this->conexionSqlServer->returnId()->realizarConsulta($queryAgregarResultadoAprendizaje,false);
 		
+		if($idResultadoAprendizaje!=false){
+			$funcionoQueryAgregarResultadoAprendizajeDocente = $this->agregarResultadoAprendizajeDocente($idResultadoAprendizaje);
+
+			$funcionoQueryAgregarCriteriosEvaluacion = 
+				$this->agregarCriteriosEvaluacion($resultadoAprendizaje["criteriosEvaluacion"],$idResultadoAprendizaje);
+		}
 		$funcionoTransaccion = 
 			$this->conexionSqlServer->finalizarTransaccion(
 				array($funcionoQueryAgregarCriteriosEvaluacion
-						,$funcionoQueryAgregarResultadoAprendizaje
+						,$idResultadoAprendizaje
 						,$funcionoQueryAgregarResultadoAprendizajeDocente)
 				);
 		
@@ -98,11 +96,11 @@ class ResultadoAprendizaje extends Singleton{
 
 	public function agregarResultadoAprendizajeDocente($idResultadoAprendizaje){
 		$idDocente = $this->conexionSqlServer->obtenerVariableSesion("CodPer");
-		$query = "INSERT INTO resultadoaprendizajedocente(idResultadoAprendizaje
+		$query = "INSERT INTO ResultadoAprendizajeDocente(idResultadoAprendizaje
 			,idDocente) 
 			VALUES('".$idResultadoAprendizaje."'
 					,'".$idDocente."')";
-		return $this->conexionSqlServer->realizarConsulta($query);
+		return $this->conexionSqlServer->realizarConsulta($query,false);
 	}
 
 	public function agregarCriteriosEvaluacion($resultadoAprendizaje,$idResultadoAprendizaje){

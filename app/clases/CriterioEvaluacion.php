@@ -12,19 +12,12 @@ class CriterioEvaluacion extends Singleton{
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
-	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){
-		$query = "INSERT into criterioevaluacion (descripcionCriterioEvaluacion, idResultadoAprendizaje) 
-		values";
-		$numeroElementos = count($criterioEvaluacion);
-		$i = 0;
+	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){		
+		$query="";
 		foreach($criterioEvaluacion as $criterio){
-			$query.= "('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
+			$query .= 
+			"INSERT into CriterioEvaluacion(descripcionCriterioEvaluacion, idResultadoAprendizaje) 
+			VALUES('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."');";
 		}
 		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
 		return $funciono;		
