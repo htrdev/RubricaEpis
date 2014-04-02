@@ -1,14 +1,6 @@
 <?php
 
-require_once('Conexion.php');
-
-class Usuario{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
+class Usuario extends Master{
 
 	public function listarUsuarios(){
 		$usuario = $this->conexion->realizarConsulta("SELECT * FROM PERSONA");

@@ -1,7 +1,5 @@
 <?php
 
-require_once('Singleton.php');
-
 class ConexionFactory{
 
 	public static function obtenerConexion($tipoConexion){
@@ -62,7 +60,9 @@ class ConexionSQLServer extends Conexion{
 			}else{
 				if($this->returnId){
 					$this->returnId = false;
-					return $resultado->lastInsertId();
+					$resultado = $this->conexion->query("SELECT SCOPE_IDENTITY() as Id");
+					$id = $resultado->fetch(PDO::FETCH_ASSOC);
+					return $id["Id"];
 				}
 			}
 		}catch(PDOException $ex){
@@ -73,15 +73,15 @@ class ConexionSQLServer extends Conexion{
 	}
 
 	public function iniciarTransaccion(){
-		$this->conexion->beginTransaction();
+		$this->conexion->query("BEGIN TRANSACTION");
 	}
 
 	public function commit(){
-		$this->conexion->commit();
+		$this->conexion->query("COMMIT");
 	}
 
 	public function rollback(){
-		$this->conexion->rollback();
+		$this->conexion->query("ROLLBACK");
 	}
 
 	public function convertirJson($array){

@@ -1,14 +1,6 @@
 <?php
 
-require_once('Conexion.php');
-
-class CalificacionCriterioEvaluacion extends Singleton{
-
-	private $conexionSqlServer;
-
-	protected function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
+class CalificacionCriterioEvaluacion extends Master{
 
 	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
 		$query="";

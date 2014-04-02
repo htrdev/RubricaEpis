@@ -1,20 +1,10 @@
 <?php
 
-header('Content-type: application/json');
-
-require_once('Conexion.php');
-
-class CriterioEvaluacion extends Singleton{
-
-	protected $conexionSqlServer;
-
-	protected function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
+class CriterioEvaluacion extends Master{
 
 	//QUERYS
 
-	public function queryAgregarCriterioEvaluacion($idResultadoAprendizaje){
+	public function queryAgregarCriterioEvaluacion($idResultadoAprendizaje,$criterio){
 		$query =
 		"INSERT INTO CriterioEvaluacion(
 			descripcionCriterioEvaluacion
@@ -34,11 +24,11 @@ class CriterioEvaluacion extends Singleton{
 		return $query;
 	}
 
-	//Metodos
+	//METODOS
 
-	public function agregarCriterioEvaluacion($criteriosEvaluacion,$idResultadoAprendizaje){		
+	public function agregarCriteriosEvaluacion($criteriosEvaluacion,$idResultadoAprendizaje){
 		foreach($criteriosEvaluacion as $criterioEvaluacion){
-			$this->conexionSqlServer->realizarConsulta($this->queryAgregarCriterioEvaluacion($idResultadoAprendizaje));
+			$this->conexionSqlServer->realizarConsulta($this->queryAgregarCriterioEvaluacion($idResultadoAprendizaje,$criterioEvaluacion));
 		}
 	}
 
@@ -54,11 +44,6 @@ class CriterioEvaluacion extends Singleton{
 			ON c.idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
 		$resultado = $this->conexionSqlServer->realizarConsulta($query,true);
 		return $resultado[0];
-	}
-
-
-	public function listarCriterioEvaluacionPorModeloRubrica(){
-		
 	}
 
 }

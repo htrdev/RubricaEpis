@@ -1,44 +1,39 @@
 <?php
 
-header('Content-type: application/json');
+class AsignacionPersonaCalificada extends Master{
 
-require_once('Conexion.php');
-require_once('Singleton.php');
+	//QUERYS
 
-class AsignacionPersonaCalificada extends Singleton{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
-	
-	public function agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumnos){
+	public function queryAgregarAsignacionPersonaCalificada($idResultadoRubrica,$idAlumno){
 		$query = 
 		"INSERT INTO asignacionpersonacalificada(
 			idResultadoRubrica, 
 			idPersonaCalificada)
-		values";
-		$numeroElementos = count($alumnos);
-		$i = 0;
-		foreach($alumnos as $idAlumno){
-			$query.= "('".$idResultadoRubrica."','".$idAlumno."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
-		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
+		VALUES(
+			'".$idResultadoRubrica."'
+			,'".$idAlumno."');";
+		return $query;
 	}
 
-	public function listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
+	public function queryListarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
 		$query =
 		"SELECT A.idPersonaCalificada  
 			FROM asignacionpersonacalificada AS A
 				WHERE A.idResultadoRubrica  = '".$idResultadoRubrica."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		return $query;
+	}
+
+	//METODOS
+
+	public function agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumnos){
+		$queryMultiple="";
+		foreach($alumnos as $idAlumno){
+			$queryMultiple.=$this->queryAgregarAsignacionPersonaCalificada($idResultadoRubrica,$idAlumno);
+		}
+		$this->conexionSqlServer->realizarConsulta($queryMultiple,false);
+	}
+
+	public function listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica),true);
 	}
 }

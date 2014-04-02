@@ -30,23 +30,23 @@ rubricaApp.factory('Rubrica',function($http,rutasApp){
 
 	dataFactory.obtenerResultadoRubricaPorRubricaAsignada = function(pidModeloRubrica){
 		return $http.post(
-				    rutasApp.rutaApi+'ResultadoRubrica.php', 
-				    {metodo: 'listarResultadoRubricaPorcionRubricaAsignada'
+				    rutasApp.rutaApi+'Rubrica.php', 
+				    {metodo: 'obtenerResultadoRubricaPorRubricaAsignada'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
 	};
 
 	dataFactory.obtenerResultadoRubricaPorRubricaCreada = function(pidModeloRubrica){
 		return $http.post(
-				    rutasApp.rutaApi+'ResultadoRubrica.php', 
-				    {metodo: 'listarResultadoRubricaPorIDModeloRubrica'
+				    rutasApp.rutaApi+'Rubrica.php', 
+				    {metodo: 'obtenerResultadoRubricaPorIdModeloRubrica'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
 	};
 
 	dataFactory.obtenerResultadoRubricaPorId = function(pidResultadoRubrica){
 		return $http.post(
-				rutasApp.rutaApi+'ResultadoRubrica.php',
+				rutasApp.rutaApi+'Rubrica.php',
 				{metodo: 'obtenerResultadoRubricaPorID'
 				,idResultadoRubrica:pidResultadoRubrica}
 			);
@@ -62,7 +62,7 @@ rubricaApp.factory('Rubrica',function($http,rutasApp){
 
 	dataFactory.completarResultadoRubrica = function(pResultadoRubrica){
 		return $http.post(
-				rutasApp.rutaApi+'ResultadoRubrica.php',
+				rutasApp.rutaApi+'Rubrica.php',
 				{metodo: 'completarResultadoRubrica'
 				,resultadoRubrica:pResultadoRubrica}
 			);

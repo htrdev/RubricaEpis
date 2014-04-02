@@ -28,11 +28,10 @@ rubricaApp.filter('estado',function(){
 
 rubricaApp.filter('fecha',function(){
 	return function(pfecha){
-		var fecha= pfecha;
-		if(fecha ==""){
-			fecha = "No Completado";
+		if(!pfecha){
+			pfecha = "No Completado";
 		}
-		return fecha;
+		return pfecha;
 	};
 });
 

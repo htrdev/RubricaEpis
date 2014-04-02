@@ -1,31 +1,27 @@
 <?php
 
-header('Content-type: application/json');
+class AsignacionCriterioEvaluacion extends Master{
 
-require_once('Conexion.php');
-require_once('Singleton.php');
-
-class AsignacionCriterioEvaluacion extends Singleton{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
-	
-	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
-		$query = "";
-		foreach($CriterioEvaluacion as $idCriterioEvaluacion){
-			$query .= 
+	//QUERY 
+	public function queryAgregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion){
+		$query = 
 			"INSERT INTO asignacionCriterioEvaluacion(
 				idModeloRubrica
 				,idCriterioEvaluacion)
 			VALUES(
 				'".$idModeloRubrica."'
 				,'".$idCriterioEvaluacion."');";
+		return $query;
+	}
+
+	//METODOS
+
+	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$criteriosEvaluacion){
+		$queryMultiple = "";
+		foreach($criteriosEvaluacion as $idCriterioEvaluacion){
+			$queryMultiple .= $this->queryAgregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion);
 		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
+		$this->conexionSqlServer->realizarConsulta($queryMultiple,false);
 	}
 
 	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
