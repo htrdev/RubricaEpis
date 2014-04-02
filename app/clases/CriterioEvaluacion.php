@@ -6,30 +6,44 @@ require_once('Conexion.php');
 
 class CriterioEvaluacion extends Singleton{
 
-	private $conexionSqlServer;
+	protected $conexionSqlServer;
 
-	public function __construct(){
+	protected function __construct(){
 		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
 	}
 
-	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){		
-		$query="";
-		foreach($criterioEvaluacion as $criterio){
-			$query .= 
-			"INSERT into CriterioEvaluacion(descripcionCriterioEvaluacion, idResultadoAprendizaje) 
-			VALUES('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."');";
-		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
+	//QUERYS
+
+	public function queryAgregarCriterioEvaluacion($idResultadoAprendizaje){
+		$query =
+		"INSERT INTO CriterioEvaluacion(
+			descripcionCriterioEvaluacion
+			,idResultadoAprendizaje) 
+		VALUES(
+			'".$criterio["descripcionCriterioEvaluacion"]."'
+			,'".$idResultadoAprendizaje."');";
+		return $query;
 	}
 
-	public function listarCriterioEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+	public function queryCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
 		$query = 
 		"SELECT idCriterioEvaluacion
 				,descripcionCriterioEvaluacion
 		FROM CriterioEvaluacion
 			WHERE idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		return $query;
+	}
+
+	//Metodos
+
+	public function agregarCriterioEvaluacion($criteriosEvaluacion,$idResultadoAprendizaje){		
+		foreach($criteriosEvaluacion as $criterioEvaluacion){
+			$this->conexionSqlServer->realizarConsulta($this->queryAgregarCriterioEvaluacion($idResultadoAprendizaje));
+		}
+	}
+
+	public function listarCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+		return $this->conexionSqlServer->realizarConsulta($this->queryCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje),true);
 	}
 
 	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){

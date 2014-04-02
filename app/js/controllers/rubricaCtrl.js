@@ -35,13 +35,16 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			tipoModeloRubrica : "Curso",
 		};
 
+		$scope.tmpResultadosAprendizaje = null;
+
 		$scope.obtenerInformacionNuevaRubrica = function(){
 			Rubrica.obtenerInformacionNuevaRubrica()
 				.success(function(data){
 					console.log(data);
 					$scope.semestre = data.semestre;
 					$scope.modeloRubrica.idSemestre = $scope.semestre[0].idSem;
-					$scope.resultadosAprendizaje = data.resultadosAprendizaje.resultadosAprendizaje;
+					$scope.tmpResultadosAprendizaje = data.resultadosAprendizaje;
+					$scope.resultadosAprendizaje = $scope.tmpResultadosAprendizaje.resultadosAprendizaje;
 					$scope.docentes = data.docentes;
 					$scope.cursos = data.cursos;
 					$scope.loader.estadoLoader = false;
@@ -88,6 +91,14 @@ rubricaApp.controller('nuevoRubricaCtrl',
 				else{
 					$scope.Formulario.QuitarResultadoAprendizajeLista(resultadoAprendizaje,criterio);
 					console.log($scope.modeloRubrica.resultadosAprendizaje);
+				}
+			},
+
+			callBackCheckBoxRaDocente : function(estado){
+				if(estado){
+					$scope.resultadosAprendizaje = $scope.tmpResultadosAprendizaje.resultadosAprendizajeDocente;
+				}else{
+					$scope.resultadosAprendizaje = $scope.tmpResultadosAprendizaje.resultadosAprendizaje;
 				}
 			},
 
@@ -426,5 +437,9 @@ rubricaApp.controller('completarRubricaCtrl',
 		};
 
 		$scope.obtenerResultadoRubricaPorId();
-
 });
+
+rubricaApp.controller('reporteRubricaCtrl',
+	function reporteRubricaCtrl($scope){
+
+	});

@@ -49,28 +49,13 @@ interfaz.grupoBotones = function() {
 };
 
 interfaz.linkBorrarItem = function(){
-  var cuadroMensaje = function(callback){
-                        bootbox.dialog("<h4 class='lighter smaller'>¿Esta seguro que desea borrar este elemento?</h4><hr>"
-                        , [{
-                        "label" : "Si <i class='icon-ok'></i>",
-                        "class" : "btn-small btn-success",
-                        "callback": function() {
-                          callback();
-                        }
-                        }, {
-                        "label" : "No",
-                        "class" : "btn-small btn-danger",
-                        "callback": function() {
-                          //Example.show("uh oh, look out!");
-                        }
-                        }]);
-                      };
+
   return {
     restrict : 'E',
     scope : {
       action : "&"
     },
-    template : "<a class='blue' cuadro-confirmacion-borrar><i class='icon-zoom-in bigger-130' ng-click='action'></i></a>"
+    template : "<a class='blue' cuadro-confirmacion-borrar><i class='icon-remove bigger-130 red' ng-click='action'></i></a>"
   }
 };
 

@@ -25,7 +25,6 @@ abstract class Conexion extends Singleton{
 	protected $returnId;
 
 	public abstract function obtenerConexion();
-	protected abstract function convertirArray($resultado);
 	public abstract function convertirJson($array);
 
 	public function obtenerVariableSesion($variable){
@@ -51,65 +50,38 @@ class ConexionSQLServer extends Conexion{
 	}
 
 	public function obtenerConexion(){
-		 $this->conexion = mssql_connect($this->servidor,$this->usuario,$this->password) or die(mssql_get_last_message());
-       	 mssql_select_db($this->baseDeDatos,$this->conexion);
-	}
-
-	public function iniciarTransaccion(){
-		mssql_query("BEGIN TRANSACTION",$this->conexion);
+     	$this->conexion = new PDO("dblib:host=$this->servidor;dbname=".$this->baseDeDatos.";charset=utf8",$this->usuario,$this->password);
+     	$this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 	}
 
 	public function realizarConsulta($sql,$convertirArray){
-		if($this->returnId){
-			$sql .= ";SELECT @@IDENTITY as id;";
-		}
-		$resultado =  mssql_query($sql,$this->conexion);
-		if(!$resultado){
-			echo "La peticion a la Base de Datos ha fallado :(";
-			return $resultado;
-		}
-		else{
+		try{
+			$resultado = $this->conexion->query($sql);
 			if($convertirArray){
-				$resultadoArray = $this->convertirArray($resultado);
-				return $resultadoArray;
-			}
-			else{
+				return $resultado->fetchAll(PDO::FETCH_ASSOC);
+			}else{
 				if($this->returnId){
 					$this->returnId = false;
-					$resultado = $this->convertirArray($resultado);
-					return $resultado[0]["id"];
+					return $resultado->lastInsertId();
 				}
-				return $resultado;
 			}
+		}catch(PDOException $ex){
+			$error = $this->conexion->errorInfo();
+			throw new PDOException($error[2]);
 		}
+		
 	}
 
-	public function finalizarTransaccion($confirmaciones){
-		$esCorrecto = true;
-		$numeroConfirmaciones = count($confirmaciones);
-		for($i=0;$i<$numeroConfirmaciones;$i++){
-			if(!$confirmaciones[$i]){
-				$esCorrecto = false;
-				break;
-			}
-		}
-		if($esCorrecto){
-			mssql_query("COMMIT",$this->conexion);
-			return true;
-		}
-		else{
-			mssql_query("ROLLBACK",$this->conexion);
-			header("HTTP/1.1 500 Internal Server Error");
-			return "La transaccion en la Base de Datos ha fallado :(";
-		}
+	public function iniciarTransaccion(){
+		$this->conexion->beginTransaction();
 	}
 
-	protected function convertirArray($resultado){
-		$objetos = array();
-		while($r = mssql_fetch_assoc($resultado)) {
-		    $objetos[] = array_map('utf8_encode', $r);
-		}
-		return $objetos;
+	public function commit(){
+		$this->conexion->commit();
+	}
+
+	public function rollback(){
+		$this->conexion->rollback();
 	}
 
 	public function convertirJson($array){
@@ -117,78 +89,79 @@ class ConexionSQLServer extends Conexion{
 	}
 }
 
-class ConexionMySQL extends Conexion{
 
-	protected function __construct(){
-		$this->servidor = 'epis.upt.edu.pe';
-		$this->usuario	= 'urubrica';
-		$this->password = 'rubrica%789.';
-		$this->baseDeDatos = "rubricaepis";
-		$this->obtenerConexion();
-	}
+// class ConexionMySQL extends Conexion{
 
-	public function obtenerConexion(){
-        $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
-        mysql_select_db($this->baseDeDatos,$this->conexion);
-	}
+// 	protected function __construct(){
+// 		$this->servidor = 'epis.upt.edu.pe';
+// 		$this->usuario	= 'urubrica';
+// 		$this->password = 'rubrica%789.';
+// 		$this->baseDeDatos = "rubricaepis";
+// 		$this->obtenerConexion();
+// 	}
 
-	public function realizarConsulta($sql,$convertirArray){
-		$resultado =  mysql_query($sql,$this->conexion);
-		if(!$resultado){
-			header("HTTP/1.1 500 Internal Server Error");
-			return "La peticion a la Base de Datos ha fallado :(";
-		}
-		else{
-			if($convertirArray){
-				$resultadoArray = $this->convertirArray($resultado);
-				return $resultadoArray;
-			}
-			else{
-				if($this->returnId){
-					$this->returnId = false;
-					return mysql_insert_id();
-				}
-				return $resultado;
-			}
-		}
-	}
+// 	public function obtenerConexion(){
+//         $this->conexion = mysql_connect($this->servidor,$this->usuario,$this->password) or die(mysql_error());
+//         mysql_select_db($this->baseDeDatos,$this->conexion);
+// 	}
 
-	protected function convertirArray($resultado){
-		$objetos = array();
-		while($r = mysql_fetch_assoc($resultado)) {
-		    $objetos[] = array_map('utf8_encode', $r);
-		}
-		return $objetos;
-	}
+// 	public function realizarConsulta($sql,$convertirArray){
+// 		$resultado =  mysql_query($sql,$this->conexion);
+// 		if(!$resultado){
+// 			header("HTTP/1.1 500 Internal Server Error");
+// 			return "La peticion a la Base de Datos ha fallado :(";
+// 		}
+// 		else{
+// 			if($convertirArray){
+// 				$resultadoArray = $this->convertirArray($resultado);
+// 				return $resultadoArray;
+// 			}
+// 			else{
+// 				if($this->returnId){
+// 					$this->returnId = false;
+// 					return mysql_insert_id();
+// 				}
+// 				return $resultado;
+// 			}
+// 		}
+// 	}
 
-	public function convertirJson($array){
-		header('Content-type: application/json');
-		return json_encode($array);
-	}
+// 	protected function convertirArray($resultado){
+// 		$objetos = array();
+// 		while($r = mysql_fetch_assoc($resultado)) {
+// 		    $objetos[] = array_map('utf8_encode', $r);
+// 		}
+// 		return $objetos;
+// 	}
 
-	public function iniciarTransaccion(){
-		mysql_query("SET AUTOCOMMIT=0",$this->conexion);
-		mysql_query("START TRANSACTION",$this->conexion);
-	}
+// 	public function convertirJson($array){
+// 		header('Content-type: application/json');
+// 		return json_encode($array);
+// 	}
 
-	public function finalizarTransaccion($confirmaciones){
-		$esCorrecto = true;
-		foreach($confirmaciones as $confirmacion){
-			if(!$confirmacion){
-				$esCorrecto = false;
-				break;
-			}
-		}
-		if($esCorrecto){
-			mysql_query("COMMIT",$this->conexion);
-			return true;
-		}
-		else{
-			mysql_query("ROLLBACK",$this->conexion);
-			header("HTTP/1.1 500 Internal Server Error");
-			return "La transaccion en la Base de Datos ha fallado :(";
-		}
-	}
-}
+// 	public function iniciarTransaccion(){
+// 		mysql_query("SET AUTOCOMMIT=0",$this->conexion);
+// 		mysql_query("START TRANSACTION",$this->conexion);
+// 	}
+
+// 	public function finalizarTransaccion($confirmaciones){
+// 		$esCorrecto = true;
+// 		foreach($confirmaciones as $confirmacion){
+// 			if(!$confirmacion){
+// 				$esCorrecto = false;
+// 				break;
+// 			}
+// 		}
+// 		if($esCorrecto){
+// 			mysql_query("COMMIT",$this->conexion);
+// 			return true;
+// 		}
+// 		else{
+// 			mysql_query("ROLLBACK",$this->conexion);
+// 			header("HTTP/1.1 500 Internal Server Error");
+// 			return "La transaccion en la Base de Datos ha fallado :(";
+// 		}
+// 	}
+// }
 
 ?>

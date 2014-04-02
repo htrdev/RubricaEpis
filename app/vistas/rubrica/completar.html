@@ -131,10 +131,10 @@
 									<tr ng-repeat="criterioEval in resultadoAprendizaje">
 										<td>{{criterioEval.descripcionCriterioEvaluacion}}</td>
 										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="No opina" ng-init="criterioEval.calificacion = 'No opina'"></td>
-										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="20"></td>
-										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="40"></td>
-										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="60"></td>
-										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="80"></td>
+										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="0"></td>
+										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="25"></td>
+										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="50"></td>
+										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="75"></td>
 										<td><input type="radio" name="{{criterioEval.idCriterioEvaluacion}}" ng-change="calcularTotal(resultadoAprendizaje)" ng-model="criterioEval.calificacion" value="100"></td>
 										<td style="text-align:center">{{criterioEval.calificacion}}</td>
 									</tr>
