@@ -14,6 +14,20 @@ class AsignacionCriterioEvaluacion extends Master{
 		return $query;
 	}
 
+	public function queryListarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
+		$query = 
+		"SELECT C.descripcionCriterioEvaluacion
+				,R.codigoResultadoAprendizaje+' '+R.tituloResultadoAprendizaje AS resultadoAprendizaje
+				,A.idAsignacionCriterioEvaluacion
+			FROM asignacioncriterioevaluacion AS A 
+			INNER JOIN CriterioEvaluacion AS C
+				ON C.idCriterioEvaluacion = A.idCriterioEvaluacion
+			INNER JOIN ResultadoAprendizaje as R
+				ON R.idResultadoAprendizaje = C.idResultadoAprendizaje
+				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
+		return $query;
+	}
+
 	//METODOS
 
 	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$criteriosEvaluacion){
@@ -25,11 +39,7 @@ class AsignacionCriterioEvaluacion extends Master{
 	}
 
 	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
-		$query = 
-		"SELECT A.idCriterioEvaluacion AS idCriterioEvaluacion
-				,A.idAsignacionCriterioEvaluacion
-			FROM asignacioncriterioevaluacion AS A 
-				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica),true);
 	}
 }

@@ -17,8 +17,10 @@ class AsignacionPersonaCalificada extends Master{
 
 	public function queryListarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
 		$query =
-		"SELECT A.idPersonaCalificada  
+		"SELECT P.ApepPer+' '+P.ApemPer+', '+P.NomPer as personaCalificada
 			FROM asignacionpersonacalificada AS A
+			INNER JOIN Persona as P
+				ON A.idPersonaCalificada = P.CodPer
 				WHERE A.idResultadoRubrica  = '".$idResultadoRubrica."'";
 		return $query;
 	}

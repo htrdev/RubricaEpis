@@ -70,6 +70,31 @@ class ResultadoRubrica extends Master{
 		return $query;
 	}
 
+	public function queryModificarResultadoRubrica($resultadoRubrica){
+		$query = 
+		"UPDATE resultadorubrica
+			SET
+			totalRubrica = '".$resultadoRubrica["total"]."'
+			,estadoRubrica = 'Completado'
+			,fechaCompletadoRubrica = '".date('d/m/Y')."'
+			WHERE idResultadoRubrica = '".$resultadoRubrica["idResultadoRubrica"]."'";
+		return $query;
+	}
+
+	public function queryListarResultadoRubricaPorModeloRubrica($idModeloRubrica){
+		$query =
+		"SELECT R.idResultadoRubrica
+				,R.fechaCompletadoRubrica
+				,R.totalRubrica
+				,R.estadoRubrica
+				,P.ApepPer+' '+P.ApemPer+', '+P.NomPer as docenteCalificador
+		FROM ResultadoRubrica as R
+		INNER JOIN Persona as P
+			ON P.CodPer = R.idPersonaCalificadora
+				WHERE R.idModeloRubrica ='".$idModeloRubrica."'";
+		return $query;
+	}
+
 	//METODOS
 
 	public function listarResultadoRubricaPorDocente($idSemestre=null){
@@ -90,131 +115,56 @@ class ResultadoRubrica extends Master{
 		}
   	}
 
-	// public function listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica){
-	
-	// 	$query = "SELECT R.IDRESULTADORUBRICA ,R.FECHACOMPLETADORUBRICA, R.TOTALRUBRICA ,R.ESTADORUBRICA , R.idPersonaCalificadora 
-	// 			  FROM RESULTADORUBRICA AS R WHERE R.idModeloRubrica = '".$idModeloRubrica."'";
-	// 	$resultados = $this->conexionSqlServer->realizarConsulta($query,true);
-
-	// 	$respaldo=array();
-	// 	$contadorResultado=0;
-		
-	// 	foreach ($resultados as $resultado) {
-		
-	// 		$idPersonasEvaluadas= "SELECT a.idPersonaCalificada   from asignacionpersonacalificada as a 
-	// 							where a.idResultadoRubrica ='".$resultado["IDRESULTADORUBRICA"]."'";
-	// 		$resultadosidPersonasEvaluadas = $this->conexionSqlServer->realizarConsulta($idPersonasEvaluadas,true);
-			
-	// 		$personasEvaluadas=array();
-	// 		$i=0;
-	// 		$evaluador="";
-
-	// 		foreach ($resultadosidPersonasEvaluadas as $id ) {
-				
-	// 				$consulta = "select p.ApepPer , p.ApemPer , p.NomPer  from PERSONA as p 
-	// 							where p.CodPer ='".$id["idPersonaCalificada"]."'";
-	// 				$resultados = $this->conexionSqlServer->realizarConsulta($consulta,true);
-
-	// 				foreach ($resultados as $persona) {	
-	// 					$personasEvaluadas[$i]=array("nombreCompletoAlumno"=>$persona["ApepPer"]." ". $persona["ApemPer"].", ".$persona["NomPer"]);
-	// 			 		$i++;
-	// 				}	
-	// 		}
-
-	// 		$consultax = "SELECT P.APEPPER , P.APEMPER , P.NOMPER  FROM PERSONA AS P WHERE P.CODPER = '".$resultado["idPersonaCalificadora"]."'";
-	// 		$evaluador = $this->conexionSqlServer->realizarConsulta($consultax,true);
-			
-	// 		$respaldo[$contadorResultado] = 
-	// 			array("idResultadoRubrica"=>$resultado["IDRESULTADORUBRICA"],					
-	// 				"alumnosCalificados"=>$personasEvaluadas,
-	// 				"docenteCalificador"=>$evaluador[0]["APEPPER"]." ". $evaluador[0]["APEMPER"].", ".$evaluador[0]["NOMPER"],
-	// 				"fechaCompletadoRubrica"=>$resultado["FECHACOMPLETADORUBRICA"],
-	// 				"totalRubrica"=>$resultado["TOTALRUBRICA"],
-	// 				"estadoRubrica"=>$resultado["ESTADORUBRICA"]
-					
-	// 				); 
-	// 		$contadorResultado++;
-	// 	}
-
-	// 	$resultadoJson = $this->conexionSqlServer->convertirJson($respaldo);
-	// 	return $resultadoJson;
-	// }
+	public function obtenerResultadoRubricaPorModeloRubrica($idModeloRubrica){
+		$resultadosRubrica = $this->conexionSqlServer->realizarConsulta($this->queryListarResultadoRubricaPorModeloRubrica($idModeloRubrica),true);
+		foreach($resultadosRubrica as &$resultadoRubrica){
+			$resultadoRubrica["alumnosCalificados"] = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($resultadoRubrica["idResultadoRubrica"]);
+		}
+		return $resultadosRubrica;
+	}
 
 	public function obtenerResultadoRubricaPorRubricaAsignada($idModeloRubrica){
 		$CodPer=$this->conexionSqlServer->obtenerVariableSesion("CodPer");
 		$resultado = $this->conexionSqlServer->realizarConsulta($this->queryListarResultadoRubricaPorRubricaAsignada($idModeloRubrica,$CodPer),true);
 		foreach ($resultado as &$resultadoRubrica) {
-			$personasCalificadas = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($resultadoRubrica["idResultadoRubrica"]);
-			foreach ($personasCalificadas as $personaCalificada) {
-				$persona = Persona::obtenerObjeto()->listarPersonaPorId($personaCalificada["idPersonaCalificada"]);
-				$nombreCompletoAlumno = Persona::obtenerObjeto()->obtenerNombreCompletoPersona($persona);
-				$resultadoRubrica["alumnosCalificados"][] = array("nombreCompletoAlumno"=>$nombreCompletoAlumno);
-			}
+			$resultadoRubrica["alumnosCalificados"] = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($resultadoRubrica["idResultadoRubrica"]);
 		}
 		return $resultado;
 	}
 
-	// public function obtenerResultadoRubricaPorID($idResultadoRubrica){
-	// 	$modeloRubrica = ModeloRubrica::obtenerObjeto()->listarModeloRubricaPorResultadoRubrica($idResultadoRubrica);
-	// 	$semestre = Semestre::obtenerObjeto()->listarSemestrePorId($modeloRubrica['idSemestre']);
-	// 	$curso = Curso::obtenerObjeto()->listarCursoPorId($modeloRubrica['idCurso']);
-	// 	$docente = Persona::obtenerObjeto()->listarPersonaPorId($modeloRubrica['idPersonaCreadorRubrica']);
-	// 	$alumnosCalificados = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica);
-	// 	foreach ($alumnosCalificados as &$alumnoCalificado) {
-	// 			$alumno = Persona::obtenerObjeto()->listarPersonaPorId($alumnoCalificado["idPersonaCalificada"]);
-	// 			$alumnoCalificado["nombreCompletoAlumno"] = Persona::obtenerObjeto()->obtenerNombreCompletoPersona($alumno);
-	// 			unset($alumnoCalificado["idPersonaCalificada"]);
-	// 	}
-	// 	$criteriosEvaluacion=AsignacionCriterioEvaluacion::obtenerObjeto()->listarAsignacionCriterioEvaluacionPorModeloRubrica($modeloRubrica["idModeloRubrica"]);
-	// 	foreach ($criteriosEvaluacion as &$criterioEvaluacion) {
-	// 			$ce = CriterioEvaluacion::obtenerObjeto()->listarCriterioEvaluacionPorId($criterioEvaluacion['idCriterioEvaluacion']);
-	// 			$criterioEvaluacion["descripcionCriterioEvaluacion"]=$ce["descripcionCriterioEvaluacion"];
-	// 			$criterioEvaluacion["resultadoAprendizaje"] = $ce["tituloResultadoAprendizaje"];
-	// 			unset($criterioEvaluacion['idCriterioEvaluacion']);
-	// 	}
-	// 	$resultadoRubrica = 
-	// 			array("idResultadoRubrica"=>$idResultadoRubrica,
-	// 				"semestre"=>$semestre['Semestre'],
-	// 				"curso"=>$curso['DesCurso'],
-	// 				"docenteCreadorRubrica"=>Persona::obtenerObjeto()->obtenerNombreCompletoPersona($docente),
-	// 				"ciclo"=>$curso['CicloCurso'],
-	// 				"alumnosCalificados"=>$alumnosCalificados,
-	// 				"criteriosEvaluacion"=>$criteriosEvaluacion					
-	// 				); 
-	// 	$resultadoJson = $this->conexionSqlServer->convertirJson($resultadoRubrica);
-	// 	return $resultadoJson;
-	// }
+	public function obtenerResultadoRubricaPorId($idResultadoRubrica){
+		$resultadoRubrica = ModeloRubrica::obtenerObjeto()->listarModeloRubricaPorResultadoRubrica($idResultadoRubrica);
+		$resultadoRubrica["alumnosCalificados"] = AsignacionPersonaCalificada::obtenerObjeto()->listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica);
+		$resultadoRubrica["criteriosEvaluacion"]=AsignacionCriterioEvaluacion::obtenerObjeto()->listarAsignacionCriterioEvaluacionPorModeloRubrica($resultadoRubrica["idModeloRubrica"]);
+		return $resultadoRubrica;
+	}
 
-	// public function completarResultadoRubrica($resultadoRubrica){
-	// 	$resultadoRubrica["total"] = $this->obtenerTotalResultadoRubrica($resultadoRubrica["resultadosAprendizaje"]);
-	// 	$this->conexionSqlServer->iniciarTransaccion();
-	// 	$resultados = array();
-	// 	$resultados[] = $this->modificarResultadoRubrica($resultadoRubrica);
-	// 	$resultados[] = CalificacionCriterioEvaluacion::obtenerObjeto()->agregarCalificacionCriterioEvaluacion($resultadoRubrica["idResultadoRubrica"],$resultadoRubrica["resultadosAprendizaje"]);
-	// 	echo var_dump($resultados);
-	// 	return $this->conexionSqlServer->finalizarTransaccion($resultados);
-	// }
+	public function completarResultadoRubrica($resultadoRubrica){
+		$this->conexionSqlServer->iniciarTransaccion();
+		try{
+			$resultadoRubrica["total"] = $this->obtenerTotalResultadoRubrica($resultadoRubrica["resultadosAprendizaje"]);
+			$this->modificarResultadoRubrica($resultadoRubrica);
+			CalificacionCriterioEvaluacion::obtenerObjeto()->agregarCalificacionCriterioEvaluacion($resultadoRubrica["idResultadoRubrica"],$resultadoRubrica["resultadosAprendizaje"]);
+			$this->conexionSqlServer->commit();
+		}catch(PDOException $ex){
+			$this->conexionSqlServer->rollback();
+			throw new PDOException($ex->getMessage());
+		}
+	}
 
-	// public function modificarResultadoRubrica($resultadoRubrica){
-	// 	$query = 
-	// 	"UPDATE resultadorubrica
-	// 		SET
-	// 		totalRubrica = '".$resultadoRubrica["total"]."'
-	// 		,estadoRubrica = 'Completado'
-	// 		,fechaCompletadoRubrica = '".date('Y/m/d')."'
-	// 		WHERE idResultadoRubrica = '".$resultadoRubrica["idResultadoRubrica"]."'";
-	// 	return $this->conexionSqlServer->realizarConsulta($query,false);
-	// } 
+	public function modificarResultadoRubrica($resultadoRubrica){
+		return $this->conexionSqlServer->realizarConsulta($this->queryModificarResultadoRubrica($resultadoRubrica),false);
+	} 
 
-	// public function obtenerTotalResultadoRubrica($resultadosAprendizaje){
-	// 	$total = 0;
-	// 	foreach ($resultadosAprendizaje as $resultadoAprendizaje) {
-	// 		$totalResultadoAprendizaje = 0;
-	// 		foreach($resultadoAprendizaje as $criterioEvaluacion){
-	// 			$totalResultadoAprendizaje += (int)($criterioEvaluacion["calificacion"]);
-	// 		}
-	// 		$total += $totalResultadoAprendizaje/count($resultadoAprendizaje);
-	// 	}
-	// 	return $total/count($resultadosAprendizaje);
-	// }
+	public function obtenerTotalResultadoRubrica($resultadosAprendizaje){
+		$total = 0;
+		foreach ($resultadosAprendizaje as $resultadoAprendizaje) {
+			$totalResultadoAprendizaje = 0;
+			foreach($resultadoAprendizaje as $criterioEvaluacion){
+				$totalResultadoAprendizaje += (int)($criterioEvaluacion["calificacion"]);
+			}
+			$total += $totalResultadoAprendizaje/count($resultadoAprendizaje);
+		}
+		return $total/count($resultadosAprendizaje);
+	}
 }

@@ -14,7 +14,7 @@ rubricaApp.factory('ResultadoAprendizaje',function($http,rutasApp){
 	dataFactory.agregarResultadoAprendizaje = function(presultadoAprendizaje){
 		return $http.post(
 				    rutasApp.rutaApi+'ResultadoAprendizaje.php', 
-				    {metodo: 'agregarResultadoAprendizaje',resultadoAprendizaje: presultadoAprendizaje}
+				    {metodo: 'agregarResultadoAprendizajeDocente',resultadoAprendizaje: presultadoAprendizaje}
 				 );
 	};
 

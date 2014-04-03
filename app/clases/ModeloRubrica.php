@@ -44,6 +44,25 @@ class ModeloRubrica extends Master{
 				,'".$modeloRubrica["calificacionRubrica"]."')";
 		return $query;
 	}
+
+	protected function queryListarModeloRubricaPorResultadoRubrica($idResultadoRubrica){
+		$query = 
+		"SELECT R.idResultadoRubrica
+				,M.idModeloRubrica
+				,S.Semestre as semestre
+				,C.DesCurso as curso
+				,P.ApepPer+' '+P.ApemPer+', '+P.NomPer as docenteCreadorRubrica
+			FROM modelorubrica AS M
+			INNER JOIN resultadorubrica as R
+				ON R.idModeloRubrica = M.idModeloRubrica AND R.idResultadoRubrica = '".$idResultadoRubrica."'
+			INNER JOIN Semestre as S
+				ON S.idSem = M.idSemestre
+			INNER JOIN Curso as C
+				ON C.idCurso = M.idCurso
+			INNER JOIN Persona as P
+				ON P.CodPer = M.idPersonaCreadorRubrica";
+		return $query;
+	}
 	//METODOS
 
 	protected function listarModeloRubricaPorPersona($idSemestre = null){
@@ -78,18 +97,6 @@ class ModeloRubrica extends Master{
 		}
 		return $criteriosEvaluacion;
 	}
-
-	// public function agregarCriteriosEvaluacion($idModeloRubrica,$agregarModeloRubrica){
-	// 	$funcionoQueryAgregarCriteriosEvaluacion = true;
-	// 	$objCriterioEvaluacion = AsignacionCriterioEvaluacion::obtenerObjeto();
-	// 	if(!empty($agregarModeloRubrica)){
-	// 		$funcionoQueryAgregarCriteriosEvaluacion = $objCriterioEvaluacion->agregarAsignacionCriterioEvaluacion(
-	// 			$idModeloRubrica 
-	// 			,$agregarModeloRubrica);
-	// 	}
-	// 	return $funcionoQueryAgregarCriteriosEvaluacion;
-	// }
-
 
 	public function listarRubricasPorPersona($idSemestre=null){
 		$objResultadoRubrica = ResultadoRubrica::obtenerObjeto();
@@ -128,18 +135,10 @@ class ModeloRubrica extends Master{
 		return $resultado;
 	}
 
-	// public function listarModeloRubricaPorResultadoRubrica($idResultadoRubrica){
-	// 	$query = 
-	// 	"SELECT M.idModeloRubrica
-	// 			,M.idSemestre
-	// 			,M.idCurso
-	// 			,M.idPersonaCreadorRubrica
-	// 		FROM modelorubrica AS M
-	// 		INNER JOIN resultadorubrica as R
-	// 			ON R.idModeloRubrica = M.idModeloRubrica AND R.idResultadoRubrica = '".$idResultadoRubrica."'";
-	// 	$resultado = $this->conexionSqlServer->realizarConsulta($query,true);
-	// 	return $resultado[0];
-	// }
+	public function listarModeloRubricaPorResultadoRubrica($idResultadoRubrica){
+		$resultado = $this->conexionSqlServer->realizarConsulta($this->queryListarModeloRubricaPorResultadoRubrica($idResultadoRubrica),true);
+		return $resultado[0];
+	}
 
 
 

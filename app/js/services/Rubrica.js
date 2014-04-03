@@ -39,7 +39,7 @@ rubricaApp.factory('Rubrica',function($http,rutasApp){
 	dataFactory.obtenerResultadoRubricaPorRubricaCreada = function(pidModeloRubrica){
 		return $http.post(
 				    rutasApp.rutaApi+'Rubrica.php', 
-				    {metodo: 'obtenerResultadoRubricaPorIdModeloRubrica'
+				    {metodo: 'obtenerResultadoRubricaPorModeloRubrica'
 				    ,idModeloRubrica : pidModeloRubrica}
 				 );
 	};
