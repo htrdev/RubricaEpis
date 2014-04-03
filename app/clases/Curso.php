@@ -1,24 +1,23 @@
 <?php
 
-header('Content-type: application/json');
+class Curso extends Master{
 
-require_once('Conexion.php');
+	// QUERYS
 
-class Curso extends Singleton{
-
-	private $conexion;
-
-	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
+	public function queryListarCursosDocente(){
+		$idDocente = $this->conexionSqlServer->obtenerVariableSesion('CodPer');
+		$query =
+		"SELECT  cu.idcurso,cu.DesCurso, cu.CodCurso,cu.CicloCurso FROM carga AS c
+		INNER JOIN PERSONA AS p ON p.CodPer = c.codper
+		INNER JOIN curso AS cu ON cu.idcurso = c.idcurso
+		INNER JOIN SEMESTRE AS s ON s.IdSem = c.idsem WHERE p.CodPer='".$idDocente."' and s.Activo=1";
+		return $query;
 	}
 
+	//METODOS
+
 	public function listarCursosDocente(){
-		$idDocente = $this->conexion->obtenerVariableSesion('CodPer');
-		$query = "select  cu.idcurso,cu.DesCurso, cu.CodCurso,cu.CicloCurso from carga as c
-		inner join PERSONA as p on p.CodPer = c.codper
-		inner join curso as cu on cu.idcurso = c.idcurso
-		inner join SEMESTRE as s on s.IdSem = c.idsem where p.CodPer='".$idDocente."' and s.Activo=1";
-		$resultado = $this->conexion->realizarConsulta($query,true);
+		$resultado = $this->conexionSqlServer->realizarConsulta($this->queryListarCursosDocente(),true);
 		return $resultado;
 	}
 
@@ -29,7 +28,7 @@ class Curso extends Singleton{
 			,CicloCurso 
 		FROM curso 
 		WHERE idcurso = '".$idCurso."'";
-		$curso = $this->conexion->realizarConsulta($queryCurso,true);
+		$curso = $this->conexionSqlServer->realizarConsulta($queryCurso,true);
 		return $curso[0];
 	}
 }

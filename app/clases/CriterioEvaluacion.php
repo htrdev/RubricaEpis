@@ -1,35 +1,39 @@
 <?php
 
-header('Content-type: application/json');
+class CriterioEvaluacion extends Master{
 
-require_once('Conexion.php');
+	//QUERYS
 
-class CriterioEvaluacion extends Singleton{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
+	public function queryAgregarCriterioEvaluacion($idResultadoAprendizaje,$criterio){
+		$query =
+		"INSERT INTO CriterioEvaluacion(
+			descripcionCriterioEvaluacion
+			,idResultadoAprendizaje) 
+		VALUES(
+			'".$criterio["descripcionCriterioEvaluacion"]."'
+			,'".$idResultadoAprendizaje."');";
+		return $query;
 	}
 
-	public function agregarCriterioEvaluacion($criterioEvaluacion,$idResultadoAprendizaje){		
-		$query="";
-		foreach($criterioEvaluacion as $criterio){
-			$query .= 
-			"INSERT into CriterioEvaluacion(descripcionCriterioEvaluacion, idResultadoAprendizaje) 
-			VALUES('".$criterio["descripcionCriterioEvaluacion"]."','".$idResultadoAprendizaje."');";
-		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
-	}
-
-	public function listarCriterioEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+	public function queryCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
 		$query = 
 		"SELECT idCriterioEvaluacion
 				,descripcionCriterioEvaluacion
 		FROM CriterioEvaluacion
 			WHERE idResultadoAprendizaje = '".$idResultadoAprendizaje."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		return $query;
+	}
+
+	//METODOS
+
+	public function agregarCriteriosEvaluacion($criteriosEvaluacion,$idResultadoAprendizaje){
+		foreach($criteriosEvaluacion as $criterioEvaluacion){
+			$this->conexionSqlServer->realizarConsulta($this->queryAgregarCriterioEvaluacion($idResultadoAprendizaje,$criterioEvaluacion));
+		}
+	}
+
+	public function listarCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje){
+		return $this->conexionSqlServer->realizarConsulta($this->queryCriteriosEvaluacionPorResultadoAprendizaje($idResultadoAprendizaje),true);
 	}
 
 	public function listarCriterioEvaluacionPorId($idCriterioEvaluacion){
@@ -40,11 +44,6 @@ class CriterioEvaluacion extends Singleton{
 			ON c.idResultadoAprendizaje = r.idResultadoAprendizaje AND c.idCriterioEvaluacion ='".$idCriterioEvaluacion."'";
 		$resultado = $this->conexionSqlServer->realizarConsulta($query,true);
 		return $resultado[0];
-	}
-
-
-	public function listarCriterioEvaluacionPorModeloRubrica(){
-		
 	}
 
 }

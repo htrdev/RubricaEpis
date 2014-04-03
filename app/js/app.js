@@ -38,6 +38,10 @@ rubricaApp.config(function($routeProvider,rutasApp){
         templateUrl: rutasApp.rutaVistas +'rubrica/index.html',
         controller: 'misRubricasCtrl',
       }).
+      when('/rubricas/reporte/:idModeloRubrica',{
+        templateUrl: rutasApp.rutaVistas +'rubrica/reporte.html',
+        controller: 'reporteRubricaCtrl',
+      }).
       when('/rubricas/completar/:idResultadoRubrica',{
         templateUrl: rutasApp.rutaVistas +'rubrica/completar.html',
         controller: 'completarRubricaCtrl'

@@ -1,29 +1,37 @@
 <?php
 
-require_once('Conexion.php');
+class CalificacionCriterioEvaluacion extends Master{
+	//QUERYS
 
-class CalificacionCriterioEvaluacion extends Singleton{
-
-	private $conexionSqlServer;
-
-	protected function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
-
-	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
-		$query="";
-		foreach($resultadosAprendizaje as $resultadoAprendizaje){
-			foreach ($resultadoAprendizaje as $criterioEvaluacion) {
-				$query .= 
+	public function queryAgregarCalificacionCriterioEvaluacion($idResultadoRubrica,$criterioEvaluacion){
+		$query .= 
 				"INSERT INTO CalificacionCriterioEvaluacion(
 					idResultadoRubrica
 					,CalificacionCriterioEvaluacion
 					,idAsignacionCriterioEvaluacion) 
 				VALUES('".$idResultadoRubrica."','".$criterioEvaluacion["calificacion"]."','".$criterioEvaluacion["idAsignacionCriterioEvaluacion"]."');";
+		return $query;
+	}
+
+	//METODOS 
+
+	public function obtenerArrayCriteriosEvaluacionDeResultadoAprendizaje($resultadosAprendizaje){
+		$criteriosEvaluacion = array();
+		foreach ($resultadosAprendizaje as $resultadoAprendizaje) {
+			foreach($resultadoAprendizaje as $criterioEvaluacion){
+				$criteriosEvaluacion[] = $criterioEvaluacion;
 			}
 		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;	
+		return $criteriosEvaluacion;
+	}
+
+	public function agregarCalificacionCriterioEvaluacion($idResultadoRubrica,$resultadosAprendizaje){
+		$criteriosEvaluacion = $this->obtenerArrayCriteriosEvaluacionDeResultadoAprendizaje($resultadosAprendizaje);
+		$queryMultiple = "";
+		foreach($criteriosEvaluacion as $criterioEvaluacion){
+			$queryMultiple .= $this->queryAgregarCalificacionCriterioEvaluacion($idResultadoRubrica,$criterioEvaluacion);
+		}
+		$this->conexionSqlServer->realizarConsulta($queryMultiple,false);
 	}
 
 }

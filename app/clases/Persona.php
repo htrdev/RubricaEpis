@@ -1,33 +1,9 @@
 <?php
 
-header('Content-type: application/json');
+class Persona extends Master{
+	//QUERYS
 
-require_once('Conexion.php');
-
-class Persona extends Singleton{
-
-	private $conexion;
-
-	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
-	}
-
-	public function obtenerNombreCompletoPersona($persona){
-		return $persona["ApepPer"]." ". $persona["ApemPer"].", ".$persona["NomPer"];
-	}
-
-	public function listarPersonaPorId($idPersona){
-		$queryPersona = 
-		"SELECT ApepPer
-				,ApemPer 
-				,NomPer  
-		FROM PERSONA 
-		WHERE CodPer =  '".$idPersona."'";
-		$persona = $this->conexion->realizarConsulta($queryPersona,true);
-		return $persona[0];
-	}
-
-	public function listarAlumnosRegularesPorCurso($idCurso){
+	public function queryListarAlumnosRegularesPorCurso($idCurso){
 		$query = 
 		"SELECT  
 			ApepPer
@@ -41,14 +17,10 @@ class Persona extends Singleton{
 				ON Semestre.idsem = carga.idsem	AND Semestre.Activo = 1
 			INNER JOIN Curso
 				ON carga.idcurso = Curso.idcurso AND carga.idcurso = '".$idCurso."'";
-		return $this->conexion->realizarConsulta($query,true);
+		return $query;
 	}
 
-	public function obtenerAlumnosPorCurso($idCurso){
-		return $this->conexion->convertirJson($this->listarAlumnosRegularesPorCurso($idCurso));
-	}
-
-	public function listarDocentesActivos(){
+	public function queryListarDocentesActivos(){
 		$query = 
 		"SELECT DISTINCT 
 			ApepPer
@@ -60,6 +32,35 @@ class Persona extends Singleton{
 				ON carga.CodPer = PERSONA.CodPer AND PERSONA.CodEstamento = 1
 			INNER JOIN Semestre
 				ON Semestre.idsem = carga.idsem	AND Semestre.Activo = 1";
-		return $this->conexion->realizarConsulta($query,true);
+		return $query;
+	}
+
+	public function queryListarPersonaPorId($idPersona){
+		$query = 
+		"SELECT ApepPer
+				,ApemPer 
+				,NomPer  
+		FROM PERSONA 
+		WHERE CodPer =  '".$idPersona."'";
+		return $query;
+	}
+
+	//METODOS
+
+	public function obtenerAlumnosPorCurso($idCurso){
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarAlumnosRegularesPorCurso($idCurso),true);
+	}
+
+	public function obtenerNombreCompletoPersona($persona){
+		return $persona["ApepPer"]." ". $persona["ApemPer"].", ".$persona["NomPer"];
+	}
+
+	public function listarPersonaPorId($idPersona){
+		$resultado = $persona = $this->conexionSqlServer->realizarConsulta($this->queryListarPersonaPorId($idPersona),true);
+		return $resultado[0];
+	}
+
+	public function listarDocentesActivos(){
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarDocentesActivos(),true);
 	}
 }

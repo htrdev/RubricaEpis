@@ -1,29 +1,19 @@
 <?php
 
-header('Content-type: application/json');
-
-require_once('Conexion.php');
-
-class Semestre extends Singleton{
-
-	private $conexion;
-
-	public function __construct(){
-		$this->conexion = ConexionFactory::obtenerConexion('sqlserver');
-	}
+class Semestre extends Master{
 
 	public function listarSemestre(){
-		return $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE",true);
+		return $this->conexionSqlServer->realizarConsulta("SELECT * FROM SEMESTRE",true);
 	}
 
 	public function listarSemestrePorId($idSemestre){
 		$querySemestre = "SELECT Semestre  FROM SEMESTRE  WHERE IdSem = '".$idSemestre."'";
-		$semestre = $this->conexion->realizarConsulta($querySemestre,true);
+		$semestre = $this->conexionSqlServer->realizarConsulta($querySemestre,true);
 		return $semestre[0];
 	}
 
 	public function listarSemestreActivo(){
-		$resultado = $this->conexion->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
+		$resultado = $this->conexionSqlServer->realizarConsulta("SELECT * FROM SEMESTRE WHERE Activo = '1'",true);
 		return $resultado;
 	}
 }

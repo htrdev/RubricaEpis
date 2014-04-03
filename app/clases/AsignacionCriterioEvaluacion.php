@@ -1,39 +1,45 @@
 <?php
 
-header('Content-type: application/json');
+class AsignacionCriterioEvaluacion extends Master{
 
-require_once('Conexion.php');
-require_once('Singleton.php');
-
-class AsignacionCriterioEvaluacion extends Singleton{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
-	
-	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$CriterioEvaluacion){
-		$query = "";
-		foreach($CriterioEvaluacion as $idCriterioEvaluacion){
-			$query .= 
+	//QUERY 
+	public function queryAgregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion){
+		$query = 
 			"INSERT INTO asignacionCriterioEvaluacion(
 				idModeloRubrica
 				,idCriterioEvaluacion)
 			VALUES(
 				'".$idModeloRubrica."'
 				,'".$idCriterioEvaluacion."');";
+		return $query;
+	}
+
+	public function queryListarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
+		$query = 
+		"SELECT C.descripcionCriterioEvaluacion
+				,R.codigoResultadoAprendizaje+' '+R.tituloResultadoAprendizaje AS resultadoAprendizaje
+				,A.idAsignacionCriterioEvaluacion
+			FROM asignacioncriterioevaluacion AS A 
+			INNER JOIN CriterioEvaluacion AS C
+				ON C.idCriterioEvaluacion = A.idCriterioEvaluacion
+			INNER JOIN ResultadoAprendizaje as R
+				ON R.idResultadoAprendizaje = C.idResultadoAprendizaje
+				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
+		return $query;
+	}
+
+	//METODOS
+
+	public function agregarAsignacionCriterioEvaluacion($idModeloRubrica,$criteriosEvaluacion){
+		$queryMultiple = "";
+		foreach($criteriosEvaluacion as $idCriterioEvaluacion){
+			$queryMultiple .= $this->queryAgregarAsignacionCriterioEvaluacion($idModeloRubrica,$idCriterioEvaluacion);
 		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
+		$this->conexionSqlServer->realizarConsulta($queryMultiple,false);
 	}
 
 	public function listarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica){
-		$query = 
-		"SELECT A.idCriterioEvaluacion AS idCriterioEvaluacion
-				,A.idAsignacionCriterioEvaluacion
-			FROM asignacioncriterioevaluacion AS A 
-				WHERE A.idModeloRubrica = '".$idModeloRubrica."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarAsignacionCriterioEvaluacionPorModeloRubrica($idModeloRubrica),true);
 	}
 }

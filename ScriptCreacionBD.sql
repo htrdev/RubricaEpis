@@ -83,8 +83,8 @@ GO
 
 CREATE TABLE ModeloRubrica(
 	idModeloRubrica INT IDENTITY,
-	fechaCreacionRubrica DATETIME
-		CONSTRAINT fechaCreacionRubrica_Default DEFAULT GETDATE(),
+	fechaCreacionRubrica VARCHAR(10)
+		CONSTRAINT fechaCreacionRubrica_Default DEFAULT CONVERT(VARCHAR(10), GETDATE(), 1) AS [MM/DD/YYYY],
 	fechaInicioRubrica VARCHAR(15) NOT NULL,
 	fechaFinalRubrica VARCHAR(15) NOT NULL,
 	personaCalificada VARCHAR(10) NOT NULL,
@@ -102,8 +102,8 @@ GO
 
 CREATE TABLE ResultadoRubrica(
 	idResultadoRubrica INT IDENTITY,
-	fechaCompletadoRubrica DATETIME NULL
-		CONSTRAINT fechaCompletadoRubrica_Default DEFAULT NULL,
+	fechaCompletadoRubrica VARCHAR(10) NULL
+		CONSTRAINT fechaCompletadoRubrica_Default DEFAULT 'No Completado',
 	estadoRubrica VARCHAR(10)
 		CONSTRAINT estadoRubrica_Default DEFAULT 'Pendiente',
 	totalRubrica DECIMAL(8,2) NOT NULL

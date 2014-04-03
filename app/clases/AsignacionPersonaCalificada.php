@@ -1,44 +1,41 @@
 <?php
 
-header('Content-type: application/json');
+class AsignacionPersonaCalificada extends Master{
 
-require_once('Conexion.php');
-require_once('Singleton.php');
+	//QUERYS
 
-class AsignacionPersonaCalificada extends Singleton{
-
-	private $conexionSqlServer;
-
-	public function __construct(){
-		$this->conexionSqlServer = ConexionFactory::obtenerConexion('sqlserver');
-	}
-	
-	public function agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumnos){
+	public function queryAgregarAsignacionPersonaCalificada($idResultadoRubrica,$idAlumno){
 		$query = 
 		"INSERT INTO asignacionpersonacalificada(
 			idResultadoRubrica, 
 			idPersonaCalificada)
-		values";
-		$numeroElementos = count($alumnos);
-		$i = 0;
+		VALUES(
+			'".$idResultadoRubrica."'
+			,'".$idAlumno."');";
+		return $query;
+	}
+
+	public function queryListarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
+		$query =
+		"SELECT P.ApepPer+' '+P.ApemPer+', '+P.NomPer as personaCalificada
+			FROM asignacionpersonacalificada AS A
+			INNER JOIN Persona as P
+				ON A.idPersonaCalificada = P.CodPer
+				WHERE A.idResultadoRubrica  = '".$idResultadoRubrica."'";
+		return $query;
+	}
+
+	//METODOS
+
+	public function agregarAsignacionPersonaCalificada($idResultadoRubrica,$alumnos){
+		$queryMultiple="";
 		foreach($alumnos as $idAlumno){
-			$query.= "('".$idResultadoRubrica."','".$idAlumno."')";
-			if(++$i == $numeroElementos){
-				$query.=";";
-			}
-			else{
-				$query.=",";
-			}
+			$queryMultiple.=$this->queryAgregarAsignacionPersonaCalificada($idResultadoRubrica,$idAlumno);
 		}
-		$funciono = $this->conexionSqlServer->realizarConsulta($query,false);
-		return $funciono;		
+		$this->conexionSqlServer->realizarConsulta($queryMultiple,false);
 	}
 
 	public function listarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica){
-		$query =
-		"SELECT A.idPersonaCalificada  
-			FROM asignacionpersonacalificada AS A
-				WHERE A.idResultadoRubrica  = '".$idResultadoRubrica."'";
-		return $this->conexionSqlServer->realizarConsulta($query,true);
+		return $this->conexionSqlServer->realizarConsulta($this->queryListarAsignacionPersonaCalificadaPorResultadoRubrica($idResultadoRubrica),true);
 	}
 }

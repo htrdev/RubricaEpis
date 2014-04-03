@@ -16,12 +16,9 @@ switch($metodo){
 	case 'listarResultadoRubricaPorIDModeloRubrica' : 
 		$idModeloRubrica = $json['idModeloRubrica'];
 		echo $objResultadoRubrica->listarResultadoRubricaPorIDModeloRubrica($idModeloRubrica);break;
-	case 'listarResultadoRubricaPorcionRubricaAsignada' : 
-		$idModeloRubrica = $json['idModeloRubrica'];
-		echo $objResultadoRubrica->listarResultadoRubricaPorcionRubricaAsignada($idModeloRubrica);break;
+	case 'listarResultadoRubricaPorcionRubricaAsignada' : obtenerResultadoRubricaPorRubricaAsignada();break;
 	case 'completarResultadoRubrica' : 
 		$resultadoRubrica = $json['resultadoRubrica'];
 		echo $objResultadoRubrica->completarResultadoRubrica($resultadoRubrica);break;
 }
 
-?>
