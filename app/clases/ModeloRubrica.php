@@ -63,7 +63,79 @@ class ModeloRubrica extends Master{
 				ON P.CodPer = M.idPersonaCreadorRubrica";
 		return $query;
 	}
+
+	public function queryReporteResumenPorModeloRubrica($idModeloRubrica){
+		$query =
+		"SELECT SUM(cc.calificacionCriterioEvaluacion)/COUNT(cc.calificacionCriterioEvaluacion) as calificacionPromedio
+		,P.ApepPer+' '+P.ApemPer+', '+P.NomPer AS personaCalificada
+		,ra.codigoResultadoAprendizaje
+		,ra.tituloResultadoAprendizaje
+		FROM asignacioncriterioevaluacion AS ae
+		INNER JOIN criterioevaluacion AS ce
+			ON ae.idCriterioEvaluacion = ce.idCriterioEvaluacion
+		INNER JOIN resultadoaprendizaje AS ra
+			ON ra.idResultadoAprendizaje = ce.idResultadoAprendizaje
+		INNER JOIN calificacioncriterioevaluacion AS cc
+			ON cc.idAsignacionCriterioEvaluacion = ae.idAsignacionCriterioEvaluacion
+		INNER JOIN asignacionpersonacalificada AS ac
+			ON ac.idResultadoRubrica = cc.idResultadoRubrica
+		INNER JOIN PERSONA AS P
+			ON P.CodPer = ac.idPersonaCalificada
+		WHERE ae.idAsignacionCriterioEvaluacion
+		IN (SELECT ca.idAsignacionCriterioEvaluacion 
+				FROM calificacioncriterioevaluacion ca WHERE ca.idResultadoRubrica
+					IN (SELECT rr.idResultadoRubrica FROM resultadorubrica rr 
+							WHERE rr.idModeloRubrica = '".$idModeloRubrica."'))
+		GROUP BY ra.codigoResultadoAprendizaje,ra.tituloResultadoAprendizaje,P.ApepPer+' '+P.ApemPer+', '+P.NomPer,ac.idPersonaCalificada";
+		return $query;
+	}
+
 	//METODOS
+
+	public function obtenerReporteResumenPorModeloRubrica($idModeloRubrica){
+		$resultadoQuery = $this->conexionSqlServer->realizarConsulta($this->queryReporteResumenPorModeloRubrica($idModeloRubrica),true);
+		$resultado = array("curso"=>""
+							,"docenteCreadoRubrica"=>""
+							,"ciclo"=>"IX"
+							,"semestre"=>"Ex"
+							,"promedioCalificaciones"=>array());
+		foreach($resultadoQuery as $registro){
+			$indexResultadoAprendizaje = $this->buscarResultadoAprendizajeEnArray($resultado["promedioCalificaciones"],$registro["codigoResultadoAprendizaje"]);
+			if(!is_numeric($indexResultadoAprendizaje)){
+				$resultado["promedioCalificaciones"][]=
+				array("codigoResultadoAprendizaje"=>$registro["codigoResultadoAprendizaje"]
+					,"tituloResultadoAprendizaje"=>$registro["tituloResultadoAprendizaje"]
+					,"personasCalificadas"=>array(array("personaCalificada"=>$registro["personaCalificada"],
+													"calificacionPromedio"=>$registro["calificacionPromedio"]))
+					,"totalResultadoAprendizaje"=>$registro["calificacionPromedio"]);
+			}else{
+				$resultado["promedioCalificaciones"][$indexResultadoAprendizaje]["personasCalificadas"][] = 
+											array("personaCalificada"=>$registro["personaCalificada"],
+													"calificacionPromedio"=>$registro["calificacionPromedio"]);
+				$resultado["promedioCalificaciones"][$indexResultadoAprendizaje]["totalResultadoAprendizaje"]=$this->hallarTotalResultadoAprendizaje($resultado["promedioCalificaciones"][$indexResultadoAprendizaje]["personasCalificadas"]);
+			}
+		}
+		return $resultado;
+	}
+
+	private function hallarTotalResultadoAprendizaje($personasCalificadas){
+		$totalResultadoAprendizaje = 0;
+		foreach ($personasCalificadas as $personaCalificada) {
+			$totalResultadoAprendizaje += $personaCalificada["calificacionPromedio"];
+		}
+		return $totalResultadoAprendizaje/count($personasCalificadas);
+	}
+
+	private function buscarResultadoAprendizajeEnArray($array,$codigoResultadoAprendizaje){
+		$resultado = "NoDisponible";
+		for($i=0;$i<count($array);$i++){
+			if($array[$i]["codigoResultadoAprendizaje"] == $codigoResultadoAprendizaje){
+				$resultado = $i;
+				break;
+			}
+		}
+		return $resultado;
+	}
 
 	protected function listarModeloRubricaPorPersona($idSemestre = null){
 		if(is_null($idSemestre)){

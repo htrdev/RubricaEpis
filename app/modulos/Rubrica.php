@@ -29,9 +29,27 @@ switch($metodo){
 	case 'obtenerResultadoRubricaPorID' : obtenerResultadoRubricaPorId();break;
 	case 'obtenerResultadoRubricaPorModeloRubrica' : obtenerResultadoRubricaPorModeloRubrica();break;
 	case 'completarResultadoRubrica' : completarResultadoRubrica();break;
+	case 'obtenerReporteResumenPorModeloRubrica' : obtenerReporteResumenPorModeloRubrica();break;
 }
 
 //Metodos
+function obtenerReporteResumenPorModeloRubrica(){
+	global $json;
+	$idModeloRubrica = $json['idModeloRubrica'];
+	$objModeloRubrica = ModeloRubrica::obtenerObjeto();
+	try{
+		header('Content-type: application/json');
+		$resultado = $objModeloRubrica->obtenerReporteResumenPorModeloRubrica($idModeloRubrica);
+		echo json_encode($resultado);
+	}catch(Exception $ex){
+		header("HTTP/1.1 500 Internal Server Error");
+		$error["error"] = "No se ha podido obtener el reporte de la Rubrica :(";
+		$ex = definirExcepcion($ex);
+		$error["detalle"] = $ex->getMessage();
+		echo json_encode($error);
+	}
+}
+
 function obtenerAlumnosPorCurso(){
 	global $json;
 	$idCurso = $json['idCurso'];

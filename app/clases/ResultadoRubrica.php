@@ -95,6 +95,7 @@ class ResultadoRubrica extends Master{
 		return $query;
 	}
 
+	
 	//METODOS
 
 	public function listarResultadoRubricaPorDocente($idSemestre=null){

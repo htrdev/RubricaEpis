@@ -164,7 +164,7 @@
 										<div class="content">
 											<div ng-repeat="criterioEvaluacion in resultadoAprendizajeSeleccionado.criteriosEvaluacion | filter : txtBusquedaCriterio" style="margin-bottom:5px">
 												<label class="checkbox check-box">
-													<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Formulario.AgregarCriterioSeleccionado(resultadoAprendizajeSeleccionado,criterioEvaluacion)"/>
+													<input type="checkbox" ng-model="criterioEvaluacion.estaSeleccionado" ng-change="Formulario.AgregarCriterioSeleccionado(resultadoAprendizajeSeleccionado,criterioEvaluacion)" ng-init="criterioEvaluacion.estaSeleccionado = false"/>
 													<p>{{criterioEvaluacion.descripcionCriterioEvaluacion}}</p>
 												</label>
 											</div>

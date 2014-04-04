@@ -95,6 +95,8 @@ rubricaApp.controller('nuevoRubricaCtrl',
 			},
 
 			callBackCheckBoxRaDocente : function(estado){
+				$scope.Formulario.resetearResultadoAprendizaje($scope.resultadosAprendizaje);
+				$scope.modeloRubrica.resultadosAprendizaje = [];
 				if(estado){
 					$scope.resultadosAprendizaje = $scope.tmpResultadosAprendizaje.resultadosAprendizajeDocente;
 				}else{
@@ -112,6 +114,14 @@ rubricaApp.controller('nuevoRubricaCtrl',
 					$scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.splice($scope.modeloRubrica.resultadosAprendizaje[resultado].criteriosEvaluacion.indexOf(criterio),1);
 				}
 			},
+
+			resetearResultadoAprendizaje : function(){
+				$scope.resultadosAprendizaje.forEach(function(criterio){
+					criterio.estaSeleccionado = false;
+				});
+			},
+
+
 
 			AgregarResultadoAprendizajeALista : function(resultadoAprendizaje,criterio){
 				var nombreRa = resultadoAprendizaje.codigoResultadoAprendizaje+' '+resultadoAprendizaje.tituloResultadoAprendizaje;
@@ -440,6 +450,61 @@ rubricaApp.controller('completarRubricaCtrl',
 });
 
 rubricaApp.controller('reporteRubricaCtrl',
-	function reporteRubricaCtrl($scope){
+function reporteRubricaCtrl($scope,$routeParams,Rubrica){
+	
+	$scope.dataReporte = [];
+	$scope.dataSource = [];
+	$scope.obtenerReporteResumenPorModeloRubrica = function(){
+			$scope.idModeloRubrica = $routeParams.idModeloRubrica;
+			Rubrica.obtenerReporteResumenPorModeloRubrica($scope.idModeloRubrica)
+			.success(function(data){
+				$scope.dataReporte = data.promedioCalificaciones;
+				$scope.dataSource = $scope.arreglarDataGrafico($scope.dataReporte);
+				$scope.dataCuadro = $scope.arreglarDataReporte(data.promedioCalificaciones);
+			});
+		};
 
-	});
+	$scope.arreglarDataGrafico = function(data){
+		var dataArreglada = [];
+		data.forEach(function(registro){
+			dataArreglada.push({resultadoAprendizaje:registro.codigoResultadoAprendizaje
+								,reporte1:registro.totalResultadoAprendizaje.toFixed(2)});
+		});
+		return dataArreglada;
+	};
+
+	$scope.arreglarDataReporte = function(data){
+		var dataArreglada = [];
+		var resultadosAprendizaje = [];
+		var cantidadAlumnos = data[0].personasCalificadas.length;
+		for(var i=0;i<cantidadAlumnos;i++){
+			var objeto = {
+				personaCalificada : data[0].personasCalificadas[i].personaCalificada,
+				calificacionesPromedio : []
+			};
+			data.forEach(function(registro){
+				var promedio = registro.personasCalificadas[i].calificacionPromedio;
+				objeto.calificacionesPromedio.push(parseInt(promedio).toFixed(2));
+			});
+			dataArreglada.push(objeto);
+		}
+		return dataArreglada;
+	};
+	$scope.obtenerReporteResumenPorModeloRubrica();
+	
+	$scope.exportarExcel = function(){
+		var blob = new Blob([document.getElementById('exportarReporte').innerHTML], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+	    });
+	    saveAs(blob, "Reporte.xls");
+	};
+
+	$scope.exportarXHTML = function(){
+		var xmlserializer = new XMLSerializer();
+		var blob = new Blob([xmlserializer.serializeToString(document.getElementById('exportarXHTML').innerHTML)], {
+        type: "application/xhtml+xml;charset=utf-8"
+	    });
+	    saveAs(blob, "Reporte.xhtml");
+	}
+
+});

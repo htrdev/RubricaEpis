@@ -141,7 +141,6 @@ rubricaApp.controller('misResultadosAprendizajeCtrl',
 		//METODOS
 
 		$scope.obtenerResultadosAprendizaje();
-		
 	});
 
 

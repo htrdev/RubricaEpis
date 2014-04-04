@@ -12,6 +12,13 @@ rubricaApp.factory('Rubrica',function($http,rutasApp){
 				 );
 	};
 
+	dataFactory.obtenerReporteResumenPorModeloRubrica = function(pidModeloRubrica){
+		return $http.post(
+				    rutasApp.rutaApi+'Rubrica.php', 
+				    {metodo: 'obtenerReporteResumenPorModeloRubrica'
+				    ,idModeloRubrica:pidModeloRubrica}
+				 );
+	};
 
 	dataFactory.obtenerInformacionNuevaRubrica = function(){
 		return $http.post(
