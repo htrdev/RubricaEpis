@@ -84,7 +84,7 @@ GO
 CREATE TABLE ModeloRubrica(
 	idModeloRubrica INT IDENTITY,
 	fechaCreacionRubrica VARCHAR(10)
-		CONSTRAINT fechaCreacionRubrica_Default DEFAULT CONVERT(VARCHAR(10), GETDATE(), 1) AS [MM/DD/YYYY],
+		CONSTRAINT fechaCreacionRubrica_Default DEFAULT CONVERT(VARCHAR(10), GETDATE(), 1),
 	fechaInicioRubrica VARCHAR(15) NOT NULL,
 	fechaFinalRubrica VARCHAR(15) NOT NULL,
 	personaCalificada VARCHAR(10) NOT NULL,
