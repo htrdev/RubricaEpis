@@ -9,8 +9,8 @@ class AsignacionCriterioEvaluacion extends Master{
 				idModeloRubrica
 				,idCriterioEvaluacion)
 			VALUES(
-				'".$idModeloRubrica."'
-				,'".$idCriterioEvaluacion."');";
+				".$idModeloRubrica."
+				,".$idCriterioEvaluacion.");";
 		return $query;
 	}
 

@@ -83,11 +83,11 @@ GO
 
 CREATE TABLE ModeloRubrica(
 	idModeloRubrica INT IDENTITY,
-	fechaCreacionRubrica VARCHAR(10)
-		CONSTRAINT fechaCreacionRubrica_Default DEFAULT CONVERT(VARCHAR(10), GETDATE(), 1),
-	fechaInicioRubrica VARCHAR(15) NOT NULL,
-	fechaFinalRubrica VARCHAR(15) NOT NULL,
-	personaCalificada VARCHAR(10) NOT NULL,
+	fechaCreacionRubrica DATETIME
+		CONSTRAINT fechaCreacionRubrica_Default DEFAULT GETDATE(),
+	fechaInicioRubrica VARCHAR(25) NOT NULL,
+	fechaFinalRubrica VARCHAR(25) NOT NULL,
+	personaCalificada VARCHAR(50) NOT NULL,
 	tipoModeloRubrica VARCHAR(50) NULL
 		CONSTRAINT tipoModeloRubrica_Default DEFAULT 'Curso',
 	idPersonaCreadorRubrica INT NOT NULL,
@@ -102,9 +102,9 @@ GO
 
 CREATE TABLE ResultadoRubrica(
 	idResultadoRubrica INT IDENTITY,
-	fechaCompletadoRubrica VARCHAR(10) NULL
+	fechaCompletadoRubrica VARCHAR(25) NULL
 		CONSTRAINT fechaCompletadoRubrica_Default DEFAULT 'No Completado',
-	estadoRubrica VARCHAR(10)
+	estadoRubrica VARCHAR(20)
 		CONSTRAINT estadoRubrica_Default DEFAULT 'Pendiente',
 	totalRubrica DECIMAL(8,2) NOT NULL
 		CONSTRAINT totalRubrica_Default DEFAULT 0,

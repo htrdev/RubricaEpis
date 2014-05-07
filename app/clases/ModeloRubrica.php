@@ -41,7 +41,7 @@ class ModeloRubrica extends Master{
 				,'".$modeloRubrica["fechaInicio"]."'
 				,'".$modeloRubrica["fechaFinal"]."'
 				,'".$CodPer."'
-				,'".$modeloRubrica["calificacionRubrica"]."')";
+				,'".$modeloRubrica["calificacionRubrica"]."');";
 		return $query;
 	}
 

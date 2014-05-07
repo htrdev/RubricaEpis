@@ -52,9 +52,8 @@ class ResultadoRubrica extends Master{
 					,idModeloRubrica
 					)
 				VALUES
-					(".$idDocente."
-					,".$idModeloRubrica."
-					)";
+					('".$idDocente."'
+					,'".$idModeloRubrica."');";
 		return $query;
 	}
 

@@ -54,15 +54,16 @@ class ConexionSQLServer extends Conexion{
 
 	public function realizarConsulta($sql,$convertirArray){
 		try{
+			// echo $sql;
 			$resultado = $this->conexion->query($sql);
 			if($convertirArray){
 				return $resultado->fetchAll(PDO::FETCH_ASSOC);
 			}else{
 				if($this->returnId){
 					$this->returnId = false;
-					$resultado = $this->conexion->query("SELECT SCOPE_IDENTITY() as Id");
-					$id = $resultado->fetch(PDO::FETCH_ASSOC);
-					return $id["Id"];
+					// $resultado = $this->conexion->query("SELECT SCOPE_IDENTITY() as Id;");
+					// $id = $resultado->fetch(PDO::FETCH_ASSOC);
+					return $this->conexion->lastInsertId();
 				}
 			}
 		}catch(PDOException $ex){
@@ -73,15 +74,15 @@ class ConexionSQLServer extends Conexion{
 	}
 
 	public function iniciarTransaccion(){
-		$this->conexion->query("BEGIN TRANSACTION");
+		$this->conexion->beginTransaction();
 	}
 
 	public function commit(){
-		$this->conexion->query("COMMIT");
+		$this->conexion->commit();
 	}
 
 	public function rollback(){
-		$this->conexion->query("ROLLBACK");
+		$this->conexion->rollBack();
 	}
 
 	public function convertirJson($array){
