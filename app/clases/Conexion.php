@@ -40,15 +40,15 @@ abstract class Conexion extends Singleton{
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = '192.168.1.36';
+		$this->servidor = 'localhost';
 		$this->usuario	= 'sa';
-		$this->password = '123cuatro';
+		$this->password = 'redman10';
 		$this->baseDeDatos = "RubricaEpis";
 		$this->obtenerConexion();
 	}
 
 	public function obtenerConexion(){
-     	$this->conexion = new PDO("dblib:host=$this->servidor;dbname=".$this->baseDeDatos.";charset=utf8",$this->usuario,$this->password);
+     	$this->conexion = new PDO("sqlsrv:server=".$this->servidor.";database=".$this->baseDeDatos.";", $this->usuario, $this->password);
      	$this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 	}
 
