@@ -14,7 +14,7 @@ CREATE TABLE PERSONA(
 	Email VARCHAR(100) NOT NULL,
 	Dni	VARCHAR(12) NOT NULL,
 	CodEstamento INT NOT NULL,
-	CONSTRAINT PERSONA_PK PRIMARY KEY (CodPer)
+	CONSTRAINT PERSONA_PK PRIMARY KEY CLUSTERED (CodPer)  
 )
 GO
 
@@ -22,7 +22,7 @@ CREATE TABLE SEMESTRE(
 	idSem INT IDENTITY,
 	Semestre VARCHAR(100) NOT NULL,
 	Activo VARCHAR(10) NOT NULL,
-	CONSTRAINT SEMESTRE_PK PRIMARY KEY(idSem)
+	CONSTRAINT SEMESTRE_PK PRIMARY KEY CLUSTERED (idSem)
 )
 GO
 
@@ -32,7 +32,7 @@ CREATE TABLE Curso(
 	DesCurso VARCHAR(100) NOT NULL,
 	CicloCurso VARCHAR(100) NOT NULL,
 	CursoCreditos TINYINT NOT NULL,
-	CONSTRAINT Curso_PK PRIMARY KEY(idcurso)
+	CONSTRAINT Curso_PK PRIMARY KEY CLUSTERED(idcurso)
 )
 GO
 
@@ -43,7 +43,7 @@ CREATE TABLE Carga(
 	idcurso INT NOT NULL,
 	seccion VARCHAR(10) NOT NULL
 		CONSTRAINT seccion_Default DEFAULT 'A',
-	CONSTRAINT Carga_PK PRIMARY KEY(idcarga),
+	CONSTRAINT Carga_PK PRIMARY KEY CLUSTERED (idcarga),
 	CONSTRAINT Carga_codper_FK FOREIGN KEY(codper) REFERENCES PERSONA(CodPer),
 	CONSTRAINT Carga_idsem_FK FOREIGN KEY(idsem) REFERENCES SEMESTRE(idsem),
 	CONSTRAINT Carga_idcurso_FK FOREIGN KEY(idcurso) REFERENCES CURSO(idcurso)
@@ -59,14 +59,14 @@ CREATE TABLE ResultadoAprendizaje(
 	tituloResultadoAprendizaje VARCHAR(100) NOT NULL,
 	codigoResultadoAprendizaje AS 'RA' + replace(str(idResultadoAprendizaje, 3), ' ', '0'),
 	tipoResultadoAprendizaje VARCHAR(10) NOT NULL,
-	CONSTRAINT ResultadoAprendizaje_PK PRIMARY KEY(idResultadoAprendizaje)
+	CONSTRAINT ResultadoAprendizaje_PK PRIMARY KEY CLUSTERED (idResultadoAprendizaje)
 )
 GO
 
 CREATE TABLE ResultadoAprendizajeDocente(
 	idResultadoAprendizaje INT,
 	idDocente INT NOT NULL,
-	CONSTRAINT ResultadoAprendizajeDocente_PK PRIMARY KEY(idResultadoAprendizaje),
+	CONSTRAINT ResultadoAprendizajeDocente_PK PRIMARY KEY CLUSTERED (idResultadoAprendizaje),
 	CONSTRAINT ResultadoAprendizajeDocente_idResultadoAprendizaje_FK FOREIGN KEY(idResultadoAprendizaje) REFERENCES ResultadoAprendizaje(idResultadoAprendizaje),
 	CONSTRAINT ResultadoAprendizajeDocente_idDocente_FK FOREIGN KEY(idDocente) REFERENCES PERSONA(CodPer)
 )
@@ -76,7 +76,7 @@ CREATE TABLE CriterioEvaluacion(
 	idCriterioEvaluacion INT IDENTITY,
 	descripcionCriterioEvaluacion TEXT NOT NULL,
 	idResultadoAprendizaje INT NOT NULL,
-	CONSTRAINT CriterioEvaluacion_PK PRIMARY KEY(idCriterioEvaluacion),
+	CONSTRAINT CriterioEvaluacion_PK PRIMARY KEY CLUSTERED (idCriterioEvaluacion),
 	CONSTRAINT CriterioEvaluacion_idResultadoAprendizaje_FK FOREIGN KEY(idResultadoAprendizaje) REFERENCES ResultadoAprendizaje(idResultadoAprendizaje)
 )
 GO
@@ -93,7 +93,7 @@ CREATE TABLE ModeloRubrica(
 	idPersonaCreadorRubrica INT NOT NULL,
 	idCurso INT NOT NULL,
 	idSemestre INT NOT NULL,
-	CONSTRAINT ModeloRubrica_PK PRIMARY KEY(idModeloRubrica),
+	CONSTRAINT ModeloRubrica_PK PRIMARY KEY CLUSTERED (idModeloRubrica),
 	CONSTRAINT ModeloRubrica_idPersonaCreadorRubrica_FK FOREIGN KEY(idPersonaCreadorRubrica) REFERENCES PERSONA(CodPer),
 	CONSTRAINT ModeloRubrica_idCurso_FK FOREIGN KEY(idCurso) REFERENCES Curso(idCurso),
 	CONSTRAINT ModeloRubrica_idSemestre_FK FOREIGN KEY(idSemestre) REFERENCES SEMESTRE(idsem),
@@ -110,16 +110,17 @@ CREATE TABLE ResultadoRubrica(
 		CONSTRAINT totalRubrica_Default DEFAULT 0,
 	idModeloRubrica INT NOT NULL,
 	idPersonaCalificadora INT NOT NULL,
-	CONSTRAINT idResultadoRubrica PRIMARY KEY(idResultadoRubrica),
+	CONSTRAINT idResultadoRubrica PRIMARY KEY CLUSTERED (idResultadoRubrica),
 	CONSTRAINT ResultadoRubrica_idPersonaCalificadora_FK FOREIGN KEY(idPersonaCalificadora) REFERENCES PERSONA(CodPer),
 	CONSTRAINT ResultadoRubrica_idModeloRubrica_FK FOREIGN KEY(idModeloRubrica) REFERENCES ModeloRubrica(idModeloRubrica)
 )
 GO
 
 CREATE TABLE AsignacionPersonaCalificada(
+	id int PRIMARY KEY CLUSTERED IDENTITY,
 	idResultadoRubrica INT NOT NULL,
 	idPersonaCalificada INT NOT NULL,
-	CONSTRAINT AsignacionPersonaCalificada_idResultadoRubrica_FK FOREIGN KEY(idResultadoRubrica) REFERENCES ResultadoRubrica(idResultadoRubrica),
+	CONSTRAINT AsignacionPersonaCalificada_idResultadoRubrica_FK FOREIGN KEY (idResultadoRubrica) REFERENCES ResultadoRubrica(idResultadoRubrica),
 	CONSTRAINT AsignacionPersonaCalificada_idPersonaCalificada_FK FOREIGN KEY(idPersonaCalificada) REFERENCES PERSONA(CodPer)
 )
 GO
@@ -128,17 +129,18 @@ CREATE TABLE AsignacionCriterioEvaluacion(
 	idAsignacionCriterioEvaluacion INT IDENTITY,
 	idModeloRubrica INT NOT NULL,
 	idCriterioEvaluacion INT NOT NULL,
-	CONSTRAINT AsignacionCriterioEvaluacion_PK PRIMARY KEY(idAsignacionCriterioEvaluacion),
+	CONSTRAINT AsignacionCriterioEvaluacion_PK PRIMARY KEY CLUSTERED (idAsignacionCriterioEvaluacion),
 	CONSTRAINT AsignacionCriterioEvaluacion_idModeloRubrica_FK FOREIGN KEY(idModeloRubrica) REFERENCES ModeloRubrica(idModeloRubrica),
 	CONSTRAINT CriterioEvaluacion_idCriterioEvaluacion_FK FOREIGN KEY(idCriterioEvaluacion) REFERENCES CriterioEvaluacion(idCriterioEvaluacion)
 )
 GO
 
 CREATE TABLE CalificacionCriterioEvaluacion(
+	id INT PRIMARY KEY CLUSTERED IDENTITY,
 	idResultadoRubrica INT NOT NULL,
 	calificacionCriterioEvaluacion DECIMAL(8,2) NOT NULL,
 	idAsignacionCriterioEvaluacion INT NOT NULL,
-	CONSTRAINT CalificacionCriterioEvaluacion_idResultadoRubrica_FK FOREIGN KEY(idResultadoRubrica) REFERENCES ResultadoRubrica(idResultadoRubrica),
+	CONSTRAINT CalificacionCriterioEvaluacion_idResultadoRubrica_FK FOREIGN KEY (idResultadoRubrica) REFERENCES ResultadoRubrica(idResultadoRubrica),
 	CONSTRAINT CalificacionCriterioEvaluacion_idAsignacionCriterioEvaluacion_FK FOREIGN KEY(idAsignacionCriterioEvaluacion) REFERENCES AsignacionCriterioEvaluacion(idAsignacionCriterioEvaluacion)
 )
 GO

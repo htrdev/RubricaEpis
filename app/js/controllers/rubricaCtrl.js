@@ -458,6 +458,7 @@ function reporteRubricaCtrl($scope,$routeParams,Rubrica){
 			$scope.idModeloRubrica = $routeParams.idModeloRubrica;
 			Rubrica.obtenerReporteResumenPorModeloRubrica($scope.idModeloRubrica)
 			.success(function(data){
+				debugger;
 				$scope.dataReporte = data.promedioCalificaciones;
 				$scope.dataSource = $scope.arreglarDataGrafico($scope.dataReporte);
 				$scope.dataCuadro = $scope.arreglarDataReporte(data.promedioCalificaciones);
@@ -470,6 +471,15 @@ function reporteRubricaCtrl($scope,$routeParams,Rubrica){
 			dataArreglada.push({resultadoAprendizaje:registro.codigoResultadoAprendizaje
 								,reporte1:registro.totalResultadoAprendizaje.toFixed(2)});
 		});
+		dataArreglada.sort(function (a, b) {
+		    if (a.reporte1 > b.reporte1)
+		      return 1;
+		    if (a.reporte1 < b.reporte1)
+		      return -1;
+		    // a must be equal to b
+		    return 0;
+		});
+		debugger;
 		return dataArreglada;
 	};
 
