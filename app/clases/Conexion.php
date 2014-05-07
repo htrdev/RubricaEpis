@@ -40,9 +40,13 @@ abstract class Conexion extends Singleton{
 class ConexionSQLServer extends Conexion{
 
 	protected function __construct(){
-		$this->servidor = 'localhost';
-		$this->usuario	= 'sa';
-		$this->password = 'redman10';
+		// $this->servidor = 'localhost';
+		// $this->usuario	= 'sa';
+		// $this->password = 'redman10';
+		// $this->baseDeDatos = "RubricaEpis";
+		$this->servidor = 'z60r858kbg.database.windows.net';
+		$this->usuario	= 'htrdev@z60r858kbg.database.windows.net';
+		$this->password = '123Cuatro';
 		$this->baseDeDatos = "RubricaEpis";
 		$this->obtenerConexion();
 	}

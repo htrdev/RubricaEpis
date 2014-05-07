@@ -3,8 +3,8 @@
 var rubricaApp = angular.module('rubricaApp', ['ngSanitize','ngRoute','ui.bootstrap','ngAnimate','ui.sortable','htrdev']);
 
 rubricaApp.constant('rutasApp',{
-  rutaVistas : 'http://rubricaepis:8080/app/vistas/',
-  rutaApi : 'http://rubricaepis:8080/app/modulos/'
+  rutaVistas : 'http://rubricaupt.cloudapp.net/app/vistas/',
+  rutaApi : 'http://rubricaupt.cloudapp.net/app/modulos/'
 });
 
 // URL:
